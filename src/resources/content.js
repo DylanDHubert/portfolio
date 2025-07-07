@@ -1,25 +1,24 @@
 import { Logo } from "@once-ui-system/core";
 
 const person = {
-  firstName: "Selene",
-  lastName: "Yu",
+  firstName: "Dylan",
+  lastName: "Hubert",
   get name() {
     return `${this.firstName} ${this.lastName}`;
   },
-  role: "Design Engineer",
+  role: "Machine Learning Engineer & Full Stack Developer",
   avatar: "/images/avatar.jpg",
-  email: "example@gmail.com",
-  location: "Asia/Jakarta", // Expecting the IANA time zone identifier, e.g., 'Europe/Vienna'
-  languages: ["English", "Bahasa"], // optional: Leave the array empty if you don't want to display languages
+  email: "dylandhubert@outlook.com",
+  location: "America/Los_Angeles", // San Francisco timezone
+  languages: ["English"], // optional: Leave the array empty if you don't want to display languages
 };
 
 const newsletter = {
-  display: true,
+  display: false,
   title: <>Subscribe to {person.firstName}'s Newsletter</>,
   description: (
     <>
-      I occasionally write about design, technology, and share thoughts on the intersection of
-      creativity and engineering.
+      I occasionally write about machine learning, full stack development, and share insights from my work at NASA and in the tech industry.
     </>
   ),
 };
@@ -30,17 +29,7 @@ const social = [
   {
     name: "GitHub",
     icon: "github",
-    link: "https://github.com/once-ui-system/nextjs-starter",
-  },
-  {
-    name: "LinkedIn",
-    icon: "linkedin",
-    link: "https://www.linkedin.com/company/once-ui/",
-  },
-  {
-    name: "Threads",
-    icon: "threads",
-    link: "https://www.threads.com/@once_ui",
+    link: "https://github.com/DylanDHubert",
   },
   {
     name: "Email",
@@ -55,19 +44,44 @@ const home = {
   label: "Home",
   title: `${person.name}'s Portfolio`,
   description: `Portfolio website showcasing my work as a ${person.role}`,
-  headline: <>Building bridges between design and code</>,
+  headline: <>Dylan Donnelly Hubert</>,
   featured: {
-    display: true,
-    title: <>Recent project: <strong className="ml-4">Once UI</strong></>,
-    href: "/work/building-once-ui-a-customizable-design-system",
+    display: false,
   },
+
   subline: (
     <>
-      I'm Selene, a design engineer at <Logo icon="/trademarks/wordmark-dark.svg" style={{ display: "inline-flex", top: "0.25em", marginLeft: "-0.25em" }}/>, where I craft intuitive
-      <br /> user experiences. After hours, I build my own projects.
+    BIO LINE I
+    <br/>
+    BIO LINE II
+    <br/>
+    BIO LINE III
     </>
   ),
 };
+
+const heroProjects = [
+  {
+    title: "pb&j",
+    subtitle: "RAG System Data Pipeline",
+    href: "/work/pbj-rag-system",
+  },
+  {
+    title: "farm",
+    subtitle: "RAG System Retrieval Agent", 
+    href: "/work/farm-rag-agent",
+  },
+  {
+    title: "eudaemonia",
+    subtitle: "Personal Wellness Tracker",
+    href: "/work/eudaemonia-wellness",
+  },
+  {
+    title: "undergraduate research",
+    subtitle: "NASA + Academic",
+    href: "/work/nasa-ml-research",
+  },
+];
 
 const about = {
   path: "/about",
@@ -90,9 +104,7 @@ const about = {
     title: "Introduction",
     description: (
       <>
-        Selene is a Jakarta-based design engineer with a passion for transforming complex challenges
-        into simple, elegant design solutions. Her work spans digital interfaces, interactive
-        experiences, and the convergence of design and technology.
+        Dylan is a Machine Learning Engineer and Full Stack Developer based in San Francisco, with a passion for building intelligent systems and solving complex problems. His work spans from NASA research projects to production-ready RAG systems and full-stack applications.
       </>
     ),
   },
@@ -101,41 +113,57 @@ const about = {
     title: "Work Experience",
     experiences: [
       {
-        company: "FLY",
-        timeframe: "2022 - Present",
-        role: "Senior Design Engineer",
+        company: "Stryker MedTech",
+        timeframe: "May 2025 - Present",
+        role: "ML Engineer & Full Stack Developer (Contract/Freelance)",
         achievements: [
           <>
-            Redesigned the UI/UX for the FLY platform, resulting in a 20% increase in user
-            engagement and 30% faster load times.
+            Built an internal Retrieval-Augmented Generation (RAG) chatbot to search and summarize highly technical orthopedic implant documentation.
           </>,
           <>
-            Spearheaded the integration of AI tools into design workflows, enabling designers to
-            iterate 50% faster.
+            Integrated PDF highlighting, vector search (OpenAI + LlamaIndex), and full Q&A UI.
           </>,
         ],
-        images: [
-          // optional: leave the array empty if you don't want to display images
-          {
-            src: "/images/projects/project-01/cover-01.jpg",
-            alt: "Once UI Project",
-            width: 16,
-            height: 9,
-          },
-        ],
+        images: [],
       },
       {
-        company: "Creativ3",
-        timeframe: "2018 - 2022",
-        role: "Lead Designer",
+        company: "The Pitch Place",
+        timeframe: "June 2023 - February 2025",
+        role: "Machine Learning Engineering & Software Development",
         achievements: [
           <>
-            Developed a design system that unified the brand across multiple platforms, improving
-            design consistency by 40%.
+            Developed and deployed Retrieval–Augmented Generation (RAG) system for document search and summarization.
           </>,
           <>
-            Led a cross-functional team to launch a new product line, contributing to a 15% increase
-            in overall company revenue.
+            Full Stack Web Development with Django, Next.js, and React.
+          </>,
+        ],
+        images: [],
+      },
+      {
+        company: "NASA Goddard Space Flight Center",
+        timeframe: "January 2024 - June 2024",
+        role: "Machine Learning Intern (Pretraining / 3D Reconstruction)",
+        achievements: [
+          <>
+            3D Cloud Modeling & Pre–Training Large Visual Models with assessment of Transfer Learning across similar datasets.
+          </>,
+          <>
+            Worked with Linux, GitHub/HuggingFace, and Transformer Architecture (SWIN, ViT, DINO).
+          </>,
+        ],
+        images: [],
+      },
+      {
+        company: "NASA Goddard Space Flight Center",
+        timeframe: "June 2023 - August 2023",
+        role: "Machine Learning Intern (Time Series Forecasting)",
+        achievements: [
+          <>
+            Continuation of the Predicting Total Solar Irradiance With HMI Disk Images research project.
+          </>,
+          <>
+            Skills: PyTorch, Keras, Model Architecture, Feature Extraction.
           </>,
         ],
         images: [],
@@ -144,53 +172,32 @@ const about = {
   },
   studies: {
     display: true, // set to false to hide this section
-    title: "Studies",
+    title: "Education",
     institutions: [
       {
-        name: "University of Jakarta",
-        description: <>Studied software engineering.</>,
-      },
-      {
-        name: "Build the Future",
-        description: <>Studied online marketing and personal branding.</>,
+        name: "American University, College of Arts & Sciences",
+        description: <>Bachelor of Science in Computer Science (2021-2025). GPA: 3.82. Teaching Assistant for Introduction to Machine Learning & Computer Systems. Dean's List Six Semesters, Cum Laude.</>,
       },
     ],
   },
   technical: {
     display: true, // set to false to hide this section
-    title: "Technical skills",
+    title: "Technical Skills",
     skills: [
       {
-        title: "Figma",
-        description: <>Able to prototype in Figma with Once UI with unnatural speed.</>,
-        // optional: leave the array empty if you don't want to display images
-        images: [
-          {
-            src: "/images/projects/project-01/cover-02.jpg",
-            alt: "Project image",
-            width: 16,
-            height: 9,
-          },
-          {
-            src: "/images/projects/project-01/cover-03.jpg",
-            alt: "Project image",
-            width: 16,
-            height: 9,
-          },
-        ],
+        title: "Machine Learning & AI",
+        description: <>PyTorch, TensorFlow, Keras, sklearn, Natural Language Processing & LLMs, Model Design & Training, Data Processing with numpy, Pandas, MatPlotLib, openCV, SciPy.</>,
+        images: [],
       },
       {
-        title: "Next.js",
-        description: <>Building next gen apps with Next.js + Once UI + Supabase.</>,
-        // optional: leave the array empty if you don't want to display images
-        images: [
-          {
-            src: "/images/projects/project-01/cover-04.jpg",
-            alt: "Project image",
-            width: 16,
-            height: 9,
-          },
-        ],
+        title: "Full Stack Development",
+        description: <>React, Next.js, Django, JavaScript, TypeScript, Tailwind CSS, Vercel deployment, Client-Server Communication, OOP, Dynamic Programming.</>,
+        images: [],
+      },
+      {
+        title: "Tools & Technologies",
+        description: <>Docker, CUDA, GitHub, HuggingFace, LlamaIndex, OpenAI API, Streamlit, Unity, C, C#, Linux.</>,
+        images: [],
       },
     ],
   },
@@ -265,4 +272,4 @@ const gallery = {
   ],
 };
 
-export { person, social, newsletter, home, about, blog, work, gallery };
+export { person, social, newsletter, home, about, blog, work, gallery, heroProjects };
