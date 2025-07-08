@@ -309,11 +309,11 @@ const music = {
   description: `A curated collection of songs by ${person.name}`,
   songs: [
     {
-      title: "Midnight Dreams",
+      title: "000",
       artist: "Dylan Hubert",
-      album: "Night Sessions",
+      album: "carp.ets",
       date: "2024-01-15",
-      cover: "/images/music/cover-1.jpg",
+      cover: "/images/music/carpets.png",
       audioFile: "/audio/song-1.mp3",
     },
     {
