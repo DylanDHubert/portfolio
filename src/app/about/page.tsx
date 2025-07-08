@@ -162,7 +162,7 @@ export default function About() {
                               sizes={image.width.toString()}
                               //@ts-ignore
                               alt={image.alt}
-                              //@ts-ignore...
+                              //@ts-ignore
                               src={image.src}
                             />
                           </Flex>
