@@ -49,7 +49,7 @@ const home = {
   label: "Home",
   title: `${person.name}'s Portfolio`,
   description: `Portfolio website showcasing my work as a ${person.role}`,
-  headline: <>Dylan Donnelly Hubert</>,
+  headline: <>Dylan Hubert</>,
   featured: {
     display: false,
   },
@@ -511,4 +511,11 @@ const music = {
   ],
 };
 
-export { person, social, newsletter, home, about, blog, work, gallery, music, heroProjects };
+const rag = {
+  path: "/rag",
+  label: "RAG",
+  title: `RAG Chat – ${person.name}`,
+  description: `Chat with an AI assistant that knows everything about ${person.name}'s background, projects, and experience`,
+};
+
+export { person, social, newsletter, home, about, blog, work, gallery, music, rag, heroProjects };
