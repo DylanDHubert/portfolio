@@ -3,8 +3,11 @@
   justify-content: center;
   align-items: center;
   padding: 2rem;
-  min-height: 80vh;
+  min-height: 70vh;
+  max-height: 80vh;
   animation: fadeInUp 0.8s ease-out;
+  position: relative;
+  z-index: 1;
 }
 
 @keyframes fadeInUp {
@@ -21,7 +24,9 @@
 .crtFrame {
   position: relative;
   width: 800px;
+  max-width: 90vw;
   height: 600px;
+  max-height: 70vh;
   background: linear-gradient(145deg, var(--neutral-background-strong), var(--neutral-background-medium));
   border-radius: 20px;
   box-shadow: 
