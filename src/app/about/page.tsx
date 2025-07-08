@@ -17,6 +17,14 @@ import TableOfContents from "@/components/about/TableOfContents";
 import styles from "@/components/about/about.module.scss";
 import React from "react";
 
+// Mapping of work experiences to blog posts
+const workToBlogMapping: Record<string, string | null> = {
+  "Stryker MedTech": null, // No specific blog post for this
+  "The Pitch Place": "rag-systems-pbj-farm",
+  "NASA Goddard Space Flight Center": "3d-cloud-modeling-transfer-learning", // For the 3D reconstruction role
+  "NASA Goddard Space Flight Center-TSI": "tsi-prediction-nasa-breakthrough", // For the TSI role
+};
+
 export async function generateMetadata() {
   return Meta.generate({
     title: about.title,
@@ -92,7 +100,7 @@ export default function About() {
             <Avatar src={person.avatar} size="xl" />
             <Flex gap="8" vertical="center">
               <Icon onBackground="accent-weak" name="globe" />
-              {person.location}
+              {person.location.replace('America/Los_Angeles', 'San Fransisco, CA')}
             </Flex>
             {person.languages.length > 0 && (
               <Flex wrap gap="8">
@@ -191,16 +199,39 @@ export default function About() {
                 {about.work.title}
               </Heading>
               <Column fillWidth gap="l" marginBottom="40">
-                {about.work.experiences.map((experience, index) => (
-                  <Column key={`${experience.company}-${experience.role}-${index}`} fillWidth>
-                    <Flex fillWidth horizontal="space-between" vertical="end" marginBottom="4">
-                      <Text id={experience.company} variant="heading-strong-l">
-                        {experience.company}
-                      </Text>
-                      <Text variant="heading-default-xs" onBackground="neutral-weak">
-                        {experience.timeframe}
-                      </Text>
-                    </Flex>
+                {about.work.experiences.map((experience, index) => {
+                  // Determine which blog post to link to
+                  let blogSlug = workToBlogMapping[experience.company];
+                  if (experience.company === "NASA Goddard Space Flight Center") {
+                    // Check if it's the TSI role (time series forecasting)
+                    if (experience.role.includes("Time Series")) {
+                      blogSlug = workToBlogMapping["NASA Goddard Space Flight Center-TSI"];
+                    } else {
+                      blogSlug = workToBlogMapping["NASA Goddard Space Flight Center"];
+                    }
+                  }
+                  
+                  return (
+                    <Column key={`${experience.company}-${experience.role}-${index}`} fillWidth>
+                      <Flex fillWidth horizontal="space-between" vertical="end" marginBottom="4">
+                        <Flex gap="8" vertical="center">
+                          <Text id={experience.company} variant="heading-strong-l">
+                            {experience.company}
+                          </Text>
+                          {blogSlug && (
+                            <IconButton
+                              href={`/blog/${blogSlug}`}
+                              icon="document"
+                              size="s"
+                              variant="tertiary"
+                              title="Read detailed blog post"
+                            />
+                          )}
+                        </Flex>
+                        <Text variant="heading-default-xs" onBackground="neutral-weak">
+                          {experience.timeframe}
+                        </Text>
+                      </Flex>
                     <Text variant="body-default-s" onBackground="brand-weak" marginBottom="m">
                       {experience.role}
                     </Text>
@@ -242,7 +273,8 @@ export default function About() {
                       </Flex>
                     )}
                   </Column>
-                ))}
+                );
+                })}
               </Column>
             </>
           )}
@@ -255,9 +287,18 @@ export default function About() {
               <Column fillWidth gap="l" marginBottom="40">
                 {about.studies.institutions.map((institution, index) => (
                   <Column key={`${institution.name}-${index}`} fillWidth gap="4">
-                    <Text id={institution.name} variant="heading-strong-l">
-                      {institution.name}
-                    </Text>
+                    <Flex gap="8" vertical="center">
+                      <Text id={institution.name} variant="heading-strong-l">
+                        {institution.name}
+                      </Text>
+                      <IconButton
+                        href="/blog/python-turtle-to-ml-journey"
+                        icon="document"
+                        size="s"
+                        variant="tertiary"
+                        title="Read about my journey into ML"
+                      />
+                    </Flex>
                     <Text variant="heading-default-xs" onBackground="neutral-weak">
                       {institution.description}
                     </Text>
@@ -280,7 +321,18 @@ export default function About() {
               <Column fillWidth gap="l">
                 {about.technical.skills.map((skill, index) => (
                   <Column key={`${skill}-${index}`} fillWidth gap="4">
-                    <Text id={skill.title} variant="heading-strong-l">{skill.title}</Text>
+                    <Flex gap="8" vertical="center">
+                      <Text id={skill.title} variant="heading-strong-l">{skill.title}</Text>
+                      {skill.title === "Machine Learning & AI" && (
+                        <IconButton
+                          href="/blog/work-style-philosophy"
+                          icon="document"
+                          size="s"
+                          variant="tertiary"
+                          title="Read about my work philosophy"
+                        />
+                      )}
+                    </Flex>
                     <Text variant="body-default-m" onBackground="neutral-weak">
                       {skill.description}
                     </Text>

@@ -8,6 +8,7 @@ export {
   blog,
   work,
   gallery,
+  music,
   heroProjects,
 } from "./content";
 

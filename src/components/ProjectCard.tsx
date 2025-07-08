@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import {
   AvatarGroup,
   Carousel,
@@ -8,7 +9,9 @@ import {
   Heading,
   SmartLink,
   Text,
+  Button,
 } from "@once-ui-system/core";
+import DemoModal from "./DemoModal";
 
 interface ProjectCardProps {
   href: string;
@@ -19,6 +22,7 @@ interface ProjectCardProps {
   description: string;
   avatars: { src: string }[];
   link: string;
+  demoUrl?: string;
 }
 
 export const ProjectCard: React.FC<ProjectCardProps> = ({
@@ -29,16 +33,58 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
   description,
   avatars,
   link,
+  demoUrl,
 }) => {
+  const [showDemo, setShowDemo] = useState(false);
   return (
     <Column fillWidth gap="m">
-      <Carousel
-        sizes="(max-width: 960px) 100vw, 960px"
-        items={images.map((image) => ({
-          slide: image,
-          alt: title,
-        }))}
-      />
+      {demoUrl && showDemo ? (
+        <div style={{
+          position: 'relative',
+          width: '100%',
+          height: '500px',
+          borderRadius: '12px',
+          overflow: 'hidden',
+          border: '2px solid var(--neutral-alpha-medium)',
+          boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+        }}>
+          <iframe
+            src={demoUrl}
+            title={`${title} Demo`}
+            style={{
+              border: 'none',
+              transform: 'scale(0.6)',
+              transformOrigin: 'top left',
+              width: '166.67%',
+              height: '166.67%'
+            }}
+            allow="microphone; camera"
+          />
+          <Button
+            style={{
+              position: 'absolute',
+              top: '12px',
+              right: '12px',
+              zIndex: 10,
+              background: 'rgba(0, 0, 0, 0.7)',
+              backdropFilter: 'blur(10px)',
+              border: '1px solid rgba(255, 255, 255, 0.1)'
+            }}
+            variant="tertiary"
+            size="s"
+            onClick={() => setShowDemo(false)}
+            prefixIcon="close"
+          />
+        </div>
+      ) : (
+        <Carousel
+          sizes="(max-width: 960px) 100vw, 960px"
+          items={images.map((image) => ({
+            slide: image,
+            alt: title,
+          }))}
+        />
+      )}
       <Flex
         mobileDirection="column"
         fillWidth
@@ -62,15 +108,16 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
                 {description}
               </Text>
             )}
-            <Flex gap="24" wrap>
-              {content?.trim() && (
-                <SmartLink
-                  suffixIcon="arrowRight"
-                  style={{ margin: "0", width: "fit-content" }}
-                  href={href}
+                        <Flex gap="24" wrap>
+              {demoUrl && (
+                <Button
+                  variant="primary"
+                  size="s"
+                  onClick={() => setShowDemo(true)}
+                  prefixIcon="play"
                 >
-                  <Text variant="body-default-s">Read case study</Text>
-                </SmartLink>
+                  Try Live Demo
+                </Button>
               )}
               {link && (
                 <SmartLink
@@ -85,6 +132,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
           </Column>
         )}
       </Flex>
+      
     </Column>
   );
 };

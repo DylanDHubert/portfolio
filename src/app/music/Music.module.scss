@@ -1,0 +1,76 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+  width: 100%;
+}
+
+.songCard {
+  transition: transform 0.2s ease-in-out;
+  
+  &:hover {
+    transform: translateY(-4px);
+  }
+}
+
+.coverContainer {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--neutral-alpha-weak);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cover {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, var(--brand-background-weak), var(--accent-background-weak));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.coverFallback {
+  text-align: center;
+  padding: 16px;
+}
+
+.playButton {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  z-index: 2;
+  opacity: 0.9;
+  transition: opacity 0.2s ease-in-out;
+  
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.coverContainer:hover .playButton {
+  opacity: 1;
+}
+
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 16px;
+  }
+  
+  .coverContainer {
+    height: 160px;
+  }
+}
+
+@media (max-width: 480px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+} 

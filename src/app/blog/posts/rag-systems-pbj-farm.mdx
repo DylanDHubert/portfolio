@@ -1,0 +1,119 @@
+---
+title: "Building Production RAG Systems: PB&J Pipeline and Farm Agent"
+summary: "How I designed dynamic document processing pipelines and conversational RAG agents that work across various query scales and complex datasets."
+publishedAt: "2024-12-01"
+tag: "RAG Systems"
+images: ["/images/placeholder/rag-systems.jpg"]
+---
+
+# Building Production RAG Systems: PB&J Pipeline and Farm Agent
+
+## The Challenge: Making Unstructured Data Usable
+
+The future of AI integration excites me because of the massive scale of possibilities. My latest project, PB&J, builds on my RAG experience to create both a data pipeline and a retrieval agent that can handle the messy reality of real-world documents.
+
+The core challenge is simple to state but complex to solve: **How do you take poorly formatted, highly technical information and transform it into agent-accessible data structures?** This isn't just about parsing PDFs—it's about creating systems that can understand and reason about complex technical content.
+
+## PB&J: The Dynamic Document Processing Pipeline
+
+PB&J stands for Peanut, Butter, and Jelly—a three-phase approach to document processing that prioritizes quality over speed. While it's slightly more expensive than simple parsing, it ensures that the data is actually useful for downstream applications.
+
+### Phase 1: Peanut (Parsing)
+The first phase takes raw PDFs and performs initial parsing. This isn't just OCR—it's intelligent document understanding that can handle:
+- Complex table structures
+- Multi-column layouts
+- Mixed content types (text, tables, images)
+- Technical diagrams and charts
+
+### Phase 2: Butter (Betterment)
+This is where the magic happens. The "butter" phase uses dynamic agents to improve the parsed content:
+- **Table Processing**: Conjoining or separating tables based on semantic relationships
+- **Content Reformating**: Restructuring text for better comprehension
+- **Metadata Extraction**: Identifying key concepts, relationships, and context
+- **Quality Assurance**: Validating the processed content
+
+### Phase 3: Jelly (JSON Transformation)
+The final phase transforms the improved content into structured JSON with rich metadata:
+- **Structured Data**: Clean, queryable JSON representations
+- **Keywords and Tags**: Automated concept extraction
+- **Relationships**: Understanding connections between different pieces of content
+- **Searchability**: Optimizing for retrieval and discovery
+
+## Farm: The Conversational RAG Agent
+
+While PB&J handles the data preparation, Farm is the conversational agent that makes it all accessible. The key innovation is its **multi-layered decision logic** that can handle different types of queries and datasets.
+
+### The Decision Classifier
+Farm starts by classifying each query to determine the best approach:
+
+**A. Full RAG Approach**: Agent accesses tables and pages in a loop, using sophisticated retrieval strategies
+**B. Full Context**: Get relevant pages and feed into a large LLM for comprehensive understanding
+**C. Chat Context**: Handle follow-up questions and conversational flow
+**D. Limited Tokens**: Use shortened context for quick responses
+
+This classification ensures that each query gets the appropriate level of processing and resources.
+
+### The Three-Phase Discovery Process
+
+For full RAG queries, Farm uses a sophisticated three-phase approach:
+
+#### Phase 1: Discovery
+- **Data Exploration**: Understanding what data is available
+- **Source Identification**: Finding relevant documents, tables, and sections
+- **Scope Definition**: Determining the boundaries of the search
+
+#### Phase 2: Exploration
+- **Content Analysis**: Understanding what the discovered data contains
+- **Relationship Mapping**: Identifying connections between different pieces of information
+- **Relevance Assessment**: Determining which content is most pertinent to the query
+
+#### Phase 3: Retrieval
+- **Precise Extraction**: Getting the exact information needed
+- **Context Preservation**: Maintaining important surrounding context
+- **Quality Validation**: Ensuring the retrieved information is accurate and complete
+
+## Technical Innovations
+
+### Dynamic Agent Architecture
+The use of dynamic agents in PB&J allows the system to adapt to different document types and content structures. Instead of using fixed parsing rules, the system can learn and adjust its approach based on the content it encounters.
+
+### Multi-Scale Query Handling
+Farm's ability to handle queries across various scales is crucial for real-world applications. A simple question about a specific fact requires different processing than a complex analysis request spanning multiple documents.
+
+### Domain Agnostic Design
+The system is designed to work with highly technical, table-heavy PDFs across different domains. While it's currently focused on medical sales rep portfolios, the architecture is general enough to handle other technical domains.
+
+## The "Magic" Tools
+
+We've developed various specialized tools to help agents do their best work:
+- **Table Understanding**: Tools that can interpret complex tabular data
+- **Document Navigation**: Systems for understanding document structure and relationships
+- **Context Management**: Tools for maintaining conversation history and relevance
+- **Quality Assessment**: Automated systems for evaluating response quality
+
+## Real-World Impact
+
+This system is designed for medical sales representatives who need to quickly access and understand complex technical documentation. The ability to ask natural language questions about technical content and get accurate, contextual answers is transformative for their workflow.
+
+But the implications go far beyond medical sales. The same approach can be applied to:
+- Legal document analysis
+- Technical documentation search
+- Research paper exploration
+- Regulatory compliance checking
+
+## Lessons Learned
+
+1. **Quality Over Speed**: In production systems, accuracy is more important than speed
+2. **Layered Decision Making**: Different queries require different approaches
+3. **Dynamic Adaptation**: Fixed rules don't work for complex, real-world content
+4. **Context Matters**: Understanding relationships between information is crucial
+
+## Looking Forward
+
+The work on PB&J and Farm has taught me that the future of AI isn't just about building bigger models—it's about building smarter systems that can understand and work with the messy reality of real-world data.
+
+The combination of dynamic processing (PB&J) and intelligent retrieval (Farm) creates a system that can handle the complexity of technical documents while providing the simplicity of natural language interaction.
+
+This approach to RAG systems—prioritizing quality, using dynamic agents, and implementing multi-layered decision logic—represents the next generation of document understanding and retrieval systems. It's not just about finding information; it's about understanding it in context and making it truly accessible.
+
+The future of AI integration is bright, and systems like PB&J and Farm are just the beginning of what's possible when we combine intelligent data processing with conversational AI. 

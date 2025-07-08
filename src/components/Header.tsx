@@ -5,8 +5,9 @@ import { useEffect, useState } from "react";
 
 import { Fade, Flex, Line, ToggleButton } from "@once-ui-system/core";
 
-import { routes, display, person, about, blog, work, gallery } from "@/resources";
+import { routes, display, person, about, blog, work, gallery, music } from "@/resources";
 import { ThemeToggle } from "./ThemeToggle";
+import { Logo } from "./Logo";
 import styles from "./Header.module.scss";
 
 type TimeDisplayProps = {
@@ -61,7 +62,7 @@ export const Header = () => {
         data-border="rounded"
       >
         <Flex paddingLeft="12" fillWidth vertical="center" textVariant="body-default-s">
-          {display.location && <Flex hide="s">{person.location}</Flex>}
+          <Logo size="s" showText={false} />
         </Flex>
         <Flex fillWidth horizontal="center">
           <Flex
@@ -95,20 +96,20 @@ export const Header = () => {
                   />
                 </>
               )}
-              {routes["/work"] && (
+              {routes["/websites"] && (
                 <>
                   <ToggleButton
                     className="s-flex-hide"
                     prefixIcon="grid"
-                    href="/work"
+                    href="/websites"
                     label={work.label}
-                    selected={pathname.startsWith("/work")}
+                    selected={pathname.startsWith("/websites")}
                   />
                   <ToggleButton
                     className="s-flex-show"
                     prefixIcon="grid"
-                    href="/work"
-                    selected={pathname.startsWith("/work")}
+                    href="/websites"
+                    selected={pathname.startsWith("/websites")}
                   />
                 </>
               )}
@@ -143,6 +144,23 @@ export const Header = () => {
                     prefixIcon="gallery"
                     href="/gallery"
                     selected={pathname.startsWith("/gallery")}
+                  />
+                </>
+              )}
+              {routes["/music"] && (
+                <>
+                  <ToggleButton
+                    className="s-flex-hide"
+                    prefixIcon="music"
+                    href="/music"
+                    label={music.label}
+                    selected={pathname.startsWith("/music")}
+                  />
+                  <ToggleButton
+                    className="s-flex-show"
+                    prefixIcon="music"
+                    href="/music"
+                    selected={pathname.startsWith("/music")}
                   />
                 </>
               )}

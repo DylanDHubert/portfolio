@@ -1,0 +1,74 @@
+---
+title: "Predicting Solar Energy: My NASA Breakthrough with CNN-Informer Architecture"
+summary: "How I achieved 175% improvement in Total Solar Irradiance prediction using innovative deep learning approaches at NASA Goddard Space Flight Center."
+publishedAt: "2024-12-01"
+tag: "NASA Research"
+images: ["/images/placeholder/nasa-tsi.jpg"]
+---
+
+# Predicting Solar Energy: My NASA Breakthrough with CNN-Informer Architecture
+
+## The Challenge: Predicting Earth's Solar Energy Input
+
+When I joined NASA Goddard Space Flight Center for my first machine learning internship, I was handed a deceptively simple problem: predict Total Solar Irradiance (TSI)—the amount of solar energy reaching Earth (measured in watts per square meter)—using images from the Helioseismic and Magnetic Imager (HMI).
+
+The challenge was that my team had been using only basic statistical approaches: taking the average value of HMI images as the sole input per timestamp. While they had experimented with Singular Spectrum Analysis (SSA) to extract sub-signals, they had recombined them, losing the valuable information contained in the individual components.
+
+## Learning PyTorch from Scratch
+
+This was my first real machine learning project, and I was learning PyTorch from the ground up. Understanding the fundamentals—train/validation/test splits, learning rates, layer architectures—was both challenging and exhilarating, especially in the pre-LLM era when resources were more limited.
+
+I spent countless hours experimenting with different architectures, debugging gradient flows, and learning the subtle art of hyperparameter tuning. Every breakthrough felt like unlocking a new superpower.
+
+## The Innovation: CNN-Informer Hybrid Architecture
+
+My breakthrough came when I realized we could leverage the **actual visual content** of the HMI images instead of just their statistical summaries. The key insight was that sunspots and other solar features visible in the images directly correlate with solar energy output.
+
+I designed a hybrid architecture that combined:
+- **CNN (Convolutional Neural Network)**: To extract spatial features from the HMI images
+- **Informer**: A transformer-based model for time series forecasting
+- **SSA Sub-signals**: Individual components from Singular Spectrum Analysis, passed directly to the Informer without recombination
+
+## The Architecture in Detail
+
+```
+HMI Image → CNN → Feature Extraction → Concatenate with SSA Sub-signals → Informer → TSI Prediction
+```
+
+The beauty of this approach was that it allowed the model to learn both spatial patterns (sunspots, solar features) and temporal patterns (solar cycles, variations) simultaneously. The CNN captured the visual information that previous approaches had ignored, while the SSA sub-signals provided the temporal decomposition that the team had been recombining.
+
+## Results: 175% Improvement and Beyond
+
+The results were staggering: **175% improvement** over the baseline approaches. But more importantly, the model was significantly more stable for future predictions, which is crucial for space weather forecasting and climate modeling.
+
+The improvement came from several factors:
+1. **Visual Feature Extraction**: The CNN learned to recognize sunspots and other solar features that directly affect TSI
+2. **Temporal Decomposition**: Using SSA sub-signals without recombination preserved important frequency components
+3. **End-to-End Learning**: The entire pipeline learned to optimize for the final prediction task
+
+## The Technical Challenges
+
+One of the biggest challenges was handling the massive HMI images at high frequency. The HMI instrument captures images at regular intervals, creating a continuous stream of high-resolution data. Processing this efficiently required careful attention to data pipelines and memory management.
+
+I also had to develop a robust evaluation framework that could handle the non-stationary nature of solar data. Solar activity follows complex cycles, so traditional time series evaluation metrics needed to be adapted for this domain.
+
+## Lessons Learned
+
+1. **Domain Knowledge is Crucial**: Understanding that sunspots affect solar output was key to the CNN approach
+2. **Don't Throw Away Information**: The team's recombination of SSA signals was losing valuable temporal information
+3. **Hybrid Architectures Work**: Combining CNN spatial features with transformer temporal modeling can be powerful
+4. **Start Simple, Then Complexify**: I began with basic CNN approaches before adding the Informer component
+
+## Impact and Future Work
+
+This work contributed to NASA's understanding of solar-terrestrial relationships and improved the accuracy of space weather predictions. The approach has potential applications in other areas where visual and temporal data need to be combined for prediction tasks.
+
+The success of this project taught me that sometimes the most impactful innovations come from asking a simple question: "What information are we throwing away?" In this case, it was the visual content of the images and the individual SSA components.
+
+## Looking Forward
+
+The principles I learned from this project—hybrid architectures, preserving information, and domain-aware modeling—continue to influence my work on RAG systems and other AI applications. The idea of combining different types of data (visual, temporal, statistical) in intelligent ways has become a cornerstone of my approach to machine learning problems.
+
+This project also taught me the importance of working on problems that matter. Predicting solar energy input to Earth isn't just an academic exercise—it has real implications for climate science, space weather forecasting, and our understanding of the Sun-Earth system.
+
+The 175% improvement wasn't just a number—it was a validation that sometimes the most elegant solutions come from looking at old problems with fresh eyes and new tools. 
