@@ -43,6 +43,7 @@ const CRTTV: React.FC<CRTTVProps> = ({ onNavigate, onOpenProject, onOpenBlog }) 
   const [isBooting, setIsBooting] = useState(false);
   const [isShuttingDown, setIsShuttingDown] = useState(false);
   const [bootMessage, setBootMessage] = useState("");
+  const [responseTime, setResponseTime] = useState(25);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -53,6 +54,16 @@ const CRTTV: React.FC<CRTTVProps> = ({ onNavigate, onOpenProject, onOpenBlog }) 
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  // Update response time randomly
+  useEffect(() => {
+    if (isPoweredOn) {
+      const interval = setInterval(() => {
+        setResponseTime(Math.floor(Math.random() * 50) + 10);
+      }, 2000);
+      return () => clearInterval(interval);
+    }
+  }, [isPoweredOn]);
 
   const executeToolCall = (toolCall: ToolCall) => {
     switch (toolCall.type) {
@@ -396,7 +407,7 @@ What would you like to know more about?`
   return (
     <div className={styles.crtContainer}>
       {/* CRT TV Frame */}
-      <div className={styles.crtFrame}>
+      <div className={`${styles.crtFrame} ${!isPoweredOn ? styles.poweredOff : ''}`}>
         {/* TV Screen */}
         <div className={`${styles.screen} ${
           !isPoweredOn ? styles.poweredOff : 
@@ -506,15 +517,14 @@ What would you like to know more about?`
                 className={styles.chatInput}
                 disabled={isLoading}
               />
-              <Button
+              <button
                 onClick={handleSendMessage}
                 disabled={!inputValue.trim() || isLoading}
                 className={styles.sendButton}
-                variant="secondary"
-                size="s"
+                type="button"
               >
-                <Icon name="send" />
-              </Button>
+                ENTER
+              </button>
             </div>
           </div>
           )}
@@ -522,16 +532,28 @@ What would you like to know more about?`
         
         {/* TV Controls */}
         <div className={styles.controls}>
-          {/* Power Button */}
-          <div 
-            className={`${styles.powerButton} ${
-              isBooting || isShuttingDown ? styles.booting : 
-              isPoweredOn ? styles.poweredOn : 
-              styles.poweredOff
-            }`}
-            onClick={handlePowerToggle}
-          >
-            <div className={styles.powerIndicator}></div>
+          {/* Power Button and Status Panels */}
+          <div className={styles.powerSection}>
+            <div 
+              className={`${styles.powerButton} ${
+                isBooting || isShuttingDown ? styles.booting : 
+                isPoweredOn ? styles.poweredOn : 
+                styles.poweredOff
+              }`}
+              onClick={handlePowerToggle}
+            >
+              <Icon name="power" className={styles.powerIcon} />
+            </div>
+            
+            {/* Status OLED Panels */}
+            <div className={styles.statusPanels}>
+              <div className={`${styles.statusOled} ${!isPoweredOn ? styles.failure : ''}`}>
+                {isPoweredOn ? "ACTIVE" : "FAILURE"}
+              </div>
+              <div className={styles.statusOled}>
+                {isPoweredOn ? `${responseTime}ms` : "–––"}
+              </div>
+            </div>
           </div>
           
           {/* Knobs */}
@@ -548,7 +570,7 @@ What would you like to know more about?`
                   onChange={(e) => setTemperature(parseFloat(e.target.value))}
                   className={styles.knobRange}
                 />
-                <div className={styles.knobValue}>{temperature}</div>
+                <div className={styles.knobValue}>{isPoweredOn ? temperature : "–––"}</div>
               </div>
             </div>
             
@@ -564,7 +586,7 @@ What would you like to know more about?`
                   onChange={(e) => setTopP(parseFloat(e.target.value))}
                   className={styles.knobRange}
                 />
-                <div className={styles.knobValue}>{topP}</div>
+                <div className={styles.knobValue}>{isPoweredOn ? topP : "–––"}</div>
               </div>
             </div>
             
@@ -580,7 +602,7 @@ What would you like to know more about?`
                   onChange={(e) => setMaxTokens(parseInt(e.target.value))}
                   className={styles.knobRange}
                 />
-                <div className={styles.knobValue}>{maxTokens}</div>
+                <div className={styles.knobValue}>{isPoweredOn ? maxTokens : "–––"}</div>
               </div>
             </div>
           </div>
