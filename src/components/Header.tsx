@@ -66,101 +66,105 @@ export const Header = () => {
         </Flex>
         <Flex fillWidth horizontal="center">
           <Flex
-            background="page"
-            border="neutral-alpha-weak"
+            className={styles.navBarBackground}
             radius="m-4"
-            shadow="l"
             padding="4"
             horizontal="center"
             zIndex={1}
           >
             <Flex gap="4" vertical="center" textVariant="body-default-s" suppressHydrationWarning>
               {routes["/"] && (
-                <ToggleButton prefixIcon="home" href="/" selected={pathname === "/"} />
+                <ToggleButton 
+                  prefixIcon="home" 
+                  href="/" 
+                  selected={pathname === "/"} 
+                  className={styles.glowyNavButton}
+                  data-selected={pathname === "/"}
+                />
               )}
               <Line background="neutral-alpha-medium" vert maxHeight="24" />
               {routes["/about"] && (
                 <>
                   <ToggleButton
-                    className="s-flex-hide"
-                    prefixIcon="person"
+                    className={`s-flex-hide ${styles.glowyNavButton}`}
                     href="/about"
                     label={about.label}
                     selected={pathname === "/about"}
+                    data-selected={pathname === "/about"}
                   />
                   <ToggleButton
-                    className="s-flex-show"
-                    prefixIcon="person"
+                    className={`s-flex-show ${styles.glowyNavButton}`}
                     href="/about"
                     selected={pathname === "/about"}
+                    data-selected={pathname === "/about"}
                   />
                 </>
               )}
               {routes["/websites"] && (
                 <>
                   <ToggleButton
-                    className="s-flex-hide"
-                    prefixIcon="grid"
+                    className={`s-flex-hide ${styles.glowyNavButton}`}
                     href="/websites"
                     label={work.label}
                     selected={pathname.startsWith("/websites")}
+                    data-selected={pathname.startsWith("/websites")}
                   />
                   <ToggleButton
-                    className="s-flex-show"
-                    prefixIcon="grid"
+                    className={`s-flex-show ${styles.glowyNavButton}`}
                     href="/websites"
                     selected={pathname.startsWith("/websites")}
+                    data-selected={pathname.startsWith("/websites")}
                   />
                 </>
               )}
               {routes["/blog"] && (
                 <>
                   <ToggleButton
-                    className="s-flex-hide"
-                    prefixIcon="book"
+                    className={`s-flex-hide ${styles.glowyNavButton}`}
                     href="/blog"
                     label={blog.label}
                     selected={pathname.startsWith("/blog")}
+                    data-selected={pathname.startsWith("/blog")}
                   />
                   <ToggleButton
-                    className="s-flex-show"
-                    prefixIcon="book"
+                    className={`s-flex-show ${styles.glowyNavButton}`}
                     href="/blog"
                     selected={pathname.startsWith("/blog")}
+                    data-selected={pathname.startsWith("/blog")}
                   />
                 </>
               )}
               {routes["/gallery"] && (
                 <>
                   <ToggleButton
-                    className="s-flex-hide"
-                    prefixIcon="gallery"
+                    className={`s-flex-hide ${styles.glowyNavButton}`}
                     href="/gallery"
                     label={gallery.label}
                     selected={pathname.startsWith("/gallery")}
+                    data-selected={pathname.startsWith("/gallery")}
                   />
                   <ToggleButton
-                    className="s-flex-show"
-                    prefixIcon="gallery"
+                    className={`s-flex-show ${styles.glowyNavButton}`}
                     href="/gallery"
                     selected={pathname.startsWith("/gallery")}
+                    data-selected={pathname.startsWith("/gallery")}
                   />
                 </>
               )}
               {routes["/music"] && (
                 <>
                   <ToggleButton
-                    className="s-flex-hide"
-                    prefixIcon="music"
+                    className={`s-flex-hide ${styles.glowyNavButton}`}
                     href="/music"
                     label={music.label}
                     selected={pathname.startsWith("/music")}
+                    data-selected={pathname.startsWith("/music")}
                   />
                   <ToggleButton
-                    className="s-flex-show"
-                    prefixIcon="music"
+                    className={`s-flex-show ${styles.glowyNavButton}`}
                     href="/music"
                     selected={pathname.startsWith("/music")}
+                    data-selected={pathname.startsWith("/music")}
                   />
                 </>
               )}

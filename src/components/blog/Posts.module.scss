@@ -10,3 +10,32 @@
     transition: var(--transition-micro-medium);
     transform: scale(1);
 }
+
+// Yellow glow for blog post titles
+.yellowGlow {
+  color: #fbbf24 !important;
+  text-shadow: 0 0 8px rgba(251, 191, 36, 0.6), 0 0 12px rgba(251, 191, 36, 0.3) !important;
+  font-weight: bold !important;
+  transition: all 0.3s ease !important;
+  
+  &:hover {
+    color: #fef3c7 !important;
+    text-shadow: 0 0 10px rgba(254, 243, 199, 0.8), 0 0 15px rgba(254, 243, 199, 0.4) !important;
+    transform: scale(1.02) !important;
+  }
+}
+
+// Yellow glow for blog tags
+.yellowGlowTag {
+  color: #fbbf24 !important;
+  text-shadow: 0 0 6px rgba(251, 191, 36, 0.6), 0 0 10px rgba(251, 191, 36, 0.3) !important;
+  font-weight: bold !important;
+  transition: all 0.3s ease !important;
+  
+  &:hover {
+    color: #fef3c7 !important;
+    text-shadow: 0 0 8px rgba(254, 243, 199, 0.8), 0 0 12px rgba(254, 243, 199, 0.4) !important;
+    transform: scale(1.05) !important;
+  }
+}
+

@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { Row, ToggleButton, useTheme } from '@once-ui-system/core';
+import styles from './Header.module.scss';
 
 export const ThemeToggle: React.FC = () => {
   const { theme, setTheme } = useTheme();
@@ -25,6 +26,7 @@ export const ThemeToggle: React.FC = () => {
       prefixIcon={icon}
       onClick={() => setTheme(nextTheme)}
       aria-label={`Switch to ${nextTheme} mode`}
+      className={styles.glowyNavButton}
     />
   );
 };

@@ -47,9 +47,18 @@ export default function Post({ post, thumbnail, direction }: PostProps) {
                     <Heading
                         as="h2"
                         variant="heading-strong-l"
-                        wrap="balance">
+                        wrap="balance"
+                        className={styles.yellowGlow}>
                         {post.metadata.title}
                     </Heading>
+                    {post.metadata.summary && (
+                        <Text
+                            variant="body-default-s"
+                            onBackground="neutral-weak"
+                            wrap="balance">
+                            {post.metadata.summary}
+                        </Text>
+                    )}
                     <Text
                         variant="label-default-s"
                         onBackground="neutral-weak">
@@ -57,7 +66,7 @@ export default function Post({ post, thumbnail, direction }: PostProps) {
                     </Text>
                     { post.metadata.tag &&
                         <Tag
-                            className="mt-12"
+                            className={`mt-12 ${styles.yellowGlowTag}`}
                             label={post.metadata.tag}
                             variant="neutral" />
                     }

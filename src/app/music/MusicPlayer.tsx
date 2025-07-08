@@ -47,23 +47,32 @@ export default function MusicPlayer() {
     }
   }, [volume]);
 
-  const handlePlay = (song: Song) => {
-    if (playingSong === song.title) {
-      if (audioRef.current) {
-        if (audioRef.current.paused) {
-          audioRef.current.play();
-        } else {
-          audioRef.current.pause();
-        }
-      }
-    } else {
-      if (audioRef.current) {
+  // Loop if mouse stays
+  useEffect(() => {
+    if (!audioRef.current) return;
+    const audio = audioRef.current;
+    if (isPlaying && duration > 0 && currentTime >= duration - 0.1) {
+      audio.currentTime = 0;
+      audio.play();
+    }
+  }, [currentTime, duration, isPlaying]);
+
+  const handleMouseEnter = (song: Song) => {
+    if (audioRef.current) {
+      if (playingSong !== song.title) {
         audioRef.current.src = song.audioFile;
         audioRef.current.currentTime = 0;
-        audioRef.current.play();
       }
       setPlayingSong(song.title);
+      audioRef.current.play();
     }
+  };
+
+  const handleMouseLeave = () => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+    }
+    setPlayingSong(null);
   };
 
   const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -92,6 +101,11 @@ export default function MusicPlayer() {
     return `${min}:${sec.toString().padStart(2, '0')}`;
   };
 
+  // SVG circle progress helpers
+  const CIRCLE_RADIUS = 70;
+  const CIRCLE_STROKE = 6;
+  const CIRCLE_CIRCUM = 2 * Math.PI * CIRCLE_RADIUS;
+
   return (
     <Column maxWidth="l" gap="xl" paddingX="l">
       <Column gap="l" horizontal="center">
@@ -102,27 +116,65 @@ export default function MusicPlayer() {
           {music.description}
         </Text>
       </Column>
-
-      <div className={styles.grid} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 32 }}>
-        {music.songs.map((song: Song, index: number) => (
-          <div
-            key={index}
-            className={styles.songCard}
-            style={{ marginBottom: 0, background: 'none', boxShadow: 'none' }}
-          >
-            <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 24 }}>
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+      <div className={styles.grid} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 32 }}>
+        {music.songs.map((song: Song, index: number) => {
+          const isCurrent = playingSong === song.title;
+          const progress = isCurrent && duration > 0 ? currentTime / duration : 0;
+          return (
+            <div
+              key={index}
+              className={styles.songCard}
+              style={{ marginBottom: 0, background: 'none', boxShadow: 'none', display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+            >
+              <div
+                style={{ position: 'relative', width: 2 * CIRCLE_RADIUS, height: 2 * CIRCLE_RADIUS, margin: '0 auto', cursor: 'pointer' }}
+                onMouseEnter={() => handleMouseEnter(song)}
+                onMouseLeave={handleMouseLeave}
+              >
+                <svg width={2 * CIRCLE_RADIUS} height={2 * CIRCLE_RADIUS} style={{ position: 'absolute', top: 0, left: 0, zIndex: 2 }}>
+                  <circle
+                    cx={CIRCLE_RADIUS}
+                    cy={CIRCLE_RADIUS}
+                    r={CIRCLE_RADIUS}
+                    fill="none"
+                    stroke="#8b5cf6"
+                    strokeWidth={CIRCLE_STROKE}
+                    opacity={0.18}
+                  />
+                  <circle
+                    cx={CIRCLE_RADIUS}
+                    cy={CIRCLE_RADIUS}
+                    r={CIRCLE_RADIUS}
+                    fill="none"
+                    stroke="#8b5cf6"
+                    strokeWidth={CIRCLE_STROKE}
+                    strokeDasharray={CIRCLE_CIRCUM}
+                    strokeDashoffset={CIRCLE_CIRCUM * (1 - progress)}
+                    style={{ transition: isCurrent ? 'stroke-dashoffset 0.2s linear' : undefined }}
+                  />
+                </svg>
                 <div
                   className={styles.cover}
-                  style={{ aspectRatio: '1 / 1', width: 140, height: 140, background: '#222', borderRadius: 8, overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}
-                  tabIndex={0}
+                  style={{
+                    width: 2 * (CIRCLE_RADIUS - CIRCLE_STROKE),
+                    height: 2 * (CIRCLE_RADIUS - CIRCLE_STROKE),
+                    background: '#222',
+                    borderRadius: '50%',
+                    overflow: 'hidden',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    position: 'absolute',
+                    top: CIRCLE_STROKE,
+                    left: CIRCLE_STROKE,
+                  }}
                 >
                   {song.cover ? (
                     <img
                       src={song.cover}
                       alt={song.title + ' cover'}
                       className={styles.coverImage}
-                      style={{ width: '100%', height: '100%', objectFit: 'cover', aspectRatio: '1 / 1' }}
+                      style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }}
                     />
                   ) : (
                     <div className={styles.coverFallback}>
@@ -132,58 +184,23 @@ export default function MusicPlayer() {
                     </div>
                   )}
                 </div>
-                <div style={{ width: 140, textAlign: 'center', marginTop: 8 }}>
-                  <Text variant="body-strong-m" onBackground="brand-strong">
-                    {song.title}
-                  </Text>
-                </div>
               </div>
-              <Column gap="m" style={{ flex: 1 }}>
-                <Column gap="s">
-                  <Text variant="body-default-s" onBackground="neutral-weak">
-                    {song.artist}
-                  </Text>
-                  <Text variant="body-default-s" onBackground="neutral-weak">
-                    {song.album}
-                  </Text>
-                  <Text variant="body-default-s" onBackground="neutral-weak">
-                    {formatDate(song.date)}
-                  </Text>
-                </Column>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginTop: 16, minHeight: 32 }}>
-                  <span style={{ fontSize: 12, minWidth: 32 }}>
-                    {playingSong === song.title ? formatTime(currentTime) : '0:00'}
-                  </span>
-                  <input
-                    type="range"
-                    min={0}
-                    max={playingSong === song.title ? duration || 1 : 1}
-                    step={0.1}
-                    value={playingSong === song.title ? currentTime : 0}
-                    onChange={playingSong === song.title ? handleSeek : undefined}
-                    style={{ flex: 1 }}
-                    disabled={playingSong !== song.title}
-                  />
-                  <span style={{ fontSize: 12, minWidth: 32 }}>
-                    {playingSong === song.title ? formatTime(duration) : formatTime(0)}
-                  </span>
-                  <div style={{ display: 'flex', alignItems: 'center', height: 32 }}>
-                    <Button
-                      className={styles.playButton}
-                      variant="primary"
-                      size="s"
-                      onClick={() => handlePlay(song)}
-                      prefixIcon={playingSong === song.title && isPlaying ? "pause" : "play"}
-                    />
-                  </div>
-                </div>
-              </Column>
+              <div style={{ width: 2 * CIRCLE_RADIUS, textAlign: 'center', marginTop: 16 }}>
+                <Text variant="body-strong-m" onBackground="brand-strong">
+                  {song.title}
+                </Text>
+                <Text variant="body-default-s" onBackground="neutral-weak">
+                  {song.album}
+                </Text>
+                <Text variant="body-default-s" onBackground="neutral-weak">
+                  {formatDate(song.date)}
+                </Text>
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
-
-      <audio ref={audioRef} style={{ display: 'none' }} loop />
+      <audio ref={audioRef} style={{ display: 'none' }} />
     </Column>
   );
 } 

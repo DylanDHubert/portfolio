@@ -12,6 +12,7 @@ import {
   Button,
 } from "@once-ui-system/core";
 import DemoModal from "./DemoModal";
+import styles from "./ProjectCard.module.scss";
 
 interface ProjectCardProps {
   href: string;
@@ -39,42 +40,44 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
   return (
     <Column fillWidth gap="m">
       {demoUrl && showDemo ? (
-        <div style={{
-          position: 'relative',
-          width: '100%',
-          height: '500px',
-          borderRadius: '12px',
-          overflow: 'hidden',
-          border: '2px solid var(--neutral-alpha-medium)',
-          boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
-        }}>
-          <iframe
-            src={demoUrl}
-            title={`${title} Demo`}
-            style={{
-              border: 'none',
-              transform: 'scale(0.6)',
-              transformOrigin: 'top left',
-              width: '166.67%',
-              height: '166.67%'
-            }}
-            allow="microphone; camera"
-          />
-          <Button
-            style={{
-              position: 'absolute',
-              top: '12px',
-              right: '12px',
-              zIndex: 10,
-              background: 'rgba(0, 0, 0, 0.7)',
-              backdropFilter: 'blur(10px)',
-              border: '1px solid rgba(255, 255, 255, 0.1)'
-            }}
-            variant="tertiary"
-            size="s"
-            onClick={() => setShowDemo(false)}
-            prefixIcon="close"
-          />
+        <div className={styles.purpleDemoArea}>
+          <div style={{
+            position: 'relative',
+            width: '100%',
+            height: '500px',
+            borderRadius: '12px',
+            overflow: 'hidden',
+            border: '2px solid var(--neutral-alpha-medium)',
+            boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+          }}>
+            <iframe
+              src={demoUrl}
+              title={`${title} Demo`}
+              style={{
+                border: 'none',
+                transform: 'scale(0.6)',
+                transformOrigin: 'top left',
+                width: '166.67%',
+                height: '166.67%'
+              }}
+              allow="microphone; camera"
+            />
+            <Button
+              style={{
+                position: 'absolute',
+                top: '12px',
+                right: '12px',
+                zIndex: 10,
+                background: 'rgba(0, 0, 0, 0.7)',
+                backdropFilter: 'blur(10px)',
+                border: '1px solid rgba(255, 255, 255, 0.1)'
+              }}
+              variant="tertiary"
+              size="s"
+              onClick={() => setShowDemo(false)}
+              prefixIcon="close"
+            />
+          </div>
         </div>
       ) : (
         <Carousel
@@ -95,7 +98,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
       >
         {title && (
           <Flex flex={5}>
-            <Heading as="h2" wrap="balance" variant="heading-strong-xl">
+            <Heading as="h2" wrap="balance" variant="heading-strong-xl" className={styles.yellowGlow}>
               {title}
             </Heading>
           </Flex>
@@ -111,12 +114,13 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
                         <Flex gap="24" wrap>
               {demoUrl && (
                 <Button
-                  variant="primary"
+                  variant="secondary"
                   size="s"
                   onClick={() => setShowDemo(true)}
                   prefixIcon="play"
+                  className={`${styles.yellowGlowButton} ${showDemo ? styles.activeDemo : ''}`}
                 >
-                  Try Live Demo
+                  TRY LIVE DEMO
                 </Button>
               )}
               {link && (
@@ -124,8 +128,9 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
                   suffixIcon="arrowUpRightFromSquare"
                   style={{ margin: "0", width: "fit-content" }}
                   href={link}
+                  className={styles.yellowGlowLink}
                 >
-                  <Text variant="body-default-s">View project</Text>
+                  <Text variant="body-default-s" className={styles.yellowGlowText}>VIEW PROJECT</Text>
                 </SmartLink>
               )}
             </Flex>

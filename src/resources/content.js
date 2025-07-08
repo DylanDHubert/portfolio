@@ -80,7 +80,7 @@ const heroProjects = [
 
 const about = {
   path: "/about",
-  label: "About",
+  label: "ABOUT",
   title: `About – ${person.name}`,
   description: `Meet ${person.name}, ${person.role} from ${person.location}`,
   tableOfContent: {
@@ -113,7 +113,7 @@ const about = {
     experiences: [
       {
         company: "Stryker MedTech",
-        timeframe: "May 2025 - Present",
+        timeframe: "05.01.2025 - Present",
         role: "ML Engineer & Full Stack Developer (Contract/Freelance)",
         achievements: [
           <>
@@ -130,7 +130,7 @@ const about = {
       },
       {
         company: "The Pitch Place",
-        timeframe: "June 2023 - February 2025",
+        timeframe: "06.01.2023 - 02.01.2025",
         role: "Machine Learning Engineering & Software Development",
         achievements: [
           <>
@@ -149,8 +149,8 @@ const about = {
         images: [],
       },
       {
-        company: "NASA Goddard Space Flight Center",
-        timeframe: "January 2024 - June 2024",
+        company: "NASA GSFC",
+        timeframe: "01.01.2024 - 06.01.2024",
         role: "Machine Learning Intern (Pretraining / 3D Reconstruction)",
         achievements: [
           <>
@@ -169,8 +169,8 @@ const about = {
         images: [],
       },
       {
-        company: "NASA Goddard Space Flight Center",
-        timeframe: "June 2023 - August 2023",
+        company: "NASA GSFC",
+        timeframe: "06.01.2023 - 08.01.2023",
         role: "Machine Learning Intern (Time Series Forecasting)",
         achievements: [
           <>
@@ -235,7 +235,7 @@ const about = {
 
 const blog = {
   path: "/blog",
-  label: "Blog",
+  label: "BLOG",
   title: "Other Experience & Projects",
   description: `Additional experience and projects by ${person.name}`,
   // Create new posts by adding a new .mdx file to app/blog/posts
@@ -244,7 +244,7 @@ const blog = {
 
 const work = {
   path: "/websites",
-  label: "Websites",
+  label: "WEBSITES",
   title: `Websites – ${person.name}`,
   description: `Live web applications and projects by ${person.name}`,
   // Create new project pages by adding a new .mdx file to app/work/projects
@@ -253,7 +253,7 @@ const work = {
 
 const gallery = {
   path: "/gallery",
-  label: "Gallery",
+  label: "GALLERY",
   title: `Photo gallery – ${person.name}`,
   description: `A photo collection by ${person.name}`,
   // Images by https://lorant.one
@@ -304,7 +304,7 @@ const gallery = {
 
 const music = {
   path: "/music",
-  label: "Music",
+  label: "MUSIC",
   title: `Music Collection – ${person.name}`,
   description: `A curated collection of songs by ${person.name}`,
   songs: [
