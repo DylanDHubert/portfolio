@@ -27,7 +27,6 @@ const protectedRoutes = {
 
 // Import and set font for each variant
 import { Inter } from "next/font/google";
-import { JetBrains_Mono } from "next/font/google";
 
 const heading = Inter({
   variable: "--font-heading",
@@ -47,7 +46,7 @@ const label = Inter({
   display: "swap",
 });
 
-const code = JetBrains_Mono({
+const code = Inter({
   variable: "--font-code",
   subsets: ["latin"],
   display: "swap",

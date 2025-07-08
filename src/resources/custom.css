@@ -1,3 +1,8 @@
+/* Global font override to use Courier New */
+* {
+  font-family: 'Courier New', monospace !important;
+}
+
 /* :root {
   /*
   /* Example setup for custom colors */

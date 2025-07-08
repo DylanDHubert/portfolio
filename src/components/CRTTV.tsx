@@ -39,10 +39,15 @@ const CRTTV: React.FC<CRTTVProps> = ({ onNavigate, onOpenProject, onOpenBlog }) 
   const [temperature, setTemperature] = useState(0.7);
   const [topP, setTopP] = useState(0.9);
   const [maxTokens, setMaxTokens] = useState(1000);
+  const [isPoweredOn, setIsPoweredOn] = useState(true);
+  const [isBooting, setIsBooting] = useState(false);
+  const [isShuttingDown, setIsShuttingDown] = useState(false);
+  const [bootMessage, setBootMessage] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    // Temporarily disabled to test layout stability
+    // messagesEndRef.current?.scrollIntoView({ behavior: "auto" });
   };
 
   useEffect(() => {
@@ -364,17 +369,53 @@ What would you like to know more about?`
     }
   };
 
+  const handlePowerToggle = () => {
+    if (isPoweredOn && !isShuttingDown) {
+      // Shutdown sequence
+      setIsShuttingDown(true);
+      setBootMessage("SHUTTING DOWN...");
+      
+      setTimeout(() => {
+        setIsPoweredOn(false);
+        setIsShuttingDown(false);
+        setBootMessage("");
+      }, 2000);
+    } else if (!isPoweredOn && !isBooting) {
+      // Boot sequence
+      setIsBooting(true);
+      setBootMessage("BOOTING SYSTEM...");
+      
+      setTimeout(() => {
+        setIsPoweredOn(true);
+        setIsBooting(false);
+        setBootMessage("");
+      }, 3000);
+    }
+  };
+
   return (
     <div className={styles.crtContainer}>
       {/* CRT TV Frame */}
       <div className={styles.crtFrame}>
         {/* TV Screen */}
-        <div className={styles.screen}>
+        <div className={`${styles.screen} ${
+          !isPoweredOn ? styles.poweredOff : 
+          isBooting ? styles.booting : 
+          isShuttingDown ? styles.shuttingDown : ''
+        }`}>
           {/* Scan Lines Effect */}
-          <div className={styles.scanLines}></div>
+          {isPoweredOn && <div className={styles.scanLines}></div>}
+          
+          {/* Boot/Shutdown Message */}
+          {(isBooting || isShuttingDown) && (
+            <div className={styles.bootMessage}>
+              {bootMessage}
+            </div>
+          )}
           
           {/* Chat Interface */}
-          <div className={styles.chatContainer}>
+          {isPoweredOn && !isBooting && !isShuttingDown && (
+            <div className={styles.chatContainer}>
             <div className={styles.chatHeader}>
               <Text 
                 variant="body-strong-s" 
@@ -476,12 +517,20 @@ What would you like to know more about?`
               </Button>
             </div>
           </div>
+          )}
         </div>
         
         {/* TV Controls */}
         <div className={styles.controls}>
           {/* Power Button */}
-          <div className={styles.powerButton}>
+          <div 
+            className={`${styles.powerButton} ${
+              isBooting || isShuttingDown ? styles.booting : 
+              isPoweredOn ? styles.poweredOn : 
+              styles.poweredOff
+            }`}
+            onClick={handlePowerToggle}
+          >
             <div className={styles.powerIndicator}></div>
           </div>
           

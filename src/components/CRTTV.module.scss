@@ -35,6 +35,7 @@
   overflow: hidden;
   border: 2px solid var(--neutral-alpha-weak);
   transition: all 0.3s ease;
+  min-height: 0;
   
   &:hover {
     box-shadow: 
@@ -55,9 +56,202 @@
   overflow: hidden;
   box-shadow: 
     inset 0 0 30px var(--brand-alpha-medium),
-    0 0 20px var(--brand-alpha-strong),
-    0 0 40px var(--brand-alpha-weak);
+    0 0 30px var(--brand-alpha-strong),
+    0 0 60px var(--brand-alpha-weak),
+    0 0 100px rgba(139, 92, 246, 0.15),
+    0 0 150px rgba(139, 92, 246, 0.08);
   border: 1px solid var(--neutral-alpha-medium);
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    background: radial-gradient(
+      ellipse at center,
+      rgba(139, 92, 246, 0.2) 0%,
+      rgba(139, 92, 246, 0.1) 30%,
+      rgba(139, 92, 246, 0.05) 60%,
+      rgba(139, 92, 246, 0.02) 80%,
+      transparent 100%
+    );
+    border-radius: 20px;
+    pointer-events: none;
+    z-index: -1;
+    animation: screenGlow 4s ease-in-out infinite alternate;
+  }
+  
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      135deg,
+      transparent 0%,
+      rgba(139, 92, 246, 0.03) 25%,
+      rgba(139, 92, 246, 0.06) 50%,
+      rgba(139, 92, 246, 0.03) 75%,
+      transparent 100%
+    );
+    border-radius: 12px;
+    pointer-events: none;
+    animation: screenFlicker 5s ease-in-out infinite;
+  }
+}
+
+@keyframes screenGlow {
+  0% {
+    opacity: 0.7;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+}
+
+@keyframes screenFlicker {
+  0%, 100% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.screen {
+  &.poweredOff {
+    background: #000000;
+    box-shadow: none;
+    
+    &::before,
+    &::after {
+      display: none;
+    }
+  }
+
+  &.booting {
+    background: #000000;
+    animation: bootSequence 3s ease-in-out;
+    
+    &::before {
+      animation: bootGlow 3s ease-in-out;
+    }
+  }
+
+  &.shuttingDown {
+    animation: shutdownSequence 2s ease-in-out;
+    
+    &::before {
+      animation: shutdownGlow 2s ease-in-out;
+    }
+  }
+}
+
+@keyframes bootSequence {
+  0% {
+    background: #000000;
+    opacity: 0;
+  }
+  20% {
+    background: #000000;
+    opacity: 1;
+  }
+  40% {
+    background: #1a1a1a;
+  }
+  60% {
+    background: #2a2a2a;
+  }
+  80% {
+    background: var(--neutral-background-strong);
+  }
+  100% {
+    background: var(--neutral-background-strong);
+  }
+}
+
+@keyframes bootGlow {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.3;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes shutdownSequence {
+  0% {
+    background: var(--neutral-background-strong);
+    opacity: 1;
+  }
+  30% {
+    background: #2a2a2a;
+  }
+  60% {
+    background: #1a1a1a;
+  }
+  80% {
+    background: #000000;
+    opacity: 0.5;
+  }
+  100% {
+    background: #000000;
+    opacity: 0;
+  }
+}
+
+@keyframes shutdownGlow {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.bootMessage {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--brand-on-background-strong);
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+  font-weight: bold;
+  text-shadow: 0 0 8px rgba(139, 92, 246, 0.8);
+  z-index: 10;
+  text-align: center;
+  animation: bootText 3s ease-in-out;
+}
+
+@keyframes bootText {
+  0% {
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }
 
 .scanLines {
@@ -90,18 +284,23 @@
 .chatContainer {
   position: relative;
   z-index: 2;
-  height: 100%;
+  flex: 1;
   display: flex;
   flex-direction: column;
   background: transparent;
   font-family: 'Courier New', monospace;
+  min-height: 0; /* Important for flex child */
 }
 
 .chatHeader {
+  flex-shrink: 0;
   padding: 8px 12px;
   border-bottom: 1px solid var(--neutral-alpha-medium);
   background: var(--neutral-background-medium);
   backdrop-filter: blur(8px);
+  height: 36px;
+  display: flex;
+  align-items: center;
 }
 
 .messagesContainer {
@@ -111,6 +310,8 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
+  min-height: 0; /* Important for flex child */
+  max-height: 100%;
 
   &::-webkit-scrollbar {
     width: 8px;
@@ -161,12 +362,15 @@
   word-wrap: break-word;
   line-height: 1.3;
   font-size: 10px;
+  color: var(--brand-on-background-strong) !important;
+  text-shadow: 0 0 4px rgba(139, 92, 246, 0.6);
 }
 
 .messageTime {
   font-size: 6px;
   opacity: 0.6;
-  color: var(--neutral-on-background-weak);
+  color: var(--brand-on-background-strong) !important;
+  text-shadow: 0 0 2px rgba(139, 92, 246, 0.4);
 }
 
 .typingIndicator {
@@ -198,6 +402,7 @@
 }
 
 .inputContainer {
+  flex-shrink: 0;
   display: flex;
   gap: 4px;
   padding: 4px 4px;
@@ -205,13 +410,14 @@
   background: var(--neutral-background-medium);
   backdrop-filter: blur(8px);
   align-items: center;
+  height: 36px;
 }
 
 .chatInput {
   flex: 1;
   background: transparent;
   border: none;
-  color: var(--brand-on-background-strong);
+  color: var(--brand-on-background-strong) !important;
   font-family: 'Courier New', monospace;
   font-size: 10px;
   font-weight: bold;
@@ -221,6 +427,7 @@
   line-height: 20px;
   caret-color: var(--brand-on-background-strong);
   animation: blink 1.2s infinite;
+  text-shadow: 0 0 4px rgba(139, 92, 246, 0.6);
 
   &::placeholder {
     color: var(--neutral-on-background-weak);
@@ -260,31 +467,128 @@
 }
 
 .controls {
+  flex-shrink: 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 16px 20px;
   background: linear-gradient(145deg, var(--neutral-background-medium), var(--neutral-background-weak));
   border-top: 2px solid var(--neutral-alpha-medium);
+  height: 80px;
 }
 
 .powerButton {
-  width: 40px;
-  height: 40px;
+  width: 45px;
+  height: 45px;
   border-radius: 50%;
-  background: linear-gradient(145deg, var(--neutral-background-strong), var(--neutral-background-medium));
-  border: 2px solid var(--neutral-alpha-medium);
+  background: linear-gradient(145deg, 
+    var(--neutral-background-strong) 0%, 
+    var(--neutral-background-medium) 30%, 
+    var(--neutral-background-weak) 100%);
+  border: 2px solid var(--neutral-alpha-strong);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   box-shadow: 
-    inset 0 2px 4px rgba(255, 255, 255, 0.05),
-    0 2px 4px rgba(0, 0, 0, 0.2);
+    0 2px 4px rgba(0, 0, 0, 0.4),
+    inset 0 1px 3px rgba(255, 255, 255, 0.2),
+    inset 0 -1px 2px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  position: relative;
 
   &:hover {
-    background: linear-gradient(145deg, var(--neutral-background-medium), var(--neutral-background-strong));
-    border-color: var(--brand-alpha-medium);
+    background: linear-gradient(145deg, 
+      var(--neutral-background-medium) 0%, 
+      var(--neutral-background-weak) 30%, 
+      var(--neutral-background-strong) 100%);
+    transform: scale(1.05);
+    box-shadow: 
+      0 3px 6px rgba(0, 0, 0, 0.5),
+      inset 0 1px 3px rgba(255, 255, 255, 0.3),
+      inset 0 -1px 2px rgba(0, 0, 0, 0.3);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+
+  &.poweredOn {
+    box-shadow: 
+      0 2px 4px rgba(0, 0, 0, 0.4),
+      inset 0 1px 3px rgba(255, 255, 255, 0.2),
+      inset 0 -1px 2px rgba(0, 0, 0, 0.2),
+      0 0 15px rgba(0, 255, 0, 0.4);
+    animation: greenPulse 2s ease-in-out infinite;
+  }
+
+  &.booting, &.shuttingDown {
+    box-shadow: 
+      0 2px 4px rgba(0, 0, 0, 0.4),
+      inset 0 1px 3px rgba(255, 255, 255, 0.2),
+      inset 0 -1px 2px rgba(0, 0, 0, 0.2),
+      0 0 15px rgba(255, 165, 0, 0.6);
+    animation: orangeFlicker 0.3s ease-in-out infinite;
+  }
+
+  &.poweredOff {
+    box-shadow: 
+      0 2px 4px rgba(0, 0, 0, 0.4),
+      inset 0 1px 3px rgba(255, 255, 255, 0.2),
+      inset 0 -1px 2px rgba(0, 0, 0, 0.2),
+      0 0 15px rgba(255, 0, 0, 0.3);
+    animation: redPulse 3s ease-in-out infinite;
+  }
+}
+
+@keyframes greenPulse {
+  0%, 100% {
+    box-shadow: 
+      0 2px 4px rgba(0, 0, 0, 0.4),
+      inset 0 1px 3px rgba(255, 255, 255, 0.2),
+      inset 0 -1px 2px rgba(0, 0, 0, 0.2),
+      0 0 15px rgba(0, 255, 0, 0.4);
+  }
+  50% {
+    box-shadow: 
+      0 2px 4px rgba(0, 0, 0, 0.4),
+      inset 0 1px 3px rgba(255, 255, 255, 0.2),
+      inset 0 -1px 2px rgba(0, 0, 0, 0.2),
+      0 0 20px rgba(0, 255, 0, 0.6);
+  }
+}
+
+@keyframes orangeFlicker {
+  0%, 100% {
+    box-shadow: 
+      0 2px 4px rgba(0, 0, 0, 0.4),
+      inset 0 1px 3px rgba(255, 255, 255, 0.2),
+      inset 0 -1px 2px rgba(0, 0, 0, 0.2),
+      0 0 15px rgba(255, 165, 0, 0.6);
+  }
+  50% {
+    box-shadow: 
+      0 2px 4px rgba(0, 0, 0, 0.4),
+      inset 0 1px 3px rgba(255, 255, 255, 0.2),
+      inset 0 -1px 2px rgba(0, 0, 0, 0.2),
+      0 0 25px rgba(255, 165, 0, 0.8);
+  }
+}
+
+@keyframes redPulse {
+  0%, 100% {
+    box-shadow: 
+      0 2px 4px rgba(0, 0, 0, 0.4),
+      inset 0 1px 3px rgba(255, 255, 255, 0.2),
+      inset 0 -1px 2px rgba(0, 0, 0, 0.2),
+      0 0 15px rgba(255, 0, 0, 0.3);
+  }
+  50% {
+    box-shadow: 
+      0 2px 4px rgba(0, 0, 0, 0.4),
+      inset 0 1px 3px rgba(255, 255, 255, 0.2),
+      inset 0 -1px 2px rgba(0, 0, 0, 0.2),
+      0 0 20px rgba(255, 0, 0, 0.5);
   }
 }
 
@@ -318,80 +622,144 @@
   flex-direction: column;
   align-items: center;
   gap: 8px;
+  position: relative;
 }
 
 .knobLabel {
-  font-size: 10px;
+  font-size: 9px;
   font-weight: bold;
   color: var(--neutral-on-background-weak);
   text-transform: uppercase;
   letter-spacing: 1px;
   font-family: 'Courier New', monospace;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
 }
 
 .knobControl {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
+  position: relative;
 }
 
 .knobRange {
-  width: 60px;
-  height: 4px;
-  background: var(--neutral-background-weak);
-  border-radius: 2px;
+  width: 50px;
+  height: 6px;
+  background: linear-gradient(to bottom, 
+    var(--neutral-background-weak) 0%, 
+    var(--neutral-background-medium) 50%, 
+    var(--neutral-background-strong) 100%);
+  border-radius: 3px;
   outline: none;
   cursor: pointer;
   appearance: none;
+  border: 1px solid var(--neutral-alpha-medium);
+  box-shadow: 
+    inset 0 2px 4px rgba(0, 0, 0, 0.3),
+    0 1px 2px rgba(255, 255, 255, 0.1);
 
   &::-webkit-slider-thumb {
     appearance: none;
-    width: 16px;
-    height: 16px;
-    background: linear-gradient(145deg, var(--brand-on-background-strong), var(--brand-background-medium));
+    width: 14px;
+    height: 14px;
+    background: linear-gradient(145deg, 
+      var(--neutral-background-strong) 0%, 
+      var(--neutral-background-medium) 30%, 
+      var(--neutral-background-weak) 100%);
     border-radius: 50%;
-    border: 2px solid var(--neutral-background-strong);
+    border: 2px solid var(--neutral-alpha-strong);
     cursor: pointer;
     box-shadow: 
-      0 2px 4px rgba(0, 0, 0, 0.2),
-      inset 0 1px 2px rgba(255, 255, 255, 0.1);
+      0 2px 4px rgba(0, 0, 0, 0.4),
+      inset 0 1px 3px rgba(255, 255, 255, 0.2),
+      inset 0 -1px 2px rgba(0, 0, 0, 0.2);
+    position: relative;
 
     &:hover {
-      background: linear-gradient(145deg, var(--brand-on-background-strong), var(--brand-background-strong));
-      transform: scale(1.1);
+      background: linear-gradient(145deg, 
+        var(--neutral-background-medium) 0%, 
+        var(--neutral-background-weak) 30%, 
+        var(--neutral-background-strong) 100%);
+      transform: scale(1.05);
+      box-shadow: 
+        0 3px 6px rgba(0, 0, 0, 0.5),
+        inset 0 1px 3px rgba(255, 255, 255, 0.3),
+        inset 0 -1px 2px rgba(0, 0, 0, 0.3);
+    }
+
+    &:active {
+      transform: scale(0.95);
     }
   }
 
   &::-moz-range-thumb {
-    width: 16px;
-    height: 16px;
-    background: linear-gradient(145deg, var(--brand-on-background-strong), var(--brand-background-medium));
+    width: 14px;
+    height: 14px;
+    background: linear-gradient(145deg, 
+      var(--neutral-background-strong) 0%, 
+      var(--neutral-background-medium) 30%, 
+      var(--neutral-background-weak) 100%);
     border-radius: 50%;
-    border: 2px solid var(--neutral-background-strong);
+    border: 2px solid var(--neutral-alpha-strong);
     cursor: pointer;
     box-shadow: 
-      0 2px 4px rgba(0, 0, 0, 0.2),
-      inset 0 1px 2px rgba(255, 255, 255, 0.1);
+      0 2px 4px rgba(0, 0, 0, 0.4),
+      inset 0 1px 3px rgba(255, 255, 255, 0.2),
+      inset 0 -1px 2px rgba(0, 0, 0, 0.2);
 
     &:hover {
-      background: linear-gradient(145deg, var(--brand-on-background-strong), var(--brand-background-strong));
-      transform: scale(1.1);
+      background: linear-gradient(145deg, 
+        var(--neutral-background-medium) 0%, 
+        var(--neutral-background-weak) 30%, 
+        var(--neutral-background-strong) 100%);
+      transform: scale(1.05);
     }
   }
 }
 
 .knobValue {
-  font-size: 12px;
+  font-size: 10px;
   font-weight: bold;
   color: var(--brand-on-background-strong);
   font-family: 'Courier New', monospace;
-  background: var(--neutral-background-strong);
-  padding: 2px 6px;
-  border-radius: 4px;
-  border: 1px solid var(--neutral-alpha-medium);
-  min-width: 30px;
+  background: #000000;
+  padding: 4px 8px;
+  border-radius: 3px;
+  border: 1px solid #333333;
+  min-width: 35px;
   text-align: center;
+  box-shadow: 
+    0 0 8px rgba(139, 92, 246, 0.3),
+    inset 0 0 4px rgba(139, 92, 246, 0.1);
+  text-shadow: 0 0 4px rgba(139, 92, 246, 0.8);
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(139, 92, 246, 0.05) 50%,
+      transparent 100%
+    );
+    pointer-events: none;
+    animation: oledScan 2s linear infinite;
+  }
+}
+
+@keyframes oledScan {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
 }
 
 .toolCalls {
