@@ -97,6 +97,7 @@ export const Header = () => {
                     href="/about"
                     selected={pathname === "/about"}
                     data-selected={pathname === "/about"}
+                    prefixIcon="fileBadge"
                   />
                 </>
               )}
@@ -114,6 +115,7 @@ export const Header = () => {
                     href="/websites"
                     selected={pathname.startsWith("/websites")}
                     data-selected={pathname.startsWith("/websites")}
+                    prefixIcon="fileCode2"
                   />
                 </>
               )}
@@ -131,6 +133,7 @@ export const Header = () => {
                     href="/blog"
                     selected={pathname.startsWith("/blog")}
                     data-selected={pathname.startsWith("/blog")}
+                    prefixIcon="fileType2"
                   />
                 </>
               )}
@@ -148,6 +151,7 @@ export const Header = () => {
                     href="/gallery"
                     selected={pathname.startsWith("/gallery")}
                     data-selected={pathname.startsWith("/gallery")}
+                    prefixIcon="fileImage"
                   />
                 </>
               )}
@@ -165,6 +169,7 @@ export const Header = () => {
                     href="/music"
                     selected={pathname.startsWith("/music")}
                     data-selected={pathname.startsWith("/music")}
+                    prefixIcon="fileAudio"
                   />
                 </>
               )}

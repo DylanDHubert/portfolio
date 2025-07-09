@@ -27,6 +27,24 @@ import {
 
 import { FaDiscord, FaGithub, FaLinkedin, FaX, FaThreads } from "react-icons/fa6";
 
+// Import Lucide React icons for mobile navigation and social icons
+import { 
+  FileType2, 
+  FileAudio, 
+  FileImage, 
+  FileBadge, 
+  FileCode2,
+  Github,
+  Linkedin,
+  Mail,
+  MessageCircle,
+  Twitter,
+  Tv,
+  Sun,
+  Moon,
+  Lightbulb
+} from "lucide-react";
+
 export const iconLibrary: Record<string, IconType> = {
   arrowUpRight: HiArrowUpRight,
   arrowRight: HiArrowRight,
@@ -37,7 +55,7 @@ export const iconLibrary: Record<string, IconType> = {
   book: PiBookBookmarkDuotone,
   openLink: HiOutlineLink,
   calendar: HiCalendarDays,
-  home: PiHouseDuotone,
+  home: Tv,
   gallery: PiImageDuotone,
   music: PiMusicNotesDuotone,
   play: HiPlay,
@@ -51,7 +69,24 @@ export const iconLibrary: Record<string, IconType> = {
   threads: FaThreads,
   arrowUpRightFromSquare: HiArrowTopRightOnSquare,
   document: HiOutlineDocument,
-  rocket: HiOutlineRocketLaunch
+  rocket: HiOutlineRocketLaunch,
+  // Lucide React icons for mobile navigation
+  fileType2: FileType2,
+  fileAudio: FileAudio,
+  fileImage: FileImage,
+  fileBadge: FileBadge,
+  fileCode2: FileCode2,
+  // Lucide React social icons
+  lucideGithub: Github,
+  lucideLinkedin: Linkedin,
+  lucideMail: Mail,
+  lucideDiscord: MessageCircle,
+  lucideTwitter: Twitter,
+  sun: Lightbulb,
+  moon: Moon,
+  lightbulb: Lightbulb,
+  light: Lightbulb,
+  dark: Moon
 };
 
 export type IconLibrary = typeof iconLibrary;

@@ -63,6 +63,7 @@
   font-family: 'Rubik Iso', cursive !important;
   letter-spacing: 0.5px !important;
   border-radius: 20px !important;
+  padding: 12px 12px !important;
   box-shadow: 
     0 0 8px rgba(251, 191, 36, 0.3),
     0 0 15px rgba(251, 191, 36, 0.15),
@@ -243,15 +244,24 @@
   }
 }
 
+// Mobile navigation icon sizing
 @media (max-width: breakpoints.$s) {
-    .position {
-        top: auto;
-        position: fixed;
-        bottom: var(--static-space-24);
-    }
+  .position {
+    top: auto;
+    position: fixed;
+    bottom: var(--static-space-24);
+  }
 
-    .mask {
-        transform: rotate(180deg);
-        bottom: 0;
+  .mask {
+    transform: rotate(180deg);
+    bottom: 0;
+  }
+  
+  // Control icon size for mobile navigation buttons
+  .glowyNavButton {
+    svg {
+      width: 16px !important;
+      height: 16px !important;
     }
+  }
 }

@@ -215,7 +215,8 @@ const CRTTV: React.FC<CRTTVProps> = ({ onNavigate, onOpenProject, onOpenBlog }) 
                 style={{ 
                   fontFamily: 'Courier New, monospace',
                   fontWeight: 'bold',
-                  fontSize: '10px'
+                  fontSize: '16px',
+                  textShadow: '0 0 8px rgba(139, 92, 246, 0.8), 0 0 12px rgba(139, 92, 246, 0.6), 0 0 16px rgba(139, 92, 246, 0.4)'
                 }}
               >
                 AI Assistant v1.0 - Dylan's Portfolio RAG
@@ -233,7 +234,7 @@ const CRTTV: React.FC<CRTTVProps> = ({ onNavigate, onOpenProject, onOpenBlog }) 
                       <div 
                         style={{ 
                           fontFamily: 'Courier New, monospace',
-                          fontSize: '10px',
+                          fontSize: '14px',
                           lineHeight: '1.4'
                         }}
                       >
@@ -264,7 +265,7 @@ const CRTTV: React.FC<CRTTVProps> = ({ onNavigate, onOpenProject, onOpenBlog }) 
                       onBackground="neutral-weak"
                       style={{ 
                         fontFamily: 'Courier New, monospace',
-                        fontSize: '8px'
+                        fontSize: '12px'
                       }}
                     >
                       {message.timestamp.toLocaleTimeString()}

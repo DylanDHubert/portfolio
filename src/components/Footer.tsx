@@ -1,7 +1,7 @@
 import { Flex, IconButton, SmartLink, Text } from "@once-ui-system/core";
 import { person, social } from "@/resources";
 import styles from "./Footer.module.scss";
-import PixelatedSocialButton from "./PixelatedSocialButton";
+import LucideSocialButton from "./LucideSocialButton";
 
 export const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -19,7 +19,7 @@ export const Footer = () => {
         maxWidth="m"
         paddingY="8"
         paddingX="16"
-        gap="16"
+        gap="32"
         horizontal="space-between"
         vertical="center"
       >
@@ -31,7 +31,7 @@ export const Footer = () => {
           {social.map(
             (item) =>
               item.link && (
-                <PixelatedSocialButton
+                <LucideSocialButton
                   key={item.name}
                   type={item.icon as 'github' | 'linkedin' | 'email' | 'discord' | 'x' | 'threads'}
                   href={item.link}
