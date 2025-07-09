@@ -33,7 +33,7 @@ export function Posts({
             {displayedBlogs.length > 0 && (
                 <Grid
                     columns={columns} mobileColumns="1"
-                    fillWidth marginBottom="40" gap="12">
+                    fillWidth marginBottom="32" gap="24">
                     {displayedBlogs.map((post) => (
                         <Post
                             key={post.slug}

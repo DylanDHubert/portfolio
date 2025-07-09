@@ -101,10 +101,8 @@ export default function MusicPlayer() {
     return `${min}:${sec.toString().padStart(2, '0')}`;
   };
 
-  // SVG circle progress helpers
-  const CIRCLE_RADIUS = 70;
-  const CIRCLE_STROKE = 6;
-  const CIRCLE_CIRCUM = 2 * Math.PI * CIRCLE_RADIUS;
+  // Progress bar helpers
+  const PROGRESS_BAR_HEIGHT = 4;
 
   return (
     <Column maxWidth="l" gap="xl" paddingX="l">
@@ -116,77 +114,44 @@ export default function MusicPlayer() {
           {music.description}
         </Text>
       </Column>
-      <div className={styles.grid} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 32 }}>
+      <div className={styles.grid}>
         {music.songs.map((song: Song, index: number) => {
           const isCurrent = playingSong === song.title;
           const progress = isCurrent && duration > 0 ? currentTime / duration : 0;
           return (
             <div
               key={index}
-              className={styles.songCard}
-              style={{ marginBottom: 0, background: 'none', boxShadow: 'none', display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+              className={`${styles.songCard} ${styles.musicCard}`}
+              onMouseEnter={() => handleMouseEnter(song)}
+              onMouseLeave={handleMouseLeave}
             >
-              <div
-                style={{ position: 'relative', width: 2 * CIRCLE_RADIUS, height: 2 * CIRCLE_RADIUS, margin: '0 auto', cursor: 'pointer' }}
-                onMouseEnter={() => handleMouseEnter(song)}
-                onMouseLeave={handleMouseLeave}
-              >
-                <svg width={2 * CIRCLE_RADIUS} height={2 * CIRCLE_RADIUS} style={{ position: 'absolute', top: 0, left: 0, zIndex: 2 }}>
-                  <circle
-                    cx={CIRCLE_RADIUS}
-                    cy={CIRCLE_RADIUS}
-                    r={CIRCLE_RADIUS}
-                    fill="none"
-                    stroke="#8b5cf6"
-                    strokeWidth={CIRCLE_STROKE}
-                    opacity={0.18}
+              <div className={styles.coverContainer}>
+                {song.cover ? (
+                  <img
+                    src={song.cover}
+                    alt={song.title + ' cover'}
+                    className={styles.coverImage}
                   />
-                  <circle
-                    cx={CIRCLE_RADIUS}
-                    cy={CIRCLE_RADIUS}
-                    r={CIRCLE_RADIUS}
-                    fill="none"
-                    stroke="#8b5cf6"
-                    strokeWidth={CIRCLE_STROKE}
-                    strokeDasharray={CIRCLE_CIRCUM}
-                    strokeDashoffset={CIRCLE_CIRCUM * (1 - progress)}
-                    style={{ transition: isCurrent ? 'stroke-dashoffset 0.2s linear' : undefined }}
-                  />
-                </svg>
-                <div
-                  className={styles.cover}
-                  style={{
-                    width: 2 * (CIRCLE_RADIUS - CIRCLE_STROKE),
-                    height: 2 * (CIRCLE_RADIUS - CIRCLE_STROKE),
-                    background: '#222',
-                    borderRadius: '50%',
-                    overflow: 'hidden',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    position: 'absolute',
-                    top: CIRCLE_STROKE,
-                    left: CIRCLE_STROKE,
-                  }}
-                >
-                  {song.cover ? (
-                    <img
-                      src={song.cover}
-                      alt={song.title + ' cover'}
-                      className={styles.coverImage}
-                      style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }}
-                    />
-                  ) : (
-                    <div className={styles.coverFallback}>
-                      <Text variant="body-default-s" onBackground="neutral-weak">
-                        {song.title}
-                      </Text>
-                    </div>
-                  )}
+                ) : (
+                  <div className={styles.coverFallback}>
+                    <Text variant="body-default-s" onBackground="neutral-weak">
+                      {song.title}
+                    </Text>
+                  </div>
+                )}
+                <div className={styles.playButton}>
+                  <Text variant="body-strong-s" onBackground="neutral-strong">
+                    ▶
+                  </Text>
                 </div>
               </div>
-              <div style={{ width: 2 * CIRCLE_RADIUS, textAlign: 'center', marginTop: 16 }}>
-                <Text variant="body-strong-m" onBackground="brand-strong">
+              
+              <div className={styles.songInfo}>
+                <Text 
+                  variant="body-strong-m" 
+                  onBackground="brand-strong"
+                  className={styles.songTitle}
+                >
                   {song.title}
                 </Text>
                 <Text variant="body-default-s" onBackground="neutral-weak">
@@ -195,6 +160,27 @@ export default function MusicPlayer() {
                 <Text variant="body-default-s" onBackground="neutral-weak">
                   {formatDate(song.date)}
                 </Text>
+                
+                {/* Progress Bar */}
+                <div className={styles.progressContainer}>
+                  <div className={styles.progressBar}>
+                    <div 
+                      className={styles.progressFill}
+                      style={{ 
+                        width: `${progress * 100}%`,
+                        transition: isCurrent ? 'width 0.2s linear' : 'none'
+                      }}
+                    />
+                  </div>
+                  <div className={styles.timeInfo}>
+                    <Text variant="body-default-xs" onBackground="neutral-weak">
+                      {isCurrent ? formatTime(currentTime) : '0:00'}
+                    </Text>
+                    <Text variant="body-default-xs" onBackground="neutral-weak">
+                      {isCurrent ? formatTime(duration) : '0:00'}
+                    </Text>
+                  </div>
+                </div>
               </div>
             </div>
           );

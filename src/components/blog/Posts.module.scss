@@ -13,8 +13,8 @@
 
 // Yellow glow for blog post titles
 .yellowGlow {
-  color: #fbbf24 !important;
-  text-shadow: 0 0 8px rgba(251, 191, 36, 0.6), 0 0 12px rgba(251, 191, 36, 0.3) !important;
+  color: #ffffff !important;
+  text-shadow: 0 0 8px rgba(251, 191, 36, 0.8), 0 0 12px rgba(251, 191, 36, 0.6), 0 0 16px rgba(251, 191, 36, 0.4) !important;
   font-weight: bold !important;
   transition: all 0.3s ease !important;
   
@@ -25,17 +25,213 @@
   }
 }
 
+// Light mode turquoise glow for blog post titles
+[data-theme="light"] .yellowGlow {
+  color: #ffffff !important;
+  text-shadow: 0 0 8px rgba(6, 182, 212, 0.8), 0 0 12px rgba(6, 182, 212, 0.6), 0 0 16px rgba(6, 182, 212, 0.4) !important;
+  
+  &:hover {
+    color: #ffffff !important;
+    text-shadow: 0 0 10px rgba(34, 211, 238, 0.8), 0 0 15px rgba(34, 211, 238, 0.4) !important;
+  }
+}
+
 // Yellow glow for blog tags
 .yellowGlowTag {
-  color: #fbbf24 !important;
-  text-shadow: 0 0 6px rgba(251, 191, 36, 0.6), 0 0 10px rgba(251, 191, 36, 0.3) !important;
+  color: #ffffff !important;
+  text-shadow: 0 0 6px rgba(251, 191, 36, 0.8), 0 0 10px rgba(251, 191, 36, 0.6), 0 0 14px rgba(251, 191, 36, 0.4) !important;
   font-weight: bold !important;
   transition: all 0.3s ease !important;
+  border: 1px solid rgba(255, 255, 255, 0.8) !important;
+  box-shadow: 
+    0 0 8px rgba(251, 191, 36, 0.4),
+    0 0 12px rgba(251, 191, 36, 0.2),
+    inset 0 1px 2px rgba(255, 255, 255, 0.3) !important;
   
   &:hover {
     color: #fef3c7 !important;
     text-shadow: 0 0 8px rgba(254, 243, 199, 0.8), 0 0 12px rgba(254, 243, 199, 0.4) !important;
     transform: scale(1.05) !important;
+    border-color: rgba(255, 255, 255, 1) !important;
+    box-shadow: 
+      0 0 12px rgba(251, 191, 36, 0.6),
+      0 0 20px rgba(251, 191, 36, 0.3),
+      inset 0 1px 2px rgba(255, 255, 255, 0.4) !important;
+  }
+}
+
+// Light mode turquoise glow for blog tags
+[data-theme="light"] .yellowGlowTag {
+  color: #ffffff !important;
+  text-shadow: 0 0 6px rgba(6, 182, 212, 0.8), 0 0 10px rgba(6, 182, 212, 0.6), 0 0 14px rgba(6, 182, 212, 0.4) !important;
+  border: 1px solid rgba(255, 255, 255, 0.8) !important;
+  box-shadow: 
+    0 0 8px rgba(6, 182, 212, 0.4),
+    0 0 12px rgba(6, 182, 212, 0.2),
+    inset 0 1px 2px rgba(255, 255, 255, 0.3) !important;
+  
+  &:hover {
+    color: #22d3ee !important;
+    text-shadow: 0 0 8px rgba(34, 211, 238, 0.8), 0 0 12px rgba(34, 211, 238, 0.4) !important;
+    border-color: rgba(255, 255, 255, 1) !important;
+    box-shadow: 
+      0 0 12px rgba(6, 182, 212, 0.6),
+      0 0 20px rgba(6, 182, 212, 0.3),
+      inset 0 1px 2px rgba(255, 255, 255, 0.4) !important;
+  }
+}
+
+// Purple/maroon container for blog posts
+.blogPostContainer {
+  background: linear-gradient(135deg, 
+    rgba(58, 28, 92, 0.95) 0%, 
+    rgba(109, 63, 214, 0.9) 50%, 
+    rgba(139, 92, 246, 0.85) 100%);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  box-shadow: 
+    0 0 20px rgba(139, 92, 246, 0.4),
+    0 0 40px rgba(139, 92, 246, 0.2),
+    inset 0 1px 2px rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 24px;
+  padding: 0;
+  position: relative;
+  transition: all 0.3s ease;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(139, 92, 246, 0.05) 50%,
+      transparent 100%
+    );
+    border-radius: 24px;
+    pointer-events: none;
+    animation: blogScan 4s linear infinite;
+  }
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 
+      0 0 25px rgba(139, 92, 246, 0.5),
+      0 0 50px rgba(139, 92, 246, 0.3),
+      inset 0 1px 2px rgba(255, 255, 255, 0.15);
+  }
+}
+
+// Light mode maroon container for blog posts
+[data-theme="light"] .blogPostContainer {
+  background: linear-gradient(135deg, 
+    rgb(89, 0, 0) 0%, 
+    rgba(152, 0, 0, 0.9) 50%, 
+    rgba(255, 0, 0, 0.85) 100%);
+  border: 1px solid rgba(153, 27, 27, 0.3);
+  box-shadow: 
+    0 0 20px rgba(153, 27, 27, 0.4),
+    0 0 40px rgba(153, 27, 27, 0.2),
+    inset 0 1px 2px rgba(255, 255, 255, 0.1);
+  
+  &::before {
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(153, 27, 27, 0.05) 50%,
+      transparent 100%
+    );
+  }
+  
+  &:hover {
+    box-shadow: 
+      0 0 25px rgba(153, 27, 27, 0.5),
+      0 0 50px rgba(153, 27, 27, 0.3),
+      inset 0 1px 2px rgba(255, 255, 255, 0.15);
+  }
+}
+
+@keyframes blogScan {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+// Bullet points and numbered lists styling for blog posts
+.blogContent {
+  ul {
+    list-style: none;
+    padding-left: 0;
+    margin: 16px 0;
+    
+    li {
+      position: relative;
+      padding-left: 20px;
+      margin-bottom: 8px;
+      color: var(--neutral-on-background-weak);
+      
+      &::before {
+        content: ">";
+        position: absolute;
+        left: 0;
+        color: #fbbf24;
+        font-weight: bold;
+        font-size: 14px;
+      }
+    }
+  }
+  
+  ol {
+    list-style: none;
+    padding-left: 0;
+    margin: 16px 0;
+    counter-reset: item;
+    
+    li {
+      position: relative;
+      padding-left: 30px;
+      margin-bottom: 8px;
+      color: var(--neutral-on-background-weak);
+      counter-increment: item;
+      
+      &::before {
+        content: counter(item) ".";
+        position: absolute;
+        left: 0;
+        color: #fbbf24;
+        font-weight: bold;
+        font-size: 14px;
+      }
+    }
+  }
+}
+
+// Light mode bullet points and numbered lists
+[data-theme="light"] .blogContent {
+  ul {
+    li {
+      color: var(--neutral-on-background-weak);
+      
+      &::before {
+        color: #06b6d4;
+      }
+    }
+  }
+  
+  ol {
+    li {
+      color: var(--neutral-on-background-weak);
+      
+      &::before {
+        color: #06b6d4;
+      }
+    }
   }
 }
 

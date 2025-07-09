@@ -26,30 +26,34 @@ const protectedRoutes = {
 };
 
 // Import and set font for each variant
-import { Inter } from "next/font/google";
+import { Jersey_10, Jersey_25, Rubik_Iso } from "next/font/google";
 
-const heading = Inter({
+const heading = Rubik_Iso({
   variable: "--font-heading",
   subsets: ["latin"],
   display: "swap",
+  weight: "400",
 });
 
-const body = Inter({
+const body = Jersey_10({
   variable: "--font-body",
   subsets: ["latin"],
   display: "swap",
+  weight: "400",
 });
 
-const label = Inter({
+const label = Jersey_25({
   variable: "--font-label",
   subsets: ["latin"],
   display: "swap",
+  weight: "400",
 });
 
-const code = Inter({
+const code = Jersey_10({
   variable: "--font-code",
   subsets: ["latin"],
   display: "swap",
+  weight: "400",
 });
 
 const fonts = {

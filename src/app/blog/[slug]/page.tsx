@@ -5,6 +5,7 @@ import { baseURL, about, blog, person } from "@/resources";
 import { formatDate } from "@/utils/formatDate";
 import { getPosts } from "@/utils/utils";
 import { Metadata } from 'next';
+import styles from "@/components/blog/Posts.module.scss";
 
 export async function generateStaticParams(): Promise<{ slug: string }[]> {
   const posts = getPosts(["src", "app", "blog", "posts"]);
@@ -82,7 +83,7 @@ export default async function Blog({
               {post.metadata.publishedAt && formatDate(post.metadata.publishedAt)}
             </Text>
           </Row>
-          <Column as="article" fillWidth>
+          <Column as="article" fillWidth className={styles.blogContent}>
             <CustomMDX source={post.content} />
           </Column>
           <ScrollToHash />

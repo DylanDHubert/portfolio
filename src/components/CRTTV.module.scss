@@ -243,6 +243,12 @@
   animation: bootText 3s ease-in-out;
 }
 
+// Light mode boot message
+[data-theme="light"] .bootMessage {
+  color: #ffffff;
+  text-shadow: 0 0 8px rgba(6, 182, 212, 0.8), 0 0 12px rgba(6, 182, 212, 0.6), 0 0 16px rgba(6, 182, 212, 0.4);
+}
+
 @keyframes bootText {
   0% {
     opacity: 0;
@@ -446,7 +452,7 @@
   border-radius: 8px;
   word-wrap: break-word;
   line-height: 1.2;
-  font-size: 10px;
+  font-size: 15.5px;
   font-family: 'Courier New', monospace;
   position: relative;
   z-index: 1;
@@ -505,13 +511,13 @@
   border: none;
   color: var(--brand-on-background-strong) !important;
   font-family: 'Courier New', monospace;
-  font-size: 10px;
+  font-size: 13.5px;
   font-weight: bold;
   padding: 8px 8px;
   outline: none;
   height: 20px;
   line-height: 20px;
-  caret-color: var(--brand-on-background-strong);
+  caret-color: #ffffff;
   animation: blink 1.2s infinite;
   text-shadow: 0 0 4px rgba(139, 92, 246, 0.6);
 
@@ -531,8 +537,8 @@
 }
 
 .sendButton {
-  background: var(--brand-background-medium) !important;
-  border: none !important;
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.8) 0%, rgba(168, 85, 247, 0.7) 50%, rgba(196, 181, 253, 0.6) 100%) !important;
+  border: 1px solid rgba(139, 92, 246, 0.6) !important;
   color: var(--brand-on-background-strong) !important;
   min-width: 60px !important;
   max-width: 60px !important;
@@ -548,11 +554,11 @@
   text-shadow: 0 0 6px rgba(139, 92, 246, 0.8) !important;
   font-size: 10px !important;
   font-weight: bold !important;
-  font-family: 'Courier New', monospace !important;
+  font-family: 'Workbench', monospace !important;
   line-height: 1 !important;
 
   &:hover {
-    background: var(--brand-background-strong) !important;
+    background: linear-gradient(135deg, rgba(168, 85, 247, 0.9) 0%, rgba(139, 92, 246, 0.8) 50%, rgba(196, 181, 253, 0.7) 100%) !important;
     box-shadow: 0 0 12px rgba(139, 92, 246, 0.5) !important;
     transform: scale(1.05) !important;
   }
@@ -733,7 +739,7 @@
 .statusOled {
   font-size: 8px;
   font-weight: bold;
-  color: #00ff41;
+  color: #ffffff;
   font-family: 'Courier New', monospace;
   background: #000000;
   padding: 2px 6px;
@@ -742,9 +748,9 @@
   min-width: 45px;
   text-align: center;
   box-shadow: 
-    0 0 6px rgba(0, 255, 65, 0.3),
-    inset 0 0 3px rgba(0, 255, 65, 0.1);
-  text-shadow: 0 0 3px rgba(0, 255, 65, 0.8);
+    0 0 6px rgba(0, 255, 65, 0.5),
+    inset 0 0 3px rgba(0, 255, 65, 0.2);
+  text-shadow: 0 0 3px rgba(0, 255, 65, 0.9);
   position: relative;
   
   &::before {
@@ -757,12 +763,18 @@
     background: linear-gradient(
       90deg,
       transparent 0%,
-      rgba(0, 255, 65, 0.05) 50%,
+      rgba(0, 255, 65, 0.08) 50%,
       transparent 100%
     );
     pointer-events: none;
     animation: oledScan 2s linear infinite;
   }
+}
+
+// Light mode OLED status panels
+[data-theme="light"] .statusOled {
+  color: #ffffff;
+  text-shadow: 0 0 3px rgba(0, 255, 65, 0.8), 0 0 6px rgba(0, 255, 65, 0.6);
 }
 
 .statusOled.failure {
@@ -808,11 +820,17 @@
 .knobLabel {
   font-size: 9px;
   font-weight: bold;
-  color: var(--neutral-on-background-weak);
+  color: #ffffff;
   text-transform: uppercase;
   letter-spacing: 1px;
   font-family: 'Courier New', monospace;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+// Light mode dial labels
+[data-theme="light"] .knobLabel {
+  color: #d1d5db;
+  text-shadow: none;
 }
 
 .knobControl {
@@ -901,7 +919,7 @@
 .knobValue {
   font-size: 10px;
   font-weight: bold;
-  color: #fbbf24;
+  color: #ffffff;
   font-family: 'Courier New', monospace;
   background: #000000;
   padding: 4px 8px;
@@ -910,9 +928,9 @@
   min-width: 35px;
   text-align: center;
   box-shadow: 
-    0 0 8px rgba(251, 191, 36, 0.3),
+    0 0 8px rgba(251, 191, 36, 0.4),
     inset 0 0 4px rgba(251, 191, 36, 0.1);
-  text-shadow: 0 0 4px rgba(251, 191, 36, 0.8);
+  text-shadow: 0 0 4px rgba(251, 191, 36, 0.9);
   position: relative;
   
   &::before {
@@ -925,7 +943,7 @@
     background: linear-gradient(
       90deg,
       transparent 0%,
-      rgba(251, 191, 36, 0.05) 50%,
+      rgba(251, 191, 36, 0.08) 50%,
       transparent 100%
     );
     pointer-events: none;
@@ -942,6 +960,12 @@
 
 .crtFrame.poweredOff .knobValue::before {
   display: none;
+}
+
+// Light mode knob values
+[data-theme="light"] .knobValue {
+  color: #ffffff;
+  text-shadow: 0 0 4px rgba(251, 191, 36, 0.8);
 }
 
 @keyframes oledScan {
@@ -1073,5 +1097,255 @@
 
   .knobs {
     gap: 16px;
+  }
+}
+
+// Light mode styling for CRT container and background
+[data-theme="light"] .crtContainer {
+  background: linear-gradient(135deg, 
+    rgba(89, 0, 0, 0.05) 0%, 
+    rgba(152, 0, 0, 0.02) 50%, 
+    rgba(255, 0, 0, 0.01) 100%);
+}
+
+// Disable background dots around CRT in light mode
+[data-theme="light"] .crtContainer::before {
+  content: '';
+  position: absolute;
+  top: -50px;
+  left: -50px;
+  right: -50px;
+  bottom: -50px;
+  background: var(--page-background);
+  z-index: -2;
+  pointer-events: none;
+}
+
+// Ensure CRT frame layers show through in light mode
+[data-theme="light"] .crtFrame {
+  position: relative;
+  z-index: 1;
+}
+
+[data-theme="light"] .crtFrame {
+  background: linear-gradient(135deg, 
+    #ffffff 0%, 
+    #f8f9fa 50%, 
+    #e9ecef 100%);
+  border: 2px solid rgba(153, 27, 27, 0.3);
+  box-shadow: 
+    0 0 0 4px rgba(153, 27, 27, 0.2),
+    0 0 0 8px rgba(153, 27, 27, 0.1),
+    0 20px 40px rgba(153, 27, 27, 0.2),
+    inset 0 2px 4px rgba(255, 255, 255, 0.3),
+    0 0 50px rgba(153, 27, 27, 0.15);
+}
+
+[data-theme="light"] .screen {
+  background: linear-gradient(135deg, 
+    rgba(89, 0, 0, 0.95) 0%, 
+    rgba(152, 0, 0, 0.9) 50%, 
+    rgba(255, 0, 0, 0.85) 100%);
+  border: 1px solid rgba(153, 27, 27, 0.6);
+  box-shadow: 
+    inset 0 0 60px rgba(153, 27, 27, 0.6),
+    inset 0 0 120px rgba(153, 27, 27, 0.3),
+    0 0 8px rgba(153, 27, 27, 0.2),
+    0 0 15px rgba(153, 27, 27, 0.1);
+  
+  &::before {
+    background: radial-gradient(
+      ellipse at center,
+      rgba(153, 27, 27, 0.4) 0%,
+      rgba(153, 27, 27, 0.2) 30%,
+      rgba(153, 27, 27, 0.1) 60%,
+      rgba(153, 27, 27, 0.05) 80%,
+      transparent 100%
+    );
+  }
+  
+  &::after {
+    background: radial-gradient(
+      ellipse at center,
+      rgba(153, 27, 27, 0.1) 0%,
+      rgba(153, 27, 27, 0.05) 50%,
+      transparent 100%
+    );
+  }
+}
+
+[data-theme="light"] .chatHeader {
+  background: linear-gradient(90deg, rgba(89, 0, 0, 0.3) 0%, rgba(152, 0, 0, 0.2) 100%);
+  border-bottom: 1px solid rgba(153, 27, 27, 0.4);
+  
+  * {
+    color: #ffffff !important;
+    text-shadow: 0 0 4px rgba(153, 27, 27, 0.6);
+  }
+}
+
+[data-theme="light"] .inputContainer {
+  background: linear-gradient(90deg, rgba(89, 0, 0, 0.2) 0%, rgba(152, 0, 0, 0.1) 100%);
+  border-top: 1px solid rgba(153, 27, 27, 0.4);
+}
+
+[data-theme="light"] .chatInput {
+  background: rgba(153, 27, 27, 0.1);
+  border: 1px solid rgba(153, 27, 27, 0.3);
+  color: #ffffff !important;
+  text-shadow: 0 0 4px rgba(153, 27, 27, 0.6);
+  
+  &::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+  }
+}
+
+[data-theme="light"] .sendButton {
+  background: linear-gradient(135deg, rgba(6, 182, 212, 0.8) 0%, rgba(8, 145, 178, 0.7) 50%, rgba(14, 116, 144, 0.6) 100%) !important;
+  border: 1px solid rgba(6, 182, 212, 0.8) !important;
+  color: #ffffff !important;
+  box-shadow: 
+    0 0 8px rgba(6, 182, 212, 0.3),
+    0 0 15px rgba(6, 182, 212, 0.15),
+    inset 0 1px 2px rgba(255, 255, 255, 0.3) !important;
+  text-shadow: 0 0 6px rgba(6, 182, 212, 0.8) !important;
+  
+  &:hover {
+    background: linear-gradient(135deg, rgba(34, 211, 238, 0.9) 0%, rgba(6, 182, 212, 0.8) 50%, rgba(8, 145, 178, 0.7) 100%) !important;
+    box-shadow: 
+      0 0 12px rgba(6, 182, 212, 0.5),
+      0 0 25px rgba(6, 182, 212, 0.25),
+      inset 0 1px 2px rgba(255, 255, 255, 0.4) !important;
+    text-shadow: 0 0 8px rgba(6, 182, 212, 0.9) !important;
+  }
+}
+
+// Fix power button states in light mode
+[data-theme="light"] .powerButton.poweredOn {
+  box-shadow: 
+    0 2px 4px rgba(0, 0, 0, 0.4),
+    inset 0 1px 3px rgba(255, 255, 255, 0.2),
+    inset 0 -1px 2px rgba(0, 0, 0, 0.2),
+    0 0 15px rgba(6, 182, 212, 0.4);
+}
+
+[data-theme="light"] .powerButton.booting,
+[data-theme="light"] .powerButton.shuttingDown {
+  box-shadow: 
+    0 2px 4px rgba(0, 0, 0, 0.4),
+    inset 0 1px 3px rgba(255, 255, 255, 0.2),
+    inset 0 -1px 2px rgba(0, 0, 0, 0.2),
+    0 0 15px rgba(6, 182, 212, 0.6);
+}
+
+[data-theme="light"] .powerButton.poweredOff {
+  box-shadow: 
+    0 2px 4px rgba(0, 0, 0, 0.4),
+    inset 0 1px 3px rgba(255, 255, 255, 0.2),
+    inset 0 -1px 2px rgba(0, 0, 0, 0.2),
+    0 0 15px rgba(153, 27, 27, 0.3);
+}
+
+[data-theme="light"] .powerButton.poweredOn .powerIcon {
+  color: #06b6d4 !important;
+  filter: drop-shadow(0 0 8px rgba(6, 182, 212, 0.8)) !important;
+}
+
+[data-theme="light"] .powerButton.booting .powerIcon,
+[data-theme="light"] .powerButton.shuttingDown .powerIcon {
+  color: #06b6d4 !important;
+  filter: drop-shadow(0 0 8px rgba(6, 182, 212, 0.8)) !important;
+}
+
+[data-theme="light"] .powerButton.poweredOff .powerIcon {
+  color: #666666 !important;
+  filter: none !important;
+}
+
+// Fix powered off screen in light mode
+[data-theme="light"] .screen.poweredOff {
+  background: #000000 !important;
+  box-shadow: none !important;
+  
+  &::before,
+  &::after {
+    display: none !important;
+  }
+}
+
+// Light mode message styling
+[data-theme="light"] .message.user .messageContent {
+  background: linear-gradient(135deg, #06b6d4 0%, #0891b2 50%, #0e7490 100%);
+  border: 1px solid rgba(6, 182, 212, 0.6);
+  color: #ffffff;
+  box-shadow: 
+    0 0 20px rgba(6, 182, 212, 0.4),
+    0 0 40px rgba(6, 182, 212, 0.2),
+    0 0 60px rgba(6, 182, 212, 0.1),
+    inset 0 1px 2px rgba(255, 255, 255, 0.2);
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+  
+  &::before {
+    background: linear-gradient(135deg, #06b6d4, #0891b2, #0e7490);
+    opacity: 0.3;
+  }
+}
+
+[data-theme="light"] .message.assistant .messageContent {
+  background: linear-gradient(135deg, rgba(89, 0, 0, 0.8) 0%, rgba(152, 0, 0, 0.7) 50%, rgba(255, 0, 0, 0.6) 100%);
+  border: 1px solid rgba(153, 27, 27, 0.4);
+  color: #ffffff;
+  box-shadow: 
+    0 0 20px rgba(153, 27, 27, 0.3),
+    0 0 40px rgba(153, 27, 27, 0.15),
+    0 0 60px rgba(153, 27, 27, 0.08),
+    inset 0 1px 2px rgba(255, 255, 255, 0.1);
+  text-shadow: 0 0 6px rgba(153, 27, 27, 0.8), 0 0 12px rgba(153, 27, 27, 0.6), 0 0 16px rgba(153, 27, 27, 0.4);
+  
+  &::before {
+    background: linear-gradient(135deg, rgba(89, 0, 0, 0.8), rgba(152, 0, 0, 0.7), rgba(255, 0, 0, 0.6));
+    opacity: 0.2;
+  }
+}
+
+[data-theme="light"] .messageTime {
+  color: #ffffff !important;
+  text-shadow: 0 0 2px rgba(153, 27, 27, 0.4);
+}
+
+[data-theme="light"] .typingIndicator span {
+  background: #06b6d4;
+}
+
+[data-theme="light"] .toolCallButton {
+  background: linear-gradient(135deg, #06b6d4 0%, #0891b2 50%, #0e7490 100%) !important;
+  border: 1px solid rgba(6, 182, 212, 0.8) !important;
+  color: #ffffff !important;
+  box-shadow: 
+    0 0 15px rgba(6, 182, 212, 0.6),
+    0 0 30px rgba(6, 182, 212, 0.3),
+    0 0 45px rgba(6, 182, 212, 0.15),
+    inset 0 1px 2px rgba(255, 255, 255, 0.3) !important;
+  text-shadow: 0 0 6px rgba(255, 255, 255, 0.8), 0 0 10px rgba(255, 255, 255, 0.4) !important;
+  
+  &::before {
+    background: linear-gradient(135deg, #06b6d4, #0891b2, #0e7490);
+    opacity: 0.4;
+  }
+
+  &:hover {
+    background: linear-gradient(135deg, #22d3ee 0%, #06b6d4 50%, #0891b2 100%) !important;
+    border-color: rgba(6, 182, 212, 1) !important;
+    color: #ffffff !important;
+    box-shadow: 
+      0 0 20px rgba(6, 182, 212, 0.8),
+      0 0 40px rgba(6, 182, 212, 0.4),
+      0 0 60px rgba(6, 182, 212, 0.2),
+      inset 0 1px 2px rgba(255, 255, 255, 0.4) !important;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.9), 0 0 12px rgba(255, 255, 255, 0.6) !important;
+    
+    &::before {
+      opacity: 0.6;
+    }
   }
 }

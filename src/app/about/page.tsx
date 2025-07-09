@@ -14,6 +14,7 @@ import {
 import { baseURL, about, person, social } from "@/resources";
 import styles from "@/components/about/about.module.scss";
 import React from "react";
+import PixelatedSocialButton from "@/components/PixelatedSocialButton";
 
 
 
@@ -86,17 +87,16 @@ export default function About() {
               {person.role}
             </Text>
             {social.length > 0 && (
-              <Flex className={styles.blockAlign} paddingTop="20" paddingBottom="8" gap="12" wrap horizontal="center" fitWidth data-border="rounded">
+              <Flex className={styles.blockAlign} paddingTop="20" gap="12" wrap horizontal="center" fitWidth data-border="rounded">
                 {social.map(
                   (item) =>
                     item.link && (
-                        <IconButton
+                        <PixelatedSocialButton
                             key={item.name}
+                            type={item.icon as 'github' | 'linkedin' | 'email' | 'discord' | 'x' | 'threads'}
                             href={item.link}
-                            icon={item.icon}
-                            size="l"
-                            variant="secondary"
-                            className={styles.socialIcon}
+                            tooltip={item.name}
+                            size={28}
                         />
                     ),
                 )}
@@ -124,21 +124,34 @@ export default function About() {
                             {experience.company}
                           </Text>
                         </Flex>
-                        <Text variant="heading-default-xs" onBackground="neutral-weak">
+                        <Text variant="heading-strong-s" onBackground="neutral-weak" className={styles.yellowGlow}>
                           {experience.timeframe}
                         </Text>
                       </Flex>
-                    <Text variant="body-default-s" onBackground="neutral-weak" marginBottom="m">
+                    <Text variant="body-default-l" onBackground="neutral-weak" marginBottom="m">
                       {experience.role}
                     </Text>
-                    <Column as="ul" gap="16">
+                    <Column as="ul" style={{ listStyle: 'none', padding: 0 }}>
                       {experience.achievements.map((achievement: JSX.Element, index: number) => (
                         <Text
                           as="li"
                           variant="body-default-s"
                           onBackground="brand-weak"
                           key={`${experience.company}-${index}`}
+                          style={{ 
+                            position: 'relative',
+                            paddingLeft: '16px',
+                            marginBottom: '4px'
+                          }}
                         >
+                          <span style={{ 
+                            position: 'absolute', 
+                            left: '0', 
+                            color: 'var(--brand-on-background-weak)',
+                            fontWeight: 'bold'
+                          }}>
+                            -
+                          </span>
                           {achievement}
                         </Text>
                       ))}

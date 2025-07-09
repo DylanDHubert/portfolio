@@ -1,6 +1,109 @@
-/* Global font override to use Courier New */
+/* Global font override to use Jersey 10 for body text */
 * {
+  font-family: 'Jersey 10', cursive !important;
+}
+
+/* Use Rubik Iso for headings with white color and yellow glow */
+h1, h2, h3, h4, h5, h6,
+.heading,
+[class*="heading"],
+[class*="title"],
+.title {
+  font-family: 'Rubik Iso', cursive !important;
+  color: #ffffff !important;
+  text-shadow: 0 0 8px rgba(251, 191, 36, 0.8), 0 0 12px rgba(251, 191, 36, 0.6), 0 0 16px rgba(251, 191, 36, 0.4) !important;
+}
+
+/* Light mode styling for titles - turquoise with turquoise glow */
+[data-theme="light"] h1,
+[data-theme="light"] h2,
+[data-theme="light"] h3,
+[data-theme="light"] h4,
+[data-theme="light"] h5,
+[data-theme="light"] h6,
+[data-theme="light"] .heading,
+[data-theme="light"] [class*="heading"],
+[data-theme="light"] [class*="title"],
+[data-theme="light"] .title,
+[data-theme="light"] .subtitle,
+[data-theme="light"] [class*="subtitle"] {
+  color: #ffffff !important;
+  text-shadow: 0 0 8px rgba(6, 182, 212, 0.8), 0 0 12px rgba(6, 182, 212, 0.6), 0 0 16px rgba(6, 182, 212, 0.4) !important;
+}
+
+/* Use Jersey 25 for label elements (intermediate between body and title) */
+label,
+.label,
+[class*="label"],
+[class*="subtitle"],
+.subtitle {
+  font-family: 'Jersey 25', cursive !important;
+}
+
+/* Light mode styling for subtitle elements - turquoise with turquoise glow */
+[data-theme="light"] label,
+[data-theme="light"] .label,
+[data-theme="light"] [class*="label"],
+[data-theme="light"] [class*="subtitle"],
+[data-theme="light"] .subtitle {
+  color: #ffffff !important;
+  text-shadow: 0 0 8px rgba(6, 182, 212, 0.8), 0 0 12px rgba(6, 182, 212, 0.6), 0 0 16px rgba(6, 182, 212, 0.4) !important;
+}
+
+/* Exclude CRT component from global font override */
+.crtFrame *,
+.crtFrame,
+.chatContainer *,
+.chatContainer,
+.messagesContainer *,
+.messagesContainer,
+.messageContent *,
+.messageContent,
+.chatInput,
+.sendButton,
+.statusOled,
+.knobLabel,
+.toolCallButton {
   font-family: 'Courier New', monospace !important;
+}
+
+/* Light mode text styling - ONLY for maroon containers on about page */
+[data-theme="light"] .purpleArea [onBackground="neutral-weak"],
+[data-theme="light"] .purpleArea [onBackground="neutral-medium"],
+[data-theme="light"] .purpleArea [onBackground="brand-weak"] {
+  color: #fecaca !important; /* Light red/white */
+}
+
+/* Light mode subtitle styling - ONLY for maroon containers on about page */
+[data-theme="light"] .purpleArea [onBackground="neutral-weak"] {
+  color: #fef2f2 !important; /* Lighter red/white */
+}
+
+/* Light mode text overrides - ONLY for maroon containers on about page */
+[data-theme="light"] .purpleArea .Text,
+[data-theme="light"] .purpleArea [class*="Text"],
+[data-theme="light"] .purpleArea p,
+[data-theme="light"] .purpleArea span,
+[data-theme="light"] .purpleArea div {
+  color: #fecaca !important; /* Light red/white for general text */
+}
+
+/* Light mode subtitle overrides - ONLY for maroon containers on about page */
+[data-theme="light"] .purpleArea .subtitle,
+[data-theme="light"] .purpleArea [class*="subtitle"],
+[data-theme="light"] .purpleArea label,
+[data-theme="light"] .purpleArea [class*="label"] {
+  color: #fef2f2 !important; /* Lighter red/white for subtitles */
+}
+
+/* Light mode body text with higher specificity - ONLY for maroon containers on about page */
+[data-theme="light"] .purpleArea [variant="body-default-s"],
+[data-theme="light"] .purpleArea [variant="body-default-m"],
+[data-theme="light"] .purpleArea [variant="body-default-l"],
+[data-theme="light"] .purpleArea [variant="label-default-s"],
+[data-theme="light"] .purpleArea [variant="label-default-m"],
+[data-theme="light"] .purpleArea [variant="label-default-l"] {
+  color: #fecaca !important; /* Light red/white */
 }
 
 /* :root {

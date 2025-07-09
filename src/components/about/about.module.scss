@@ -18,16 +18,16 @@
 .avatarGlow {
   position: relative;
   border-radius: 50%;
-  padding: 8px;
+  padding: 4px;
   background: linear-gradient(135deg, 
-    rgba(251, 191, 36, 0.3) 0%, 
-    rgba(245, 158, 11, 0.2) 50%, 
-    rgba(217, 119, 6, 0.1) 100%);
+    rgba(255, 255, 255, 0.9) 0%, 
+    rgba(255, 255, 255, 0.8) 50%, 
+    rgba(255, 255, 255, 0.7) 100%);
   border: 2px solid rgba(251, 191, 36, 0.8);
   box-shadow: 
-    0 0 15px rgba(251, 191, 36, 0.6),
-    0 0 30px rgba(251, 191, 36, 0.3),
-    0 0 45px rgba(251, 191, 36, 0.15),
+    0 0 20px rgba(251, 191, 36, 0.8),
+    0 0 40px rgba(251, 191, 36, 0.4),
+    0 0 60px rgba(251, 191, 36, 0.2),
     inset 0 1px 2px rgba(255, 255, 255, 0.2);
   animation: avatarGlow 3s ease-in-out infinite alternate;
   
@@ -41,9 +41,28 @@
     background: linear-gradient(135deg, #fbbf24, #f59e0b, #d97706);
     border-radius: 50%;
     z-index: -1;
-    opacity: 0.3;
+    opacity: 0.4;
     filter: blur(8px);
     animation: avatarGlowPulse 4s ease-in-out infinite;
+  }
+}
+
+// Light mode white avatar glow with turquoise
+[data-theme="light"] .avatarGlow {
+  background: linear-gradient(135deg, 
+    rgba(255, 255, 255, 0.9) 0%, 
+    rgba(255, 255, 255, 0.8) 50%, 
+    rgba(255, 255, 255, 0.7) 100%);
+  border: 2px solid rgba(6, 182, 212, 0.8);
+  box-shadow: 
+    0 0 20px rgba(6, 182, 212, 0.8),
+    0 0 40px rgba(6, 182, 212, 0.4),
+    0 0 60px rgba(6, 182, 212, 0.2),
+    inset 0 1px 2px rgba(255, 255, 255, 0.3);
+  
+  &::before {
+    background: linear-gradient(135deg, #06b6d4, #0891b2, #0e7490);
+    opacity: 0.4;
   }
 }
 
@@ -64,6 +83,28 @@
   }
 }
 
+// Light mode avatar glow animation
+[data-theme="light"] .avatarGlow {
+  animation: avatarGlowLight 3s ease-in-out infinite alternate;
+}
+
+@keyframes avatarGlowLight {
+  0% {
+    box-shadow: 
+      0 0 15px rgba(6, 182, 212, 0.6),
+      0 0 30px rgba(6, 182, 212, 0.3),
+      0 0 45px rgba(6, 182, 212, 0.15),
+      inset 0 1px 2px rgba(255, 255, 255, 0.2);
+  }
+  100% {
+    box-shadow: 
+      0 0 20px rgba(6, 182, 212, 0.8),
+      0 0 40px rgba(6, 182, 212, 0.4),
+      0 0 60px rgba(6, 182, 212, 0.2),
+      inset 0 1px 2px rgba(255, 255, 255, 0.3);
+  }
+}
+
 @keyframes avatarGlowPulse {
   0% {
     opacity: 0.3;
@@ -79,18 +120,19 @@
   }
 }
 
-// Yellow glow social icons
+// White glow social icons
 .socialIcon {
   background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%) !important;
   border: 1px solid rgba(251, 191, 36, 0.8) !important;
-  color: #1f2937 !important;
+  color: #ffffff !important;
   font-weight: bold !important;
   border-radius: 20px !important;
   box-shadow: 
-    0 0 8px rgba(251, 191, 36, 0.3),
-    0 0 15px rgba(251, 191, 36, 0.15),
+    0 0 12px rgba(251, 191, 36, 0.4),
+    0 0 20px rgba(251, 191, 36, 0.2),
+    0 0 30px rgba(251, 191, 36, 0.1),
     inset 0 1px 2px rgba(255, 255, 255, 0.3) !important;
-  text-shadow: 0 0 4px rgba(31, 41, 55, 0.8) !important;
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.9), 0 0 12px rgba(255, 255, 255, 0.6), 0 0 16px rgba(255, 255, 255, 0.4) !important;
   position: relative !important;
   transition: all 0.3s ease !important;
   
@@ -104,31 +146,67 @@
     background: linear-gradient(135deg, #fbbf24, #f59e0b, #d97706);
     border-radius: 22px;
     z-index: -1;
-    opacity: 0.2;
-    filter: blur(4px);
+    opacity: 0.3;
+    filter: blur(6px);
     animation: socialGlow 3s ease-in-out infinite alternate;
   }
 
   &:hover {
     background: linear-gradient(135deg, #fcd34d 0%, #fbbf24 50%, #f59e0b 100%) !important;
     border-color: rgba(251, 191, 36, 1) !important;
-    color: #fef3c7 !important;
+    color: #ffffff !important;
     box-shadow: 
-      0 0 12px rgba(251, 191, 36, 0.5),
-      0 0 25px rgba(251, 191, 36, 0.25),
+      0 0 20px rgba(251, 191, 36, 0.7),
+      0 0 40px rgba(251, 191, 36, 0.4),
+      0 0 60px rgba(251, 191, 36, 0.2),
       inset 0 1px 2px rgba(255, 255, 255, 0.4) !important;
-    text-shadow: 0 0 6px rgba(254, 243, 199, 0.8), 0 0 10px rgba(254, 243, 199, 0.4) !important;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 1), 0 0 15px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.6) !important;
     transform: scale(1.05) !important;
     animation: socialBlink 0.8s ease-in-out infinite alternate !important;
     
     &::before {
-      opacity: 0.4;
-      filter: blur(6px);
+      opacity: 0.8;
+      filter: blur(10px);
     }
   }
   
   &:active {
     transform: scale(0.95) !important;
+    text-shadow: 0 0 12px rgba(255, 255, 255, 1), 0 0 18px rgba(255, 255, 255, 0.9), 0 0 24px rgba(255, 255, 255, 0.7) !important;
+  }
+}
+
+// Light mode turquoise social icons
+[data-theme="light"] .socialIcon {
+  background: linear-gradient(135deg, #06b6d4 0%, #0891b2 50%, #0e7490 100%) !important;
+  border: 1px solid rgba(6, 182, 212, 0.8) !important;
+  color: #ffffff !important;
+  box-shadow: 
+    0 0 12px rgba(6, 182, 212, 0.4),
+    0 0 20px rgba(6, 182, 212, 0.2),
+    0 0 30px rgba(6, 182, 212, 0.1),
+    inset 0 1px 2px rgba(255, 255, 255, 0.3) !important;
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.9), 0 0 12px rgba(255, 255, 255, 0.6), 0 0 16px rgba(255, 255, 255, 0.4) !important;
+  
+  &::before {
+    background: linear-gradient(135deg, #06b6d4, #0891b2, #0e7490);
+  }
+
+  &:hover {
+    background: linear-gradient(135deg, #22d3ee 0%, #06b6d4 50%, #0891b2 100%) !important;
+    border-color: rgba(6, 182, 212, 1) !important;
+    color: #ffffff !important;
+    box-shadow: 
+      0 0 20px rgba(6, 182, 212, 0.7),
+      0 0 40px rgba(6, 182, 212, 0.4),
+      0 0 60px rgba(6, 182, 212, 0.2),
+      inset 0 1px 2px rgba(255, 255, 255, 0.4) !important;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 1), 0 0 15px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.6) !important;
+    
+    &::before {
+      opacity: 0.8;
+      filter: blur(10px);
+    }
   }
 }
 
@@ -154,9 +232,15 @@
 
 // Yellow glow for important headings
 .yellowGlow {
-  color: #fbbf24 !important;
-  text-shadow: 0 0 8px rgba(251, 191, 36, 0.6), 0 0 12px rgba(251, 191, 36, 0.3) !important;
+  color: #ffffff !important;
+  text-shadow: 0 0 8px rgba(251, 191, 36, 0.8), 0 0 12px rgba(251, 191, 36, 0.6), 0 0 16px rgba(251, 191, 36, 0.4) !important;
   font-weight: bold !important;
+}
+
+// Light mode turquoise glow for important headings
+[data-theme="light"] .yellowGlow {
+  color: #ffffff !important;
+  text-shadow: 0 0 8px rgba(6, 182, 212, 0.8), 0 0 12px rgba(6, 182, 212, 0.6), 0 0 16px rgba(6, 182, 212, 0.4) !important;
 }
 
 // Purple area background for name, title, and social links
@@ -192,6 +276,45 @@
     border-radius: 24px;
     pointer-events: none;
     animation: aboutScan 4s linear infinite;
+  }
+}
+
+// Light mode maroon override for purple area
+[data-theme="light"] .purpleArea {
+  background: linear-gradient(135deg, 
+    rgb(89, 0, 0) 0%, 
+    rgba(152, 0, 0, 0.9) 50%, 
+    rgba(255, 0, 0, 0.85) 100%);
+  border: 1px solid rgba(153, 27, 27, 0.3);
+  box-shadow: 
+    0 0 20px rgba(153, 27, 27, 0.4),
+    0 0 40px rgba(153, 27, 27, 0.2),
+    inset 0 1px 2px rgba(255, 255, 255, 0.1);
+  
+  &::before {
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(153, 27, 27, 0.05) 50%,
+      transparent 100%
+    );
+  }
+  
+  // Force override all text in maroon containers to match maroon theme
+  * {
+    color: #fffafa !important; /* Light red/white for all text */
+  }
+  
+  // Make subtitles and role text white
+  [onBackground="neutral-weak"],
+  [variant="body-default-l"][onBackground="neutral-weak"] {
+    color: #ffffff !important; /* White for subtitles and roles */
+  }
+  
+  // Make description text light red/white
+  [onBackground="brand-weak"],
+  [variant="body-default-s"][onBackground="brand-weak"] {
+    color: #ffffff !important; /* Light red/white for descriptions */
   }
 }
 

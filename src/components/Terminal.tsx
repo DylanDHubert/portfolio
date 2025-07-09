@@ -62,7 +62,7 @@ const Terminal = () => {
         border: '1px solid var(--neutral-alpha-medium)',
         borderRadius: '8px',
         padding: '16px',
-        fontFamily: 'monospace',
+        fontFamily: 'Jersey 10, cursive',
         fontSize: '14px',
         lineHeight: '1.4',
         height: '300px',
