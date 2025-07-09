@@ -26,7 +26,7 @@ export const ThemeToggle: React.FC = () => {
       prefixIcon={icon}
       onClick={() => setTheme(nextTheme)}
       aria-label={`Switch to ${nextTheme} mode`}
-      className={styles.glowyNavButton}
+      className={`${styles.glowyNavButton} ${styles.themeToggleIcon}`}
     />
   );
 };

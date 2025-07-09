@@ -37,6 +37,7 @@ export default async function RootLayout({
       )}
     >
       <head>
+        <link id="favicon" rel="icon" href="/favicon-dark.svg" type="image/svg+xml" />
         <script
           id="theme-init"
           dangerouslySetInnerHTML={{
@@ -86,6 +87,19 @@ export default async function RootLayout({
                       root.setAttribute('data-' + key, value);
                     }
                   });
+                  // Favicon swap
+                  function setFavicon(theme) {
+                    var favicon = document.getElementById('favicon');
+                    if (favicon) {
+                      favicon.href = theme === 'light' ? '/favicon-light.svg' : '/favicon-dark.svg';
+                    }
+                  }
+                  setFavicon(resolvedTheme);
+                  // Listen for theme changes
+                  const observer = new MutationObserver(() => {
+                    setFavicon(root.getAttribute('data-theme'));
+                  });
+                  observer.observe(root, { attributes: true, attributeFilter: ['data-theme'] });
                 } catch (e) {
                   console.error('Failed to initialize theme:', e);
                   document.documentElement.setAttribute('data-theme', 'dark');

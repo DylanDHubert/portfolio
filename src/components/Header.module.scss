@@ -244,6 +244,14 @@
   }
 }
 
+// General icon sizing for navigation buttons
+.glowyNavButton {
+  svg {
+    width: 14px !important;
+    height: 14px !important;
+  }
+}
+
 // Mobile navigation icon sizing
 @media (max-width: breakpoints.$s) {
   .position {
@@ -260,8 +268,40 @@
   // Control icon size for mobile navigation buttons
   .glowyNavButton {
     svg {
-      width: 16px !important;
-      height: 16px !important;
+      width: 12px !important;
+      height: 12px !important;
     }
+  }
+}
+
+.themeToggleIcon svg {
+  filter: drop-shadow(0 0 8px #fbbf24) drop-shadow(0 0 16px #fbbf24);
+  animation: themePulse 1.2s infinite alternate;
+}
+
+@keyframes themePulse {
+  0% {
+    filter: drop-shadow(0 0 8px #fbbf24) drop-shadow(0 0 16px #fbbf24);
+    opacity: 1;
+  }
+  100% {
+    filter: drop-shadow(0 0 16px #fbbf24) drop-shadow(0 0 32px #fbbf24);
+    opacity: 0.85;
+  }
+}
+
+[data-theme="light"] .themeToggleIcon svg {
+  filter: drop-shadow(0 0 8px #06b6d4) drop-shadow(0 0 16px #06b6d4);
+  animation: themePulseLight 1.2s infinite alternate;
+}
+
+@keyframes themePulseLight {
+  0% {
+    filter: drop-shadow(0 0 8px #06b6d4) drop-shadow(0 0 16px #06b6d4);
+    opacity: 1;
+  }
+  100% {
+    filter: drop-shadow(0 0 16px #06b6d4) drop-shadow(0 0 32px #06b6d4);
+    opacity: 0.85;
   }
 }
