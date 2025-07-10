@@ -15,7 +15,7 @@ const person = {
 
 const newsletter = {
   display: false,
-  title: <>Subscribe to {person.firstName}'s Newsletter</>,
+  title: <>Subscribe to {person.firstName}&apos;s Newsletter</>,
   description: (
     <>
       I occasionally write about machine learning, full stack development, and share insights from my work at NASA and in the tech industry.
@@ -47,7 +47,7 @@ const home = {
   path: "/",
   image: "/images/og/home.jpg",
   label: "Home",
-  title: `${person.name}'s Portfolio`,
+  title: `${person.name}&apos;s Portfolio`,
   description: `Portfolio website showcasing my work as a ${person.role}`,
   headline: <>Dylan Hubert</>,
   featured: {
@@ -175,7 +175,7 @@ const about = {
         role: "Machine Learning Intern (Solar Physics & Time Series Forecasting)",
         achievements: [
           <>
-            Developed CNN-Informer hybrid architecture for Total Solar Irradiance (TSI) prediction using HMI disk images, becoming the new baseline for the lab's solar physics research.
+            Developed CNN-Informer hybrid architecture for Total Solar Irradiance (TSI) prediction using HMI disk images, becoming the new baseline for the lab&apos;s solar physics research.
           </>,
           <>
             Designed computer vision preprocessing pipeline focusing on sunspots and faculae using Gaussian blurring, edge extraction, and temporal differencing for enhanced solar feature detection.
@@ -197,7 +197,7 @@ const about = {
     institutions: [
       {
         name: "American University, College of Arts & Sciences",
-        description: <>Bachelor of Science in Computer Science (2021-2025). GPA: 3.82. Teaching Assistant for Introduction to Machine Learning & Computer Systems. Dean's List Six Semesters, Cum Laude. Mentored by Dr. Leah Ding, who recognized early talent and guided research trajectory. Conducted undergraduate research on Total Solar Irradiance (TSI) prediction using CNN-Informer hybrid architectures and computer vision preprocessing for solar physics applications. Later expanded to 3D cloud reconstruction using perpendicular 2D views and transfer learning across satellite platforms.</>,
+        description: <>Bachelor of Science in Computer Science (2021-2025). GPA: 3.82. Teaching Assistant for Introduction to Machine Learning & Computer Systems. Dean&apos;s List Six Semesters, Cum Laude. Mentored by Dr. Leah Ding, who recognized early talent and guided research trajectory. Conducted undergraduate research on Total Solar Irradiance (TSI) prediction using CNN-Informer hybrid architectures and computer vision preprocessing for solar physics applications. Later expanded to 3D cloud reconstruction using perpendicular 2D views and transfer learning across satellite platforms.</>,
       },
     ],
   },
@@ -516,7 +516,7 @@ const rag = {
   path: "/rag",
   label: "RAG",
   title: `RAG Chat – ${person.name}`,
-  description: `Chat with an AI assistant that knows everything about ${person.name}'s background, projects, and experience`,
+  description: `Chat with an AI assistant that knows everything about ${person.name}&apos;s background, projects, and experience`,
 };
 
 export { person, social, newsletter, home, about, blog, work, gallery, music, rag, heroProjects };

@@ -31,7 +31,7 @@ const CRTTV: React.FC<CRTTVProps> = ({ onNavigate, onOpenProject, onOpenBlog }) 
     {
       id: '1',
       role: 'assistant',
-      content: "GREETINGS. I AM THE PORTFOLIO EXPERT. I CONTAIN COMPLETE KNOWLEDGE OF DYLAN HUBERTS BACKGROUND, PROJECTS, AND EXPERIENCE. QUERY ME FOR INFORMATION. I CAN ALSO ASSIST WITH NAVIGATION OF THIS PORTFOLIO INTERFACE.",
+      content: "Greetings. I am the portfolio expert. I contain complete knowledge of Dylan Huberts background, projects, and experience. Query me for information. I can also assist with navigation of this portfolio interface.",
       timestamp: new Date()
     }
   ]);
