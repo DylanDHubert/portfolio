@@ -1,4 +1,5 @@
 import mdx from "@next/mdx";
+import path from "path";
 
 const withMDX = mdx({
   extension: /\.mdx?$/,
@@ -12,6 +13,14 @@ const nextConfig = {
   sassOptions: {
     compiler: "modern",
     silenceDeprecations: ["legacy-js-api"],
+  },
+  webpack: (config, { isServer }) => {
+    // Ensure path aliases work correctly
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      '@': path.resolve(process.cwd(), 'src'),
+    };
+    return config;
   },
 };
 
