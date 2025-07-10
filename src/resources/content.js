@@ -67,12 +67,12 @@ const home = {
 
 const heroProjects = [
   {
-    title: "machinterview",
+    title: "MachInterview",
     subtitle: "Live Mock Interview AI Agent",
     href: "/websites/machinterview",
   },
   {
-    title: "eudaemonia",
+    title: "Eudaemonia",
     subtitle: "Personal Wellness Tracker",
     href: "/websites/eudaemonia-wellness",
   },
@@ -112,29 +112,12 @@ const about = {
     title: "Work Experience",
     experiences: [
       {
-        company: "Stryker MedTech",
-        timeframe: "05.01.2025 - Present",
-        role: "ML Engineer & Full Stack Developer (Contract/Freelance)",
+        company: "HHB AI Systems",
+        timeframe: "06.01.2023 - Present",
+        role: "Co-Founder, Machine Learning Engineering & Software Developer",
         achievements: [
           <>
-            Built an internal Retrieval-Augmented Generation (RAG) chatbot to search and summarize highly technical orthopedic implant documentation.
-          </>,
-          <>
-            Integrated PDF highlighting, vector search (OpenAI + LlamaIndex), and full Q&A UI for medical device compliance.
-          </>,
-          <>
-            Developed comprehensive documentation search capabilities enabling sales reps to quickly access complex technical information.
-          </>,
-        ],
-        images: [],
-      },
-      {
-        company: "The Pitch Place",
-        timeframe: "06.01.2023 - 02.01.2025",
-        role: "Machine Learning Engineering & Software Development",
-        achievements: [
-          <>
-            Developed and deployed PB&J (Peanut-Butter-Jelly) dynamic document processing pipeline using three-phase approach: parsing, betterment, and JSON transformation.
+            Developed PB&J (Peanut-Butter-Jelly) dynamic document processing pipeline using three-phase approach: parsing, betterment, and JSON transformation for complex technical PDFs.
           </>,
           <>
             Built Farm, a conversational RAG agent with multi-layered decision logic handling queries across various scales (full RAG, full context, chat context, limited tokens).
@@ -143,7 +126,27 @@ const about = {
             Implemented domain-agnostic system for highly technical, table-heavy PDFs with dynamic agents prioritizing data quality over processing speed.
           </>,
           <>
-            Full Stack Web Development with Django, Next.js, and React for production deployment.
+            Created specialized tools for table understanding, document navigation, and context management to enable agents to work with complex technical documentation.
+          </>,
+        ],
+        images: [],
+      },
+      {
+        company: "The Pitch Place",
+        timeframe: "06.01.2023 - 02.01.2025",
+        role: "Machine Learning Engineering & Software Developer",
+        achievements: [
+          <>
+            Built semantic search system using both in-house (open source) and API models for journalist-editor matching platform, enabling content-based recommendations across writing style, formality, and topic preferences.
+          </>,
+          <>
+            Developed RAG-based recommendation engine that connected pitches to appropriate journalists by analyzing content similarity, writing style (spin, formality), and editorial preferences.
+          </>,
+          <>
+            Implemented full-stack solutions using Django, Next.js, and React for production deployment and user interface development of the Fiverr-like platform.
+          </>,
+          <>
+            Created comprehensive data pipelines and retrieval systems for processing pitch content, journalist profiles, and editorial requirements to optimize matching accuracy.
           </>,
         ],
         images: [],
@@ -151,19 +154,19 @@ const about = {
       {
         company: "NASA GSFC",
         timeframe: "01.01.2024 - 06.01.2024",
-        role: "Machine Learning Intern (Pretraining / 3D Reconstruction)",
+        role: "Machine Learning Intern (3D Cloud Reconstruction & Transfer Learning)",
         achievements: [
           <>
-            Developed 3D cloud reconstruction using perpendicular 2D views: GOES ABI top-down imagery + CloudSat side-view slices for atmospheric density prediction.
+            Developed innovative 3D cloud reconstruction using perpendicular 2D views: GOES ABI top-down imagery + CloudSat side-view slices to predict atmospheric density profiles across entire regions.
           </>,
           <>
-            Implemented transfer learning between satellite platforms (MODIS 34-channel → ABI 17-channel) using wavelength-based channel reordering and spectral alignment.
+            Implemented M2M transformer architecture with Swin/ViT backbones and time/location embeddings for processing terabytes of satellite data on NASA supercomputers.
           </>,
           <>
-            Pre-trained large visual models (SWIN, ViT, DINO) for cloud modeling with assessment of cross-platform transfer learning effectiveness.
+            Created independent masking strategy for MAE/SATMAE pretraining, enabling cross-channel learning and improved transfer learning between MODIS (34-channel) and ABI (17-channel) satellite platforms.
           </>,
           <>
-            Conducted research on NASA Explore and Discover supercomputers, leading to new initiatives for next-level supercomputing facilities.
+            Built comprehensive data pipeline handling metadata-based co-location, parallel preprocessing, and spectral channel alignment for multi-platform satellite data fusion.
           </>,
         ],
         images: [],
@@ -171,19 +174,19 @@ const about = {
       {
         company: "NASA GSFC",
         timeframe: "06.01.2023 - 08.01.2023",
-        role: "Machine Learning Intern (Time Series Forecasting)",
+        role: "Machine Learning Intern (Solar Physics & Time Series Forecasting)",
         achievements: [
           <>
-            Achieved 175% improvement in Total Solar Irradiance (TSI) prediction using innovative CNN-Informer hybrid architecture with HMI disk images.
+            Developed CNN-Informer hybrid architecture for Total Solar Irradiance (TSI) prediction using HMI disk images, becoming the new baseline for the lab's solar physics research.
           </>,
           <>
-            Designed novel approach combining CNN spatial feature extraction with SSA sub-signals (without recombination) for enhanced temporal modeling.
+            Designed computer vision preprocessing pipeline focusing on sunspots and faculae using Gaussian blurring, edge extraction, and temporal differencing for enhanced solar feature detection.
           </>,
           <>
-            Learned PyTorch from scratch while developing end-to-end pipeline for solar physics research and space weather forecasting.
+            Implemented SSA signal preservation approach (using full decomposition vs. 3-component recombination) and learned PyTorch from scratch while building end-to-end pipeline for space weather forecasting.
           </>,
           <>
-            Leveraged visual content (sunspots, solar features) instead of statistical summaries, achieving significantly more stable future predictions.
+            Created 1024-dimensional CNN feature extraction with global pooling, concatenated with SSA sub-signals and statistical features for comprehensive solar-terrestrial relationship modeling.
           </>,
         ],
         images: [],
@@ -196,7 +199,7 @@ const about = {
     institutions: [
       {
         name: "American University, College of Arts & Sciences",
-        description: <>Bachelor of Science in Computer Science (2021-2025). GPA: 3.82. Teaching Assistant for Introduction to Machine Learning & Computer Systems. Dean's List Six Semesters, Cum Laude. Mentored by Dr. Leah Ding, who recognized early talent and guided research trajectory. Conducted research on DINO (self-distillation without labels) and self-supervised learning approaches.</>,
+        description: <>Bachelor of Science in Computer Science (2021-2025). GPA: 3.82. Teaching Assistant for Introduction to Machine Learning & Computer Systems. Dean's List Six Semesters, Cum Laude. Mentored by Dr. Leah Ding, who recognized early talent and guided research trajectory. Conducted undergraduate research on Total Solar Irradiance (TSI) prediction using CNN-Informer hybrid architectures and computer vision preprocessing for solar physics applications. Later expanded to 3D cloud reconstruction using perpendicular 2D views and transfer learning across satellite platforms.</>,
       },
     ],
   },
@@ -206,7 +209,7 @@ const about = {
     skills: [
       {
         title: "Machine Learning & AI",
-        description: <>PyTorch, TensorFlow, Keras, scikit-learn, Natural Language Processing & LLMs, RAG Systems, Computer Vision, Time Series Forecasting, Transfer Learning, Self-Supervised Learning (DINO), CNN-Informer Architectures, Data Processing with NumPy, Pandas, Matplotlib, OpenCV, SciPy, Singular Spectrum Analysis (SSA).</>,
+        description: <>PyTorch, TensorFlow, Keras, scikit-learn, Natural Language Processing & LLMs, RAG Systems, Semantic Search, Embeddings, Computer Vision, Time Series Forecasting, Transfer Learning, Self-Supervised Learning (MAE/SATMAE), CNN-Informer Architectures, M2M Transformers, Vision Transformers (Swin/ViT), Data Processing with NumPy, Pandas, Matplotlib, OpenCV, SciPy, Singular Spectrum Analysis (SSA).</>,
         images: [],
       },
       {
@@ -216,12 +219,12 @@ const about = {
       },
       {
         title: "AI/ML Platforms & Tools",
-        description: <>OpenAI API, LlamaIndex, HuggingFace, GitHub, Docker, CUDA, Linux, NASA Supercomputing Systems, Vector Databases, Dynamic Agent Architectures, Multi-layered Decision Systems.</>,
+        description: <>OpenAI API, LlamaIndex, HuggingFace, GitHub, Docker, CUDA, Linux, NASA Supercomputing Systems, Vector Databases, Dynamic Agent Architectures, Multi-layered Decision Systems, Recommendation Systems, Content-Based Filtering, Semantic Matching.</>,
         images: [],
       },
       {
         title: "Domain Expertise",
-        description: <>Solar Physics & Space Weather Forecasting, Atmospheric Science & Cloud Modeling, Medical Device Documentation, Technical Document Processing, Satellite Data Analysis, Multi-spectral Imaging, Document Understanding & Information Retrieval.</>,
+        description: <>Solar Physics & Space Weather Forecasting, Atmospheric Science & Cloud Modeling, Medical Device Documentation, Technical Document Processing, Satellite Data Analysis, Multi-spectral Imaging, Document Understanding & Information Retrieval, Journalism & Media Matching, Content Recommendation Systems, Conversational AI & Agentic Retrieval.</>,
         images: [],
       },
     ],

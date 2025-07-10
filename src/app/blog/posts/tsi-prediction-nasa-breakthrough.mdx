@@ -30,7 +30,20 @@ I spent a lot of time experimenting with different architectures, debugging grad
 
 ## The Approach: CNN-Informer Hybrid Architecture
 
-I had two main ideas. First, I thought we could leverage the actual visual content of the HMI images instead of just their statistical summaries—sunspots and other solar features visible in the images directly correlate with solar energy output. Second, I believed the model could learn to weight the SSA sub-signals more effectively than manually recombining them into just 3 components.
+I had two main ideas that became my key contributions to the project. First, I thought we could leverage the actual visual content of the HMI images instead of just their statistical summaries—sunspots and other solar features visible in the images directly correlate with solar energy output. Second, I believed the model could learn to weight the SSA sub-signals more effectively than manually recombining them into just 3 components.
+
+## My Key Contributions
+
+### SSA Signal Preservation
+My first major innovation was **not recombining the SSA signals** into just 3 components. While the lab had established the 3-component approach as their baseline, I tested and implemented using the full SSA decomposition. This approach was so effective that it later became the new default/baseline for the lab.
+
+### Visual Feature Integration
+While the team knew we could potentially use the HMI images, I was the one who **pushed for it and figured out how to implement it**. This involved designing the CNN architecture and developing the preprocessing pipeline to extract meaningful visual features from the solar imagery.
+
+### HMI Preprocessing Pipeline
+I developed the **high-density extraction preprocessing** that focused on sunspots and faculae. This computer vision approach was crucial for making the visual features useful to the model.
+
+This project remains my favorite because I had complete ownership over these innovations—from initial concept to implementation and testing. The freedom to experiment and learn was invaluable, and I was able to contribute meaningful technical advances to the lab's research.
 
 I designed a hybrid architecture that combined:
 - **Custom CNN**: A lightweight architecture with CNN blocks (ReLU, batch normalization, max pooling) designed to connect efficiently to the Informer
@@ -38,6 +51,33 @@ I designed a hybrid architecture that combined:
 - **SSA Sub-signals**: Individual components from Singular Spectrum Analysis, passed directly to the Informer without artificial recombination
 
 The CNN used global pooling to reduce the image features to a single `batch_size × num_channels` vector that could be integrated with the Informer's input requirements.
+
+## The CNN Architecture: Simple but Effective
+
+The CNN was intentionally simple—no skip connections, residual blocks, or special attention mechanisms. It just needed to extract visual features and convert them into a feature vector. The architecture followed a classic pattern:
+
+### Layer Configuration
+- **Input**: Single channel (grayscale HMI images)
+- **Conv3D → ReLU → MaxPool → BatchNorm** (repeated through the network)
+- **Channel growth**: 1 → 32 → 64 → 128 → 1024 channels
+- **Output**: Flattened to 1024-dimensional feature vector
+
+### Feature Fusion Strategy
+The 1024 CNN features were concatenated with:
+- **SSA Sub-signals**: 10 components (I tested and found 10 vs 1K window size made very little difference)
+- **Statistical Features**: 6 additional metrics including mean, median, mode, temporal count, and other statistical measures
+- **Total**: 1040-dimensional combined feature vector
+
+### Projection to Informer
+The 1040-dimensional vector went through a simple MLP projection layer to reduce dimensionality to the Informer's `d_model` parameter.
+
+## The Informer Configuration
+
+The Informer transformer had four critical parameters:
+- **d_model**: Input dimension for attention at each timestamp
+- **seq_len**: Total number of timestamps the model receives
+- **label_len**: Number of past target values it can see (normally its own predictions during inference)
+- **pred_len**: How many future timestamps to predict (non-autoregressive predictions)
 
 ## From University Research to NASA Internship
 
@@ -94,6 +134,14 @@ We measured performance using Mean Squared Error (MSE) as our primary metric. Th
 3. **Temporal Decomposition**: Using SSA sub-signals without artificial recombination preserved important frequency components
 4. **End-to-End Learning**: The entire pipeline learned to optimize for the final prediction task
 
+## The Reality of Research Results
+
+The single point gap fill achieved near-perfect accuracy very early on, but the other scenarios showed incremental improvements rather than dramatic breakthroughs. Research isn't about finding magic bullets for 50% accuracy improvements—those kinds of metrics are often misleading and can be achieved through clever test set manipulation.
+
+What mattered was that our approach was **better than the mathematical models** that the solar physicist was using. That's why he was investing in this research—our deep learning approach could capture patterns that traditional mathematical models couldn't.
+
+The work was successful because it provided real usability improvements for solar physicists, not because of any single impressive metric. In research, incremental progress that enables better science is often more valuable than dramatic but unreliable performance gains.
+
 ## Technical Challenges
 
 Handling the massive HMI images at high frequency was challenging. The HMI instrument captures images at regular intervals, creating a continuous stream of high-resolution data. Processing this efficiently required careful attention to data pipelines and memory management.
@@ -114,6 +162,16 @@ The challenge became more significant when we tried to incorporate additional SD
 ## Impact and Limitations
 
 This work contributed to the lab's understanding of solar-terrestrial relationships and improved the accuracy of space weather predictions. The approach has potential applications in other areas where visual and temporal data need to be combined for prediction tasks.
+
+### Real-World Applications
+
+TSI prediction is crucial for **space weather forecasting**—essentially "Earth weather forecasting" for space. Understanding solar energy input is critical for:
+
+- **Spacecraft Operations**: Solar storms can damage satellites and affect space missions
+- **Electrical Grid Protection**: Solar activity can cause power grid disruptions and blackouts
+- **Global Energy Systems**: A huge portion of Earth's energy comes from the Sun, making TSI prediction fundamental to understanding our planet's energy balance
+
+Better TSI prediction means better protection for our technological infrastructure and more accurate understanding of Earth's energy systems.
 
 While we successfully implemented the CNN architecture and demonstrated its potential, the computational challenges of working with terabytes of multi-channel SDO data highlighted the infrastructure limitations that often constrain research. This experience taught me the importance of balancing technical goals with practical computational constraints.
 

@@ -35,6 +35,26 @@ The reconstruction process involved:
 
 The beauty of this approach was that it leveraged the complementary strengths of different satellite instruments, each designed for specific purposes but together providing a complete picture.
 
+## The Architecture: M2M Transformer with Vision Transformers
+
+The core architecture was a **Multiple Inputs to Multiple Outputs (M2M) transformer** designed by Yiding Wang. This wasn't a standard transformer—it was specifically designed for our satellite data fusion problem.
+
+### Vision Transformer Backbone
+The model used both **Swin Transformer** and traditional **Vision Transformer (ViT)** architectures as the backbone for processing the GOES imagery. These vision transformers were chosen for their ability to capture spatial relationships in satellite imagery effectively.
+
+### Time and Location Embeddings
+A key innovation was incorporating **time and location embeddings** into the transformer. This allowed the model to understand:
+- **Temporal context**: When the observation was taken (important for cloud dynamics)
+- **Spatial context**: Where the observation was located (latitude/longitude)
+
+### The M2M Approach
+For each CloudSat ground truth point, we created a square "chip" of GOES imagery centered on that location. The transformer would:
+1. Take the GOES chip as input
+2. Use the single CloudSat density value as supervision for that pixel
+3. Predict the full 3D density profile for the entire chip
+
+This meant the model learned to extrapolate from a single vertical slice (CloudSat) to predict the complete 3D cloud structure across the entire horizontal area (GOES chip).
+
 ## Transfer Learning Across Satellite Platforms
 
 The second part of the project was equally fascinating: transfer learning between different satellite datasets. We worked with:
@@ -43,13 +63,55 @@ The second part of the project was equally fascinating: transfer learning betwee
 
 The goal was to see if models trained on MODIS data could effectively transfer to ABI data, which would be valuable for operational forecasting and research.
 
-## My Biggest Mistake Ever
+## Pretraining Strategy: MAE and SATMAE
 
-This is where I made the most significant error of my career. I was working on channel reordering—mapping MODIS's 34 channels to ABI's 17 channels based on wavelength similarity. The idea was to make the data formats compatible for transfer learning.
+The team used **Masked Auto Encoder (MAE)** and **SATMAE** as pretraining strategies for the vision transformers. These self-supervised learning approaches were crucial for the transfer learning experiments.
+
+### How MAE/SATMAE Worked
+- **MAE**: Randomly masked portions of satellite imagery and trained the model to reconstruct the missing parts
+- **SATMAE**: A satellite-specific variant that accounted for the unique characteristics of multispectral satellite data
+
+### Transfer Learning Assessment
+Since MAE/SATMAE models are designed to reconstruct missing parts of the input, we could directly assess transfer learning performance by:
+1. Training a model on ABI data using MAE/SATMAE
+2. Testing its ability to reconstruct MODIS imagery (despite being trained on ABI)
+3. Measuring reconstruction quality to evaluate cross-platform generalization
+
+This approach provided a natural way to evaluate how well the learned representations transferred between different satellite platforms.
+
+## Training Challenges and Innovations
+
+### Supercomputing Complexity
+Training on NASA's supercomputers with terabytes of satellite data required specialized software and infrastructure. While the core ML principles were familiar, the scale and complexity of the supercomputing environment made training significantly more challenging than typical deep learning projects.
+
+### The Masking Problem
+A key technical challenge I worked on was the **masking strategy** for the MAE/SATMAE pretraining. The existing data loader setup only supported **dependent masking**—meaning the masked (blanked out) areas were in the exact same locations across all channels in each batch of chips.
+
+### Independent Masking Innovation
+I developed an **independent masking** approach where the locations of masked areas could be different per channel within each chip. This was crucial because:
+
+- **Multispectral Advantage**: Different satellite channels capture different aspects of the atmosphere (visible, infrared, water vapor, etc.)
+- **Cross-Channel Learning**: Independent masking allowed the model to leverage information from one channel to reconstruct masked areas in another channel
+- **Better Transfer Learning**: This approach improved the model's ability to generalize across different satellite platforms
+
+The independent masking setup significantly improved both pretraining performance and transfer learning capabilities, enabling the model to better leverage the complementary information available across different spectral channels.
+
+### The Reality of Research Metrics
+After running countless grid searches and experiments, the specific performance numbers became less meaningful than the overall direction of improvements. Research is fundamentally about incremental progress—each experiment builds on the previous one, and the cumulative effect of many small improvements often matters more than any single breakthrough.
+
+What mattered most was that the independent masking approach consistently showed better transfer learning performance and enabled the model to better leverage the complementary information across different spectral channels. The qualitative improvements in model behavior and the ability to generalize across satellite platforms were more valuable than any single metric.
+
+## A Critical Learning Moment: The Channel Reordering Mistake
+
+As we worked on transfer learning between ABI and MODIS datasets, I encountered a challenge that would become my biggest learning experience. The two satellites have different spectral channels—ABI has 17 channels while MODIS has 34. To enable transfer learning, I needed to map MODIS's 34 channels to ABI's 17 channels based on wavelength similarity.
 
 **The Mistake**: I was iterating over a range instead of my reordering list. This meant the channel mapping was completely wrong, and I spent weeks training models with misaligned spectral data.
 
-**The Lesson**: Always double-check your data preprocessing, especially when working with complex multi-spectral datasets. A small indexing error can have massive downstream effects.
+**The Impact**: For several weeks, we couldn't get good results from any of the models. While this wasn't catastrophic for pretraining (since ordering doesn't affect MAE/SATMAE pretraining), it was severely affecting our transfer learning assessment. The mistake slowed down the entire team's progress.
+
+**The Recovery**: Once we identified the issue, the fix was simple—but the lesson was profound. I learned the importance of thorough validation, especially when working with complex multi-spectral datasets where small indexing errors can have massive downstream effects.
+
+**The Lesson**: This experience taught me that in research, mistakes are often the best teachers. The weeks of debugging led to much more robust data validation practices and a deeper understanding of how critical proper data preprocessing is for transfer learning experiments.
 
 ## The Recovery and Results
 
@@ -64,6 +126,25 @@ Satellite data is massive. GOES captures images every few minutes, and CloudSat 
 - Efficient data pipelines
 - Careful memory management
 - Parallel processing strategies
+
+### The Data Pipeline Architecture
+The preprocessing pipeline was a multi-stage process designed to handle terabytes of satellite data:
+
+1. **Metadata-Based Co-location**: Each satellite image had associated metadata files containing temporal and spatial information. We used these metadata files to efficiently match GOES, CloudSat, and MODIS observations in both time and space without loading the full image data.
+
+2. **Parallel Preprocessing**: The pipeline involved:
+   - **Co-location**: Matching observations across satellites using metadata
+   - **Normalization**: Standardizing data ranges before any slicing operations
+   - **Chip Generation**: Slicing large satellite images into smaller "chips" sized appropriately for the transformer models
+   - **Validation**: Ensuring data quality and consistency
+   - **Batched Storage**: Saving processed chips in efficient batch files for model training
+
+3. **Local Testing → Supercomputer Deployment**: 
+   - Development and validation could be done locally with a few sample files
+   - The full pipeline was then deployed to NASA's supercomputers where the vast majority of the satellite data was stored
+   - This two-stage approach allowed for rapid iteration during development while leveraging massive computational resources for production processing
+
+This architecture was crucial for handling the scale of the satellite data—what would have been impossible on local machines became tractable through careful pipeline design and supercomputing resources.
 
 ### Spectral Channel Alignment
 Different satellites have different spectral channels. The challenge was:
@@ -91,6 +172,18 @@ This work contributed to NASA's understanding of cloud structure and demonstrate
 - Weather forecasting
 - Satellite data fusion
 - Cross-platform model deployment
+
+### Real-World Applications
+
+Currently, many weather prediction systems use **2D maps and physics models** to estimate 3D cloud structures. While these approaches are decent, getting better 3D maps from 2D satellite images means **significantly improved weather forecasting**.
+
+The transfer learning aspect is particularly important: NASA could train one massive "Earth satellite data" model that could extract information across all sorts of satellite platforms and channels. This would enable:
+
+- **Better Weather Models**: More accurate 3D cloud representations for improved forecasting
+- **Cross-Platform Efficiency**: One model that works across multiple satellite datasets
+- **Operational Scalability**: Transfer learning between different satellite missions and instruments
+
+This work moves us closer to a unified approach for processing Earth observation data, which could revolutionize how we understand and predict weather patterns.
 
 ## The Broader Context
 
