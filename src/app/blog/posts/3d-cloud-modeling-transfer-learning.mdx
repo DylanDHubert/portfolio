@@ -1,8 +1,8 @@
 ---
-title: "3D Cloud Modeling and Transfer Learning: Pushing the Boundaries at NASA"
-summary: "My work on 3D cloud reconstruction using perpendicular 2D views and transfer learning across satellite datasets, including the biggest mistake I ever made."
-publishedAt: "2024-12-01"
-tag: "NASA Research"
+title: "The Cloud Project"
+summary: "3D Cloud Reconstruction and Assessment of Knowledge Transfer with NASA ABI, MODIS, & CloudSat Data."
+publishedAt: "2025-07-15"
+tags: ["NASA GSFC–610", "Machine Learning", "Transfer Learning", "Pre–Training", "Vision Transformers", "Auto–Encoders"]
 images: ["/images/placeholder/cloud-modeling.jpg"]
 ---
 
@@ -133,11 +133,11 @@ The preprocessing pipeline was a multi-stage process designed to handle terabyte
 1. **Metadata-Based Co-location**: Each satellite image had associated metadata files containing temporal and spatial information. We used these metadata files to efficiently match GOES, CloudSat, and MODIS observations in both time and space without loading the full image data.
 
 2. **Parallel Preprocessing**: The pipeline involved:
-   - **Co-location**: Matching observations across satellites using metadata
-   - **Normalization**: Standardizing data ranges before any slicing operations
-   - **Chip Generation**: Slicing large satellite images into smaller "chips" sized appropriately for the transformer models
-   - **Validation**: Ensuring data quality and consistency
-   - **Batched Storage**: Saving processed chips in efficient batch files for model training
+   - Co-location: Matching observations across satellites using metadata
+   - Normalization: Standardizing data ranges before any slicing operations
+   - Chip Generation: Slicing large satellite images into smaller "chips" sized appropriately for the transformer models
+   - Validation: Ensuring data quality and consistency
+   - Batched Storage: Saving processed chips in efficient batch files for model training
 
 3. **Local Testing → Supercomputer Deployment**: 
    - Development and validation could be done locally with a few sample files

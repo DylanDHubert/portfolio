@@ -145,9 +145,7 @@ const about = {
           <>
             Implemented full-stack solutions using Django, Next.js, and React for production deployment and user interface development of the Fiverr-like platform.
           </>,
-          <>
-            Created comprehensive data pipelines and retrieval systems for processing pitch content, journalist profiles, and editorial requirements to optimize matching accuracy.
-          </>,
+
         ],
         images: [],
       },

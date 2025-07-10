@@ -16,9 +16,11 @@ type Metadata = {
   image?: string;
   images: string[];
   tag?: string;
+  tags?: string[];
   team: Team[];
   link?: string;
   demoUrl?: string;
+  hidden?: boolean;
 };
 
 import { notFound } from 'next/navigation';
@@ -45,7 +47,8 @@ function readMDXFile(filePath: string) {
     summary: data.summary || "",
     image: data.image || "",
     images: data.images || [],
-    tag: data.tag || [],
+    tag: data.tag || "",
+    tags: data.tags || [],
     team: data.team || [],
     link: data.link || "",
     demoUrl: data.demoUrl || "",
@@ -70,5 +73,8 @@ function getMDXData(dir: string) {
 
 export function getPosts(customPath = ["", "", "", ""]) {
   const postsDir = path.join(process.cwd(), ...customPath);
-  return getMDXData(postsDir);
+  const allPosts = getMDXData(postsDir);
+  
+  // Filter out hidden posts (posts with hidden: true in metadata)
+  return allPosts.filter(post => !post.metadata.hidden);
 }

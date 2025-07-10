@@ -66,7 +66,8 @@ export default function Post({ post, thumbnail, direction }: PostProps) {
                               overflow: 'hidden',
                               textOverflow: 'ellipsis',
                               whiteSpace: 'nowrap',
-                              padding: '0 8px'
+                              padding: '0 8px',
+                              color: '#ffffff'
                             }}>
                             {post.metadata.summary}
                         </Text>
@@ -76,12 +77,23 @@ export default function Post({ post, thumbnail, direction }: PostProps) {
                         onBackground="neutral-weak">
                         {formatDate(post.metadata.publishedAt, false)}
                     </Text>
-                    { post.metadata.tag &&
-                        <Tag
-                            className={styles.yellowGlowTag}
-                            label={post.metadata.tag}
-                            variant="neutral" />
-                    }
+                    {(post.metadata.tag || post.metadata.tags) && (
+                        <Flex gap="8" wrap>
+                            {post.metadata.tag && (
+                                <Tag
+                                    className={styles.yellowGlowTag}
+                                    label={post.metadata.tag}
+                                    variant="neutral" />
+                            )}
+                            {post.metadata.tags && post.metadata.tags.map((tag: string, index: number) => (
+                                <Tag
+                                    key={index}
+                                    className={styles.yellowGlowTag}
+                                    label={tag}
+                                    variant="neutral" />
+                            ))}
+                        </Flex>
+                    )}
                 </Column>
             </Flex>
         </SmartLink>

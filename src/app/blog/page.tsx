@@ -1,5 +1,5 @@
 import { Column, Heading, Meta, Schema } from "@once-ui-system/core";
-import { Mailchimp } from "@/components";
+import { Mailchimp, SideBySidePosts } from "@/components";
 import { Posts } from "@/components/blog/Posts";
 import { baseURL, blog, person, newsletter } from "@/resources";
 
@@ -33,8 +33,12 @@ export default function Blog() {
       <Column
 				fillWidth flex={1}>
 				<Posts range={[1,1]} thumbnail direction="column"/>
-				<Posts range={[2,4]} thumbnail/>
-				<Posts range={[5,7]} thumbnail columns="2"/>
+				<Posts range={[2,2]} thumbnail direction="column"/>
+				<SideBySidePosts 
+					post1Slug="pbj-pipeline-dynamic-document-processing"
+					post2Slug="farm-agent-conversational-rag"
+					thumbnail
+				/>
 			</Column>
       {newsletter.display && <Mailchimp newsletter={newsletter} />}
     </Column>

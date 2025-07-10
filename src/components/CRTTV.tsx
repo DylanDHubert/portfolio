@@ -31,7 +31,7 @@ const CRTTV: React.FC<CRTTVProps> = ({ onNavigate, onOpenProject, onOpenBlog }) 
     {
       id: '1',
       role: 'assistant',
-      content: "Hi! I'm your AI assistant. I know everything about Dylan's background, projects, and experience. Ask me anything! I can also help you navigate around his portfolio.",
+      content: "GREETINGS. I AM THE PORTFOLIO EXPERT. I CONTAIN COMPLETE KNOWLEDGE OF DYLAN HUBERTS BACKGROUND, PROJECTS, AND EXPERIENCE. QUERY ME FOR INFORMATION. I CAN ALSO ASSIST WITH NAVIGATION OF THIS PORTFOLIO INTERFACE.",
       timestamp: new Date()
     }
   ]);
@@ -46,6 +46,7 @@ const CRTTV: React.FC<CRTTVProps> = ({ onNavigate, onOpenProject, onOpenBlog }) 
   const [isShuttingDown, setIsShuttingDown] = useState(false);
   const [bootMessage, setBootMessage] = useState("");
   const [responseTime, setResponseTime] = useState(25);
+  const [isMobile, setIsMobile] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -56,6 +57,18 @@ const CRTTV: React.FC<CRTTVProps> = ({ onNavigate, onOpenProject, onOpenBlog }) 
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  // Detect mobile screen size
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 600);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   // Update response time randomly
   useEffect(() => {
@@ -219,7 +232,7 @@ const CRTTV: React.FC<CRTTVProps> = ({ onNavigate, onOpenProject, onOpenBlog }) 
                   textShadow: '0 0 8px rgba(139, 92, 246, 0.8), 0 0 12px rgba(139, 92, 246, 0.6), 0 0 16px rgba(139, 92, 246, 0.4)'
                 }}
               >
-                AI Assistant v1.0 - Dylan's Portfolio RAG
+                PORTFOLIO EXPERT
               </Text>
             </div>
             
@@ -311,7 +324,7 @@ const CRTTV: React.FC<CRTTVProps> = ({ onNavigate, onOpenProject, onOpenBlog }) 
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 onKeyPress={handleKeyPress}
-                placeholder="ASK ME ANYTHING ABOUT DYLAN, HIS PROJECTS, EXPERIENCE, ETC. (OR THIS WEBSITE!)"
+                placeholder={isMobile ? "ASK ME ANYTHING ABOUT DYLAN" : "ASK ME ANYTHING ABOUT DYLAN, HIS PROJECTS, EXPERIENCE, ETC. (OR THIS WEBSITE!)"}
                 className={styles.chatInput}
                 disabled={isLoading}
               />

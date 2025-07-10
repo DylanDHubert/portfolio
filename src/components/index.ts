@@ -11,3 +11,4 @@ export { CustomMDX } from "@/components/mdx";
 export { Logo } from "@/components/Logo";
 export { default as CRTTV } from "@/components/CRTTV";
 export { default as LucideSocialButton } from "@/components/LucideSocialButton";
+export { SideBySidePosts } from "@/components/blog/SideBySidePosts";

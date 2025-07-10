@@ -235,3 +235,73 @@
   }
 }
 
+// MDX-specific list styling
+.mdx-ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 16px 0;
+  
+  .mdx-li {
+    position: relative;
+    padding-left: 20px;
+    margin-bottom: 8px;
+    color: var(--neutral-on-background-weak);
+    
+    &::before {
+      content: ">";
+      position: absolute;
+      left: 0;
+      color: #fbbf24;
+      font-weight: bold;
+      font-size: 14px;
+    }
+  }
+}
+
+.mdx-ol {
+  list-style: none;
+  padding-left: 0;
+  margin: 16px 0;
+  counter-reset: item;
+  
+  .mdx-li {
+    position: relative;
+    padding-left: 30px;
+    margin-bottom: 8px;
+    color: var(--neutral-on-background-weak);
+    counter-increment: item;
+    
+    &::before {
+      content: counter(item) ".";
+      position: absolute;
+      left: 0;
+      color: #fbbf24;
+      font-weight: bold;
+      font-size: 14px;
+    }
+  }
+}
+
+// Light mode MDX list styling
+[data-theme="light"] {
+  .mdx-ul {
+    .mdx-li {
+      color: var(--neutral-on-background-weak);
+      
+      &::before {
+        color: #06b6d4;
+      }
+    }
+  }
+  
+  .mdx-ol {
+    .mdx-li {
+      color: var(--neutral-on-background-weak);
+      
+      &::before {
+        color: #06b6d4;
+      }
+    }
+  }
+}
+

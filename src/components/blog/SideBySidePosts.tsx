@@ -2,39 +2,33 @@ import { getPosts } from '@/utils/utils';
 import { Grid } from '@once-ui-system/core';
 import Post from './Post';
 
-interface PostsProps {
-    range?: [number] | [number, number];
-    columns?: '1' | '2' | '3';
+interface SideBySidePostsProps {
+    post1Slug: string;
+    post2Slug: string;
     thumbnail?: boolean;
     direction?: 'row' | 'column';
 }
 
-export function Posts({
-    range,
-    columns = '1',
+export function SideBySidePosts({
+    post1Slug,
+    post2Slug,
     thumbnail = false,
     direction
-}: PostsProps) {
+}: SideBySidePostsProps) {
     let allBlogs = getPosts(['src', 'app', 'blog', 'posts']);
-
-    const sortedBlogs = allBlogs.sort((a, b) => {
-        return new Date(b.metadata.publishedAt).getTime() - new Date(a.metadata.publishedAt).getTime();
-    });
-
-    const displayedBlogs = range
-        ? sortedBlogs.slice(
-              range[0] - 1,
-              range.length === 2 ? range[1] : sortedBlogs.length 
-          )
-        : sortedBlogs;
+    
+    const post1 = allBlogs.find(post => post.slug === post1Slug);
+    const post2 = allBlogs.find(post => post.slug === post2Slug);
+    
+    const posts = [post1, post2].filter(Boolean);
 
     return (
         <>
-            {displayedBlogs.length > 0 && (
+            {posts.length > 0 && (
                 <Grid
-                    columns={columns} mobileColumns="1"
+                    columns="2" mobileColumns="1"
                     fillWidth marginBottom="32" gap="24">
-                    {displayedBlogs.map((post) => (
+                    {posts.map((post) => post && (
                         <Post
                             key={post.slug}
                             post={post}
@@ -46,4 +40,4 @@ export function Posts({
             )}
         </>
     );
-}
+} 

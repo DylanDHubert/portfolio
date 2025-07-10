@@ -122,6 +122,30 @@ function createParagraph({ children }: TextProps) {
   );
 }
 
+function createUnorderedList({ children }: { children: ReactNode }) {
+  return (
+    <ul className="mdx-ul">
+      {children}
+    </ul>
+  );
+}
+
+function createOrderedList({ children }: { children: ReactNode }) {
+  return (
+    <ol className="mdx-ol">
+      {children}
+    </ol>
+  );
+}
+
+function createListItem({ children }: { children: ReactNode }) {
+  return (
+    <li className="mdx-li">
+      {children}
+    </li>
+  );
+}
+
 function createInlineCode({ children }: { children: ReactNode }) {
   return <InlineCode>{children}</InlineCode>;
 }
@@ -167,6 +191,9 @@ const components = {
   a: CustomLink as any,
   code: createInlineCode as any,
   pre: createCodeBlock as any,
+  ul: createUnorderedList as any,
+  ol: createOrderedList as any,
+  li: createListItem as any,
   Heading,
   Text,
   CodeBlock,
