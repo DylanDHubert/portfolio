@@ -7,7 +7,7 @@ import { gallery } from "@/resources";
 
 export default function MasonryGrid() {
   const breakpointColumnsObj = {
-    default: 2,
+    default: 3,
     720: 1,
   };
 
@@ -23,7 +23,7 @@ export default function MasonryGrid() {
           sizes="(max-width: 560px) 100vw, 50vw"
           key={index}
           radius="m"
-          aspectRatio={image.orientation === "horizontal" ? "16 / 9" : "3 / 4"}
+          aspectRatio={image.orientation === "horizontal" ? "4 / 3" : "2 / 3"}
           src={image.src}
           alt={image.alt}
           className={styles.gridItem}

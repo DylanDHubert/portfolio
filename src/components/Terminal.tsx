@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Column, Text } from "@once-ui-system/core";
 
 const Terminal = () => {
@@ -9,7 +9,7 @@ const Terminal = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isTyping, setIsTyping] = useState(false);
 
-  const commands = [
+  const commands = useMemo(() => [
     "python train_model.py",
     "Model accuracy: 175% improvement over baseline",
     "deploy_to_nasa_systems",
@@ -20,7 +20,7 @@ const Terminal = () => {
     "RAG system operational",
     "git status",
     "All systems green ✅"
-  ];
+  ], []);
 
   useEffect(() => {
     const typeCommand = async () => {

@@ -99,7 +99,7 @@ const about = {
     title: "Introduction",
     description: (
       <>
-        Dylan is a Machine Learning Engineer and Full Stack Developer who transforms ideas into reality. His journey began with Python turtle graphics drawing polygons—a simple project that perfectly captured his core passion: creating things that bridge the gap between what's in his mind and tangible reality.
+        Dylan is a Machine Learning Engineer and Full Stack Developer who transforms ideas into reality. His journey began with Python turtle graphics drawing polygons—a simple project that perfectly captured his core passion: creating things that bridge the gap between what&apos;s in his mind and tangible reality.
         <br/><br/>
         Mentored by Dr. Leah Ding at American University, Dylan deepened his love for machine learning and discovered his talent for building systems that matter. This foundation led to cutting-edge research at NASA and building production-ready RAG systems that handle real-world, messy data.
         <br/><br/>
@@ -261,44 +261,84 @@ const gallery = {
   // These are placeholder images, replace with your own
   images: [
     {
-      src: "/images/gallery/horizontal-1.jpg",
-      alt: "image",
-      orientation: "horizontal",
-    },
-    {
-      src: "/images/gallery/horizontal-2.jpg",
-      alt: "image",
-      orientation: "horizontal",
-    },
-    {
-      src: "/images/gallery/horizontal-3.jpg",
-      alt: "image",
-      orientation: "horizontal",
-    },
-    {
-      src: "/images/gallery/horizontal-4.jpg",
-      alt: "image",
-      orientation: "horizontal",
-    },
-    {
-      src: "/images/gallery/vertical-1.jpg",
-      alt: "image",
+      src: "/images/gallery/ruins.jpeg",
+      alt: "Ruins",
       orientation: "vertical",
     },
     {
-      src: "/images/gallery/vertical-2.jpg",
-      alt: "image",
+      src: "/images/gallery/factory.jpeg",
+      alt: "Factory",
       orientation: "vertical",
     },
     {
-      src: "/images/gallery/vertical-3.jpg",
-      alt: "image",
+      src: "/images/gallery/twinpeaks.jpeg",
+      alt: "Twin Peaks",
       orientation: "vertical",
     },
     {
-      src: "/images/gallery/vertical-4.jpg",
-      alt: "image",
+      src: "/images/gallery/opeanocean.jpeg",
+      alt: "Ocean",
+      orientation: "horizontal",
+    },
+    {
+      src: "/images/gallery/palace.jpeg",
+      alt: "Palace",
+      orientation: "horizontal",
+    },
+    {
+      src: "/images/gallery/theroom.jpeg",
+      alt: "The Room",
+      orientation: "horizontal",
+    },
+    {
+      src: "/images/gallery/thetank.jpeg",
+      alt: "The Tank",
       orientation: "vertical",
+    },
+    {
+      src: "/images/gallery/cactusisland.jpeg",
+      alt: "Cactus Island",
+      orientation: "horizontal",
+    },
+    {
+      src: "/images/gallery/chinacampmarsh.jpeg",
+      alt: "China Camp Marsh",
+      orientation: "horizontal",
+    },
+    {
+      src: "/images/gallery/balloons.jpeg",
+      alt: "Balloons",
+      orientation: "horizontal",
+    },
+    {
+      src: "/images/gallery/sunsetocean.jpeg",
+      alt: "Sunset Ocean",
+      orientation: "horizontal",
+    },
+    {
+      src: "/images/gallery/temple.jpeg",
+      alt: "Temple",
+      orientation: "vertical",
+    },
+    {
+      src: "/images/gallery/thething.jpeg",
+      alt: "The Thing",
+      orientation: "horizontal",
+    },
+    {
+      src: "/images/gallery/thetankii.jpeg",
+      alt: "The Tank II",
+      orientation: "vertical",
+    },
+    {
+      src: "/images/gallery/seastacks.jpeg",
+      alt: "Sea Stacks",
+      orientation: "vertical",
+    },
+    {
+      src: "/images/gallery/searchlight.jpeg",
+      alt: "Searchlight",
+      orientation: "horizontal",
     },
   ],
 };
