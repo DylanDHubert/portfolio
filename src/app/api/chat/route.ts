@@ -92,8 +92,87 @@ const tools = [
 
 export async function POST(request: NextRequest) {
   try {
-    const { message, temperature = 0.7, topP = 0.9, maxTokens = 1000 } = await request.json();
+    const { message, temperature = 0.7, topP = 0.9, maxTokens = 750, stream = false } = await request.json();
 
+    // LOG THE RECEIVED SETTINGS FOR VERIFICATION
+    console.log('🎛️ API Received Settings:', { temperature, topP, maxTokens, stream });
+
+    // IF STREAMING IS REQUESTED, RETURN STREAMING RESPONSE
+    if (stream) {
+      const completion = await openai.chat.completions.create({
+        model: 'gpt-4o-mini',
+        messages: [
+          { role: 'system', content: systemPrompt },
+          { role: 'user', content: message }
+        ],
+        tools,
+        tool_choice: 'auto',
+        temperature,
+        top_p: topP,
+        max_tokens: maxTokens,
+        stream: true
+      });
+
+      // CREATE A READABLE STREAM
+      const encoder = new TextEncoder();
+      const readable = new ReadableStream({
+        async start(controller) {
+          let toolCalls: any[] = [];
+          
+          for await (const chunk of completion) {
+            const content = chunk.choices[0]?.delta?.content;
+            const toolCall = chunk.choices[0]?.delta?.tool_calls?.[0];
+            
+            if (content) {
+              // SEND CONTENT CHUNK
+              controller.enqueue(encoder.encode(`data: ${JSON.stringify({ type: 'content', content })}\n\n`));
+            }
+            
+            if (toolCall) {
+              // ACCUMULATE TOOL CALLS
+              if (toolCall.function) {
+                const existingToolCall = toolCalls.find(tc => tc.id === toolCall.id);
+                if (existingToolCall) {
+                  existingToolCall.function.arguments += toolCall.function.arguments || '';
+                } else {
+                  toolCalls.push({
+                    id: toolCall.id,
+                    function: {
+                      name: toolCall.function.name,
+                      arguments: toolCall.function.arguments || ''
+                    }
+                  });
+                }
+              }
+            }
+          }
+          
+          // SEND COMPLETED TOOL CALLS AT THE END
+          if (toolCalls.length > 0) {
+            const parsedToolCalls = toolCalls.map(toolCall => ({
+              id: toolCall.id,
+              type: toolCall.function.name,
+              data: JSON.parse(toolCall.function.arguments),
+              executed: false
+            }));
+            controller.enqueue(encoder.encode(`data: ${JSON.stringify({ type: 'toolCalls', toolCalls: parsedToolCalls })}\n\n`));
+          }
+          
+          controller.enqueue(encoder.encode('data: [DONE]\n\n'));
+          controller.close();
+        }
+      });
+
+      return new Response(readable, {
+        headers: {
+          'Content-Type': 'text/plain; charset=utf-8',
+          'Cache-Control': 'no-cache',
+          'Connection': 'keep-alive',
+        },
+      });
+    }
+
+    // NON-STREAMING RESPONSE (EXISTING LOGIC)
     const completion = await openai.chat.completions.create({
       model: 'gpt-4o-mini',
       messages: [

@@ -37,9 +37,10 @@ const CRTTV: React.FC<CRTTVProps> = ({ onNavigate, onOpenProject, onOpenBlog }) 
   ]);
   const [inputValue, setInputValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isStreaming, setIsStreaming] = useState(false);
   const [temperature, setTemperature] = useState(0.7);
   const [topP, setTopP] = useState(0.9);
-  const [maxTokens, setMaxTokens] = useState(1000);
+  const [maxTokens, setMaxTokens] = useState(750);
 
   const [isPoweredOn, setIsPoweredOn] = useState(true);
   const [isBooting, setIsBooting] = useState(false);
@@ -106,7 +107,7 @@ const CRTTV: React.FC<CRTTVProps> = ({ onNavigate, onOpenProject, onOpenBlog }) 
   };
 
   const handleSendMessage = async () => {
-    if (!inputValue.trim() || isLoading) return;
+    if (!inputValue.trim() || isLoading || isStreaming) return;
 
     const userMessage: Message = {
       id: Date.now().toString(),
@@ -118,8 +119,23 @@ const CRTTV: React.FC<CRTTVProps> = ({ onNavigate, onOpenProject, onOpenBlog }) 
     setMessages(prev => [...prev, userMessage]);
     setInputValue("");
     setIsLoading(true);
+    setIsStreaming(true);
+
+    // CREATE A NEW ASSISTANT MESSAGE FOR STREAMING
+    const assistantMessageId = (Date.now() + 1).toString();
+    const assistantMessage: Message = {
+      id: assistantMessageId,
+      role: 'assistant',
+      content: "",
+      timestamp: new Date()
+    };
+
+    setMessages(prev => [...prev, assistantMessage]);
 
     try {
+      // LOG THE DIAL SETTINGS FOR VERIFICATION
+      console.log('🎛️ Dial Settings:', { temperature, topP, maxTokens });
+      
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: {
@@ -129,24 +145,58 @@ const CRTTV: React.FC<CRTTVProps> = ({ onNavigate, onOpenProject, onOpenBlog }) 
           message: inputValue,
           temperature,
           topP,
-          maxTokens
+          maxTokens,
+          stream: true // ENABLE STREAMING
         }),
       });
 
       if (response.ok) {
-        const data = await response.json();
-        const assistantMessage: Message = {
-          id: (Date.now() + 1).toString(),
-          role: 'assistant',
-          content: data.content,
-          timestamp: new Date(),
-          toolCalls: data.toolCalls
-        };
-        setMessages(prev => [...prev, assistantMessage]);
-        
-        // Tool calls will be handled by user clicking the buttons
-        if (data.toolCalls && data.toolCalls.length > 0) {
-          console.log('Received tool calls:', data.toolCalls);
+        const reader = response.body?.getReader();
+        const decoder = new TextDecoder();
+
+        if (reader) {
+          while (true) {
+            const { done, value } = await reader.read();
+            
+            if (done) break;
+            
+            const chunk = decoder.decode(value);
+            const lines = chunk.split('\n');
+            
+            for (const line of lines) {
+              if (line.startsWith('data: ')) {
+                const data = line.slice(6);
+                
+                if (data === '[DONE]') {
+                  setIsStreaming(false);
+                  setIsLoading(false);
+                  break;
+                }
+                
+                try {
+                  const parsed = JSON.parse(data);
+                  
+                  if (parsed.type === 'content') {
+                    // UPDATE THE ASSISTANT MESSAGE WITH STREAMING CONTENT
+                    setMessages(prev => prev.map(msg => 
+                      msg.id === assistantMessageId 
+                        ? { ...msg, content: msg.content + parsed.content }
+                        : msg
+                    ));
+                  } else if (parsed.type === 'toolCalls') {
+                    // ADD TOOL CALLS TO THE ASSISTANT MESSAGE
+                    setMessages(prev => prev.map(msg => 
+                      msg.id === assistantMessageId 
+                        ? { ...msg, toolCalls: parsed.toolCalls }
+                        : msg
+                    ));
+                  }
+                } catch (e) {
+                  console.error('Error parsing streaming data:', e);
+                }
+              }
+            }
+          }
         }
       } else {
         throw new Error('API request failed');
@@ -160,12 +210,13 @@ const CRTTV: React.FC<CRTTVProps> = ({ onNavigate, onOpenProject, onOpenBlog }) 
         timestamp: new Date()
       };
       setMessages(prev => [...prev, errorMessage]);
+      setIsStreaming(false);
+      setIsLoading(false);
     }
     
+    setIsStreaming(false);
     setIsLoading(false);
   };
-
-
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
@@ -296,8 +347,7 @@ const CRTTV: React.FC<CRTTVProps> = ({ onNavigate, onOpenProject, onOpenBlog }) 
                           size="s"
                           className={styles.toolCallButton}
                         >
-                          {toolCall.type === 'open_project' && '📁'}
-                          {toolCall.type === 'navigate_to_page' && 'NAVIGATE TO PAGE'}
+                          NAVIGATE TO PAGE
                         </Button>
                       ))}
                     </div>
@@ -305,12 +355,27 @@ const CRTTV: React.FC<CRTTVProps> = ({ onNavigate, onOpenProject, onOpenBlog }) 
                 </div>
               ))}
               
-              {isLoading && (
+              {/* SHOW TYPING INDICATOR ONLY WHEN NOT STREAMING */}
+              {isLoading && !isStreaming && (
                 <div className={`${styles.message} ${styles.assistant}`}>
                   <div className={styles.typingIndicator}>
                     <span></span>
                     <span></span>
                     <span></span>
+                  </div>
+                </div>
+              )}
+              
+              {/* SHOW STREAMING INDICATOR WHEN STREAMING */}
+              {isStreaming && (
+                <div className={`${styles.message} ${styles.assistant}`}>
+                  <div className={styles.streamingIndicator}>
+                    <span>STREAMING</span>
+                    <div className={styles.streamingDots}>
+                      <span></span>
+                      <span></span>
+                      <span></span>
+                    </div>
                   </div>
                 </div>
               )}
@@ -326,11 +391,11 @@ const CRTTV: React.FC<CRTTVProps> = ({ onNavigate, onOpenProject, onOpenBlog }) 
                 onKeyPress={handleKeyPress}
                 placeholder={isMobile ? "ASK ME ANYTHING ABOUT DYLAN" : "ASK ME ANYTHING ABOUT DYLAN, HIS PROJECTS, EXPERIENCE, ETC. (OR THIS WEBSITE!)"}
                 className={styles.chatInput}
-                disabled={isLoading}
+                disabled={isLoading || isStreaming}
               />
               <button
                 onClick={handleSendMessage}
-                disabled={!inputValue.trim() || isLoading}
+                disabled={!inputValue.trim() || isLoading || isStreaming}
                 className={styles.sendButton}
                 type="button"
               >
@@ -407,7 +472,7 @@ const CRTTV: React.FC<CRTTVProps> = ({ onNavigate, onOpenProject, onOpenBlog }) 
                 <input
                   type="range"
                   min="100"
-                  max="2000"
+                  max="1250"
                   step="100"
                   value={maxTokens}
                   onChange={(e) => setMaxTokens(parseInt(e.target.value))}
