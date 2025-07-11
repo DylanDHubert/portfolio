@@ -230,7 +230,7 @@ const about = {
   interests: {
     display: true, // set to false to hide this section
     title: "Interests",
-    description: <>I love creating art with markers and paper, producing music (self-taught), practicing Taoist philosophy, and enjoying soccer, cycling, hiking, and baking bread. I believe in the power of combining intellectual depth with practical impact, always seeking projects that are both technologically fascinating and genuinely useful.</>,
+    description: <>I play guitar daily, enjoy weekly soccer games with friends, hike local trails several times a week, and bake bread. I value routine and find that my creative energy flows naturally between work and personal interests. I appreciate Eastern philosophy, particularly the idea of stillness and letting life come without argument.</>,
   },
 };
 
