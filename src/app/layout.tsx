@@ -48,17 +48,19 @@ export default async function RootLayout({
       "TensorFlow",
       "Natural Language Processing"
     ],
-    "alumniOf": {
-      "@type": "CollegeOrUniversity",
-      "name": "American University",
-      "description": "Bachelor of Science in Computer Science"
-    },
-    "worksFor": [
+    "alumniOf": [
+      {
+        "@type": "CollegeOrUniversity",
+        "name": "American University",
+        "description": "Bachelor of Science in Computer Science"
+      },
       {
         "@type": "Organization",
         "name": "HHB AI Systems",
-        "jobTitle": "Co-Founder & ML Engineer"
-      },
+        "jobTitle": "Co-Founder & ML Engineer (Side Project)"
+      }
+    ],
+    "worksFor": [
       {
         "@type": "Organization",
         "name": "NASA GSFC", 

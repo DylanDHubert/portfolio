@@ -61,20 +61,22 @@ const home = {
     Building AI systems that bridge the gap between research and reality
     <br/>
     From NASA research to production RAG systems
+    <br/>
+    <strong>Available for ML Engineer, Software Engineer, and AI/ML opportunities</strong>
     </>
   ),
 };
 
 const heroProjects = [
   {
-    title: "MachInterview",
-    subtitle: "Live Mock Interview AI Agent",
-    href: "/websites/machinterview",
+    title: "NASA GSFC",
+    subtitle: "Machine Learning Intern - 3D Cloud Reconstruction & Solar Physics",
+    href: "/about",
   },
   {
-    title: "Eudaemonia",
-    subtitle: "Personal Wellness Tracker",
-    href: "/websites/eudaemonia-wellness",
+    title: "The Pitch Place",
+    subtitle: "ML Engineer & Software Developer - RAG Systems & Full-Stack",
+    href: "/about",
   },
 ];
 
@@ -104,6 +106,8 @@ const about = {
         Mentored by Dr. Leah Ding at American University, Dylan deepened his love for machine learning and discovered his talent for building systems that matter. This foundation led to cutting-edge research at NASA and building production-ready RAG systems that handle real-world, messy data.
         <br/><br/>
         When not coding, Dylan creates art with markers and paper, produces music (self-taught), practices Taoist philosophy, and enjoys soccer, cycling, hiking, and baking bread. He believes in combining intellectual depth with practical impact, always seeking projects that are both technologically fascinating and genuinely useful.
+        <br/><br/>
+        <strong>Currently seeking ML Engineer, Software Engineer, and AI/ML roles where I can apply my experience in RAG systems, computer vision, and full-stack development to build impactful products.</strong>
       </>
     ),
   },
@@ -243,6 +247,11 @@ const about = {
     display: true, // set to false to hide this section
     title: "Interests",
     description: <>I play guitar daily, enjoy weekly soccer games with friends, hike local trails several times a week, and bake bread. I value routine and find that my creative energy flows naturally between work and personal interests. I appreciate Eastern philosophy, particularly the idea of stillness and letting life come without argument.</>,
+  },
+  contact: {
+    display: true, // set to false to hide this section
+    title: "Get In Touch",
+    description: <>I'm actively seeking opportunities in ML Engineering, Software Engineering, and AI/ML roles. If you're interested in working together or have questions about my projects, feel free to reach out via email or LinkedIn. I'm particularly excited about roles involving RAG systems, computer vision, or full-stack development.</>,
   },
 };
 

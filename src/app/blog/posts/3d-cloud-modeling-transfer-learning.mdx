@@ -91,14 +91,14 @@ Training on NASA's supercomputers with terabytes of satellite data required spec
 ### The Masking Problem
 A key technical challenge I worked on was the **masking strategy** for the MAE/SATMAE pretraining. The existing data loader setup only supported **dependent masking**—meaning the masked (blanked out) areas were in the exact same locations across all channels in each batch of chips.
 
-### Independent Masking Innovation
-I developed an **independent masking** approach where the locations of masked areas could be different per channel within each chip. This was crucial because:
+### Independent Masking Approach
+I developed an **independent masking** approach where the locations of masked areas could be different per channel within each chip. This was important because:
 
 - **Multispectral Advantage**: Different satellite channels capture different aspects of the atmosphere (visible, infrared, water vapor, etc.)
 - **Cross-Channel Learning**: Independent masking allowed the model to leverage information from one channel to reconstruct masked areas in another channel
 - **Better Transfer Learning**: This approach improved the model's ability to generalize across different satellite platforms
 
-The independent masking setup significantly improved both pretraining performance and transfer learning capabilities, enabling the model to better leverage the complementary information available across different spectral channels.
+The independent masking setup improved both pretraining performance and transfer learning capabilities, enabling the model to better leverage the complementary information available across different spectral channels.
 
 ### The Reality of Research Metrics
 After running countless grid searches and experiments, the specific performance numbers became less meaningful than the overall direction of improvements. Research is fundamentally about incremental progress—each experiment builds on the previous one, and the cumulative effect of many small improvements often matters more than any single breakthrough.

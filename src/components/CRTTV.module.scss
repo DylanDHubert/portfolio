@@ -1423,6 +1423,74 @@
 .chatContainer .messageContent,
 .messagesContainer .messageContent,
 .message .messageContent {
-  font-size: 18px !important;
-  font-family: 'Courier New', monospace !important;
+  font-size: 20px !important;
+  font-family: 'Jersey 25', cursive !important;
+}
+
+/* LIST STYLING FOR CRT MESSAGES */
+.messageContent {
+  ul {
+    list-style: none;
+    padding-left: 0;
+    margin: 4px 0;
+    
+    li {
+      position: relative;
+      padding-left: 16px;
+      margin: 2px 0;
+      
+      &::before {
+        content: ">";
+        position: absolute;
+        left: 0;
+        color: #8b5cf6;
+        font-weight: bold;
+        font-size: 14px;
+        font-family: 'Jersey 25', cursive;
+      }
+    }
+  }
+  
+  ol {
+    list-style: none;
+    padding-left: 0;
+    margin: 4px 0;
+    counter-reset: item;
+    
+    li {
+      position: relative;
+      padding-left: 20px;
+      margin: 2px 0;
+      counter-increment: item;
+      
+      &::before {
+        content: counter(item) ".";
+        position: absolute;
+        left: 0;
+        color: #8b5cf6;
+        font-weight: bold;
+        font-size: 14px;
+        font-family: 'Jersey 25', cursive;
+      }
+    }
+  }
+}
+
+/* LIGHT MODE LIST STYLING FOR CRT MESSAGES */
+[data-theme="light"] .messageContent {
+  ul {
+    li {
+      &::before {
+        color: #06b6d4;
+      }
+    }
+  }
+  
+  ol {
+    li {
+      &::before {
+        color: #06b6d4;
+      }
+    }
+  }
 }

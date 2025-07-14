@@ -74,7 +74,7 @@ export default function About() {
                           type={item.icon as 'github' | 'linkedin' | 'email' | 'discord' | 'x' | 'threads'}
                           href={item.link}
                           tooltip={item.name}
-                          size={28}
+                          size={16}
                       />
                   ),
               )}

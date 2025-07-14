@@ -28,7 +28,7 @@ WHAT YOU KNOW ABOUT DYLAN:
 - His journey from undecided student to ML engineer through Dr. Leah Ding's mentorship
 - His creative, systematic approach to problem-solving
 - His love for building things and learning through projects
-- His work at NASA, HHB AI Systems, and other experiences
+- His work at NASA, his side project HHB AI Systems, and other experiences
 - His technical skills in ML, computer vision, RAG systems, and full-stack development
 - His personality: creative energy, systematic thinking, cross-domain connections
 - His interests: guitar, soccer, hiking, bread baking, philosophy

@@ -1,6 +1,6 @@
 ---
 title: "The Solar Project"
-summary: "Solar Weather Forcasting using Machine Learning on NASA TSI and HMI Data."
+summary: "Solar Weather Forecasting using Machine Learning on NASA TSI and HMI Data."
 publishedAt: "2025-07-10"
 tags: ["NASA GSFC–610", "Machine Learning", "Computer Vision", "Time Series Forecasting", "Solar Weather", "CNNs", "Transformers"]
 images: ["/images/placeholder/nasa-tsi.jpg", "/images/nasa/comparison.png", "/images/nasa/TSI_graph.png"]
@@ -35,7 +35,7 @@ I had two main ideas that became my key contributions to the project. First, I t
 ## My Key Contributions
 
 ### SSA Signal Preservation
-My first major innovation was **not recombining the SSA signals** into just 3 components. While the lab had established the 3-component approach as their baseline, I tested and implemented using the full SSA decomposition. This approach was so effective that it later became the new default/baseline for the lab.
+My first major innovation was **not recombining the SSA signals** into just 3 components. While the lab had established the 3-component approach as their baseline, I tested and implemented using the full SSA decomposition. This approach proved more effective than the manual recombination approach.
 
 ### Visual Feature Integration
 While the team knew we could potentially use the HMI images, I was the one who **pushed for it and figured out how to implement it**. This involved designing the CNN architecture and developing the preprocessing pipeline to extract meaningful visual features from the solar imagery.
@@ -43,7 +43,7 @@ While the team knew we could potentially use the HMI images, I was the one who *
 ### HMI Preprocessing Pipeline
 I developed the **high-density extraction preprocessing** that focused on sunspots and faculae. This computer vision approach was crucial for making the visual features useful to the model.
 
-This project remains my favorite because I had complete ownership over these innovations—from initial concept to implementation and testing. The freedom to experiment and learn was invaluable, and I was able to contribute meaningful technical advances to the lab's research.
+This project remains my favorite because I had significant ownership over these innovations—from initial concept to implementation and testing. The freedom to experiment and learn was invaluable, and I was able to contribute meaningful technical advances to the lab's research.
 
 I designed a hybrid architecture that combined:
 - **Custom CNN**: A lightweight architecture with CNN blocks (ReLU, batch normalization, max pooling) designed to connect efficiently to the Informer

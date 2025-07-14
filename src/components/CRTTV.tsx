@@ -31,7 +31,7 @@ const CRTTV: React.FC<CRTTVProps> = ({ onNavigate, onOpenProject, onOpenBlog }) 
     {
       id: '1',
       role: 'assistant',
-      content: "WELCOME. I am the portfolio expert. I contain complete knowledge of Dylan Hubert's background, projects, and experience— including his NASA research and building production AI systems for medical technology. Query me for info, or ask for navigation help. TRY: 'Tell me about NASA', 'Show me AI projects', OR 'What makes Dylan unique?'", // INITIAL MESSAGE IN ALL CAPS
+      content: "WELCOME. I am the portfolio expert. I contain complete knowledge of Dylan Hubert's background, projects, and experience— including his NASA research and AI systems development. Query me for info, or ask for navigation help. TRY: 'Tell me about NASA', 'Show me AI projects', OR 'What makes Dylan unique?'", // INITIAL MESSAGE IN ALL CAPS
       timestamp: new Date()
     }
   ]);
@@ -297,8 +297,8 @@ const CRTTV: React.FC<CRTTVProps> = ({ onNavigate, onOpenProject, onOpenBlog }) 
                     <div className={styles.messageContent}>
                       <div 
                         style={{ 
-                          fontFamily: 'Courier New, monospace',
-                          fontSize: '14px',
+                          fontFamily: 'Jersey 25, cursive',
+                          fontSize: '16px',
                           lineHeight: '1.4'
                         }}
                       >
@@ -313,8 +313,8 @@ const CRTTV: React.FC<CRTTVProps> = ({ onNavigate, onOpenProject, onOpenBlog }) 
                             li: ({children}) => <li style={{margin: '2px 0'}}>{children}</li>,
                             strong: ({children}) => <strong style={{fontWeight: 'bold'}}>{children}</strong>,
                             em: ({children}) => <em style={{fontStyle: 'italic'}}>{children}</em>,
-                            code: ({children}) => <code style={{backgroundColor: 'rgba(255,255,255,0.1)', padding: '1px 3px', borderRadius: '2px', fontFamily: 'Courier New, monospace'}}>{children}</code>,
-                            pre: ({children}) => <pre style={{backgroundColor: 'rgba(255,255,255,0.1)', padding: '4px', borderRadius: '3px', overflow: 'auto', margin: '4px 0'}}>{children}</pre>,
+                            code: ({children}) => <code style={{backgroundColor: 'rgba(255,255,255,0.1)', padding: '1px 3px', borderRadius: '2px', fontFamily: 'Jersey 25, cursive'}}>{children}</code>,
+                            pre: ({children}) => <pre style={{backgroundColor: 'rgba(255,255,255,0.1)', padding: '4px', borderRadius: '3px', overflow: 'auto', margin: '4px 0', fontFamily: 'Jersey 25, cursive'}}>{children}</pre>,
                             blockquote: ({children}) => <blockquote style={{borderLeft: '2px solid rgba(255,255,255,0.3)', paddingLeft: '8px', margin: '4px 0', fontStyle: 'italic'}}>{children}</blockquote>
                           }}
                         >
