@@ -9,6 +9,8 @@ const routes = {
   "/websites": true,
   "/blog": true,
   "/gallery": true,
+  "/music": false,
+  "/library": false,
   "/rag": true,
 };
 

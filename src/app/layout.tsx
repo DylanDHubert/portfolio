@@ -6,7 +6,7 @@ import classNames from "classnames";
 
 import { Background, Column, Flex, Meta, opacity, SpacingToken } from "@once-ui-system/core";
 import { Footer, Header, RouteGuard, Providers } from '@/components';
-import { baseURL, effects, fonts, style, dataStyle, home } from '@/resources';
+import { baseURL, effects, fonts, style, dataStyle, home, person, social } from '@/resources';
 
 export async function generateMetadata() {
   return Meta.generate({
@@ -23,6 +23,86 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // COMPREHENSIVE STRUCTURED DATA FOR AI ACCESSIBILITY
+  const personSchema = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": person.name,
+    "jobTitle": person.role,
+    "email": person.email,
+    "image": `${baseURL}${person.avatar}`,
+    "url": `${baseURL}/about`,
+    "sameAs": social.map(s => s.link),
+    "description": "Recent Computer Science Graduate & Machine Learning Engineer specializing in AI systems, RAG, and NASA research",
+    "knowsAbout": [
+      "Machine Learning",
+      "Artificial Intelligence", 
+      "RAG Systems",
+      "Computer Vision",
+      "Time Series Forecasting",
+      "NASA Research",
+      "Full Stack Development",
+      "React",
+      "Next.js",
+      "PyTorch",
+      "TensorFlow",
+      "Natural Language Processing"
+    ],
+    "alumniOf": {
+      "@type": "CollegeOrUniversity",
+      "name": "American University",
+      "description": "Bachelor of Science in Computer Science"
+    },
+    "worksFor": [
+      {
+        "@type": "Organization",
+        "name": "HHB AI Systems",
+        "jobTitle": "Co-Founder & ML Engineer"
+      },
+      {
+        "@type": "Organization",
+        "name": "NASA GSFC", 
+        "jobTitle": "Machine Learning Intern"
+      }
+    ]
+  };
+
+  const organizationSchema = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": `${person.name}'s Portfolio`,
+    "url": baseURL,
+    "logo": `${baseURL}/favicon-dark.svg`,
+    "description": "Portfolio website showcasing machine learning engineering work, AI systems, and research projects",
+    "founder": {
+      "@type": "Person",
+      "name": person.name,
+      "url": `${baseURL}/about`
+    },
+    "sameAs": social.map(s => s.link)
+  };
+
+  const websiteSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": `${person.name}'s Portfolio`,
+    "url": baseURL,
+    "description": home.description,
+    "author": {
+      "@type": "Person",
+      "name": person.name,
+      "url": `${baseURL}/about`
+    },
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": {
+        "@type": "EntryPoint",
+        "urlTemplate": `${baseURL}/search?q={search_term_string}`
+      },
+      "query-input": "required name=search_term_string"
+    }
+  };
+
   return (
     <Flex
       suppressHydrationWarning
@@ -40,6 +120,29 @@ export default async function RootLayout({
         <link rel="icon" href="/favicon-dark.svg" type="image/svg+xml" />
         <link rel="icon" href="/favicon-light.svg" type="image/svg+xml" media="(prefers-color-scheme: light)" />
         <link rel="icon" href="/favicon-dark.svg" type="image/svg+xml" media="(prefers-color-scheme: dark)" />
+        
+        {/* COMPREHENSIVE STRUCTURED DATA FOR AI ACCESSIBILITY */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(personSchema)
+          }}
+        />
+        
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(organizationSchema)
+          }}
+        />
+        
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(websiteSchema)
+          }}
+        />
+        
         <script
           id="theme-init"
           dangerouslySetInnerHTML={{

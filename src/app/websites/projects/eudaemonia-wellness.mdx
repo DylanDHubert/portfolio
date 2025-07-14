@@ -1,6 +1,6 @@
 ---
 title: "Eudaemonia - Personal Wellness Tracker"
-summary: "A comprehensive wellness tracking application designed to help users monitor and improve their physical and mental health."
+summary: "A comprehensive wellness tracking application that helps users monitor daily habits, track correlations with happiness and stress, and build gratitude practices."
 publishedAt: "2024-11-15"
 tag: "Wellness App"
 images: ["/images/projects/eudaemonia/cover.png", "/images/projects/eudaemonia/demo.png"]
@@ -12,136 +12,120 @@ demoUrl: "https://eudaemonia.vercel.app"
 
 ## Overview
 
-Eudaemonia is a personal wellness tracking application available at [eudaemonia.vercel.app](https://eudaemonia.vercel.app). The app helps users monitor and improve their physical and mental health through comprehensive tracking, analytics, and personalized insights.
+Eudaemonia is a personal wellness tracking application built for my own use, available at [eudaemonia.vercel.app](https://eudaemonia.vercel.app). The app helps me monitor daily habits, track correlations with happiness and stress, and build gratitude practices through comprehensive tracking and analytics.
 
 ## Problem Statement
 
-Many people struggle with:
-- Inconsistent health tracking across multiple platforms
-- Lack of holistic wellness monitoring
-- Difficulty identifying patterns in health data
-- Limited personalized health insights
-- Poor motivation to maintain healthy habits
+I wanted to track my own wellness data but found existing solutions lacking:
+- No easy way to track multiple custom categories consistently
+- Limited understanding of how daily habits affect my happiness and stress
+- No built-in gratitude practices or reflection tools
+- Difficulty identifying patterns between activities and emotional well-being
+- Need for a personalized system that fits my specific tracking needs
 
 ## Solution
 
-Eudaemonia provides a unified platform for comprehensive wellness tracking:
+I built Eudaemonia as a comprehensive platform for my own wellness tracking and correlation analysis:
 
-### **Comprehensive Health Monitoring**
-- Physical activity and exercise tracking
-- Sleep quality and duration monitoring
-- Nutrition and hydration logging
-- Mental health and mood tracking
-- Stress and energy level assessment
+### **Multi-Category Tracking**
+- Custom category creation for any wellness metric
+- Standard categories (exercise, sleep, nutrition, etc.)
+- Daily habit tracking with boolean and numerical inputs
+- Gratitude notes and daily reflections
 
-### **Personalized Analytics**
-- Data visualization and trend analysis
-- Pattern recognition and insights
-- Goal setting and progress tracking
-- Personalized recommendations
-- Health score calculation
+### **Correlation Analysis**
+- Pearson correlation analysis for boolean categories
+- Happiness and stress correlation tracking
+- Pattern identification between activities and mood
+- Visual correlation displays and insights
 
 ### **User Experience**
 - Intuitive, clean interface
-- Quick logging capabilities
+- Quick daily logging capabilities
 - Mobile-responsive design
 - Privacy-focused data handling
-- Export and backup functionality
+- Rich visualizations and analytics
 
 ## Technical Implementation
 
 ### **Frontend**
-- **Next.js** - Modern, responsive web application
+- **React** - Modern, responsive web application
+- **Next.js** - Full-stack framework and deployment
 - **TypeScript** - Type-safe development
 - **Tailwind CSS** - Clean, modern styling
-- **Chart.js** - Data visualization
+- **Chart.js** - Data visualization and analytics
 - **Vercel** - Deployment and hosting
 
 ### **Backend**
-- **Next.js API Routes** - Serverless backend
-- **PostgreSQL** - Reliable data storage
-- **Prisma** - Type-safe database operations
-- **Authentication** - Secure user management
+- **Supabase** - Database, authentication, and backend services
+- **PostgreSQL** - Reliable data storage (via Supabase)
+- **Next.js API Routes** - Serverless backend functions
+- **Real-time subscriptions** - Live data updates
 
 ### **Features**
-- **Real-time Data Sync** - Instant updates across devices
-- **Data Export** - CSV/JSON export capabilities
-- **Goal Tracking** - Customizable health goals
-- **Notifications** - Reminder system for logging
-- **Privacy Controls** - User-controlled data sharing
+- **Real-time Data Sync** - Instant updates across devices via Supabase
+- **Correlation Analysis** - Pearson correlation for boolean categories
+- **Custom Categories** - User-defined wellness metrics
+- **Gratitude Notes** - Daily reflection and gratitude tracking
+- **Rich Visualizations** - Charts and analytics for pattern recognition
 
 ## Key Features
 
-### **1. Health Tracking Dashboard**
-- Comprehensive overview of all health metrics
-- Visual progress indicators
-- Quick logging interface
-- Historical data comparison
+### **1. Multi-Category Tracking Dashboard**
+- Comprehensive overview of all wellness metrics
+- Custom category creation and management
+- Quick daily logging interface
+- Historical data comparison and trends
 
-### **2. Analytics & Insights**
-- Trend analysis and pattern recognition
-- Correlation identification between different health factors
-- Personalized health recommendations
-- Progress reports and summaries
+### **2. Correlation Analysis**
+- Pearson correlation analysis for boolean categories
+- Happiness and stress correlation tracking
+- Pattern identification between activities and mood
+- Visual correlation displays and insights
 
-### **3. Goal Setting & Achievement**
-- Customizable health goals
-- Progress tracking and milestones
-- Achievement badges and rewards
-- Motivation and encouragement system
+### **3. Gratitude & Reflection**
+- Daily gratitude notes and reflections
+- Mood tracking and emotional well-being
+- Progress tracking and personal insights
+- Motivation through pattern recognition
 
 ### **4. Data Management**
-- Secure data storage and backup
-- Export functionality for personal records
+- Secure data storage via Supabase
+- Real-time synchronization across devices
 - Privacy controls and data ownership
-- Integration with other health platforms
+- Rich visualizations and analytics
 
 ## Results & Impact
 
 ### **User Experience**
-- 90% user retention rate after 30 days
-- Average 25% improvement in health awareness
-- 3x increase in consistent health tracking
-- Positive user feedback on interface design
+- Intuitive daily logging workflow designed for my needs
+- Real-time correlation insights for personal patterns
+- Custom category flexibility for my specific tracking
+- Rich visualization of my wellness patterns
 
 ### **Technical Achievements**
-- 99.9% uptime on Vercel deployment
-- Sub-200ms page load times
+- Real-time data synchronization via Supabase
+- Efficient correlation analysis algorithms
 - Responsive design across all devices
 - Secure data handling and privacy compliance
 
 ## Technologies Used
 
-- **Frontend**: Next.js, TypeScript, Tailwind CSS, Chart.js
-- **Backend**: Next.js API Routes, PostgreSQL, Prisma
-- **Deployment**: Vercel, Vercel Postgres
-- **Authentication**: NextAuth.js
-- **Analytics**: Custom analytics dashboard
-
-## Future Enhancements
-
-### **Planned Features**
-- Mobile application (React Native)
-- Wearable device integration
-- AI-powered health insights
-- Social features and community support
-- Advanced analytics and machine learning
-
-### **Integration Opportunities**
-- Apple Health and Google Fit
-- Smart home devices
-- Fitness trackers and wearables
-- Telemedicine platforms
+- **Frontend**: React, Next.js, TypeScript, Tailwind CSS, Chart.js
+- **Backend**: Supabase, PostgreSQL, Next.js API Routes
+- **Deployment**: Vercel
+- **Authentication**: Supabase Auth
+- **Analytics**: Custom correlation analysis and Chart.js visualizations
 
 ## Conclusion
 
-Eudaemonia represents a modern approach to personal wellness tracking, combining clean design with comprehensive functionality. The application demonstrates the importance of user experience in health technology and shows how thoughtful design can encourage positive health behaviors.
+Eudaemonia represents a personal approach to wellness tracking, combining clean design with comprehensive functionality tailored to my specific needs. The application demonstrates how building tools for yourself can lead to better understanding of personal patterns and improved wellness practices.
 
 The project showcases expertise in:
-- Full-stack web development
-- Data visualization and analytics
-- User experience design
-- Health technology
-- Privacy and security
+- Full-stack web development with React and Next.js
+- Data visualization and correlation analysis
+- User experience design for personal use cases
+- Real-time data synchronization
+- Privacy and security in health applications
 
-This work exemplifies the potential of technology to positively impact personal health and wellness, creating tools that genuinely help users improve their quality of life. 
+This work exemplifies the value of building tools that solve your own problems, creating applications that genuinely improve quality of life through better self-understanding and pattern recognition. 

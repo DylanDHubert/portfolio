@@ -1,0 +1,665 @@
+.bookshelfContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  min-height: 70vh;
+  animation: fadeInUp 0.8s ease-out;
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.bookshelf {
+  position: relative;
+  width: 800px;
+  max-width: 90vw;
+  height: 600px;
+  max-height: 70vh;
+  background: 
+    linear-gradient(90deg, 
+      #3E2723 0%, 
+      #5D4037 20%, 
+      #654321 40%, 
+      #8B4513 60%, 
+      #654321 80%, 
+      #3E2723 100%
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent 0px,
+      transparent 2px,
+      rgba(62, 39, 35, 0.2) 2px,
+      rgba(62, 39, 35, 0.2) 4px
+    );
+  border-radius: 20px;
+  box-shadow: 
+    0 0 0 4px rgba(139, 69, 19, 0.3),
+    0 0 0 8px #654321,
+    0 20px 40px rgba(0, 0, 0, 0.4),
+    inset 0 2px 4px rgba(255, 255, 255, 0.1),
+    0 0 50px rgba(139, 69, 19, 0.2),
+    0 30px 60px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 2px solid #654321;
+  transition: all 0.3s ease;
+  min-height: 0;
+  
+  &:hover {
+    box-shadow: 
+      0 0 0 4px rgba(139, 69, 19, 0.3),
+      0 0 0 8px #654321,
+      0 20px 40px rgba(0, 0, 0, 0.4),
+      inset 0 2px 4px rgba(255, 255, 255, 0.1),
+      0 0 60px rgba(139, 69, 19, 0.3),
+      0 40px 80px rgba(0, 0, 0, 0.4);
+  }
+}
+
+.shelf {
+  flex: 1;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  margin: 20px;
+  border-radius: 12px;
+  background: 
+    linear-gradient(135deg, 
+      #3E2723 0%, 
+      #5D4037 30%, 
+      #654321 70%, 
+      #5D4037 100%
+    ),
+    repeating-linear-gradient(
+      45deg,
+      transparent 0px,
+      transparent 3px,
+      rgba(62, 39, 35, 0.3) 3px,
+      rgba(62, 39, 35, 0.3) 4px
+    );
+  box-shadow: 
+    inset 0 0 40px rgba(139, 69, 19, 0.3),
+    0 4px 8px rgba(0, 0, 0, 0.3);
+  border: 1px solid #3E2723;
+  min-height: 0;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(
+      ellipse at center,
+      rgba(101, 67, 33, 0.3) 0%,
+      rgba(101, 67, 33, 0.2) 30%,
+      rgba(101, 67, 33, 0.1) 60%,
+      rgba(101, 67, 33, 0.05) 80%,
+      transparent 100%
+    );
+    border-radius: 12px;
+    pointer-events: none;
+    z-index: -1;
+  }
+}
+
+.shelfBoard {
+  height: 18px;
+  background: 
+    linear-gradient(90deg, 
+      #3E2723 0%, 
+      #5D4037 20%, 
+      #654321 40%, 
+      #8B4513 60%, 
+      #654321 80%, 
+      #3E2723 100%
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent 0px,
+      transparent 1px,
+      rgba(62, 39, 35, 0.2) 1px,
+      rgba(62, 39, 35, 0.2) 2px
+    );
+  border-radius: 0 0 4px 4px;
+  box-shadow: 
+    inset 0 -2px 4px rgba(0, 0, 0, 0.3),
+    0 2px 4px rgba(0, 0, 0, 0.3);
+  border-top: 2px solid #3E2723;
+  margin-top: 0px;
+  position: relative;
+  
+  // METALLIC SHINE EFFECT
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.2) 30%,
+      rgba(255, 255, 255, 0.4) 50%,
+      rgba(255, 255, 255, 0.2) 70%,
+      transparent 100%
+    );
+    border-radius: 0 0 4px 4px;
+    pointer-events: none;
+    z-index: 1;
+  }
+}
+
+.booksRow {
+  flex: 1;
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  padding: 15px;
+  padding-top: 8px;
+  padding-bottom: 0px;
+  overflow-x: auto;
+  margin-bottom: 0px;
+  
+  &::-webkit-scrollbar {
+    height: 6px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: rgba(139, 69, 19, 0.2);
+    border-radius: 3px;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: rgba(139, 69, 19, 0.6);
+    border-radius: 3px;
+    
+    &:hover {
+      background: rgba(139, 69, 19, 0.8);
+    }
+  }
+}
+
+.book {
+  position: relative;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 
+    0 2px 4px rgba(0, 0, 0, 0.3),
+    inset 0 1px 2px rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(0, 0, 0, 0.4);
+  
+  &:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 
+      0 8px 16px rgba(0, 0, 0, 0.4),
+      inset 0 1px 2px rgba(255, 255, 255, 0.2),
+      0 0 20px rgba(255, 255, 255, 0.1);
+    z-index: 10;
+  }
+  
+  &:active {
+    transform: translateY(-2px) scale(1.01);
+  }
+}
+
+.bookSpine {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 4px 2px;
+  text-align: center;
+  color: white;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+  font-weight: bold;
+  font-size: 10px;
+  line-height: 1.2;
+  overflow: hidden;
+  
+  // ROTATE TEXT FOR VERTICAL ORIENTATION
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+}
+
+.bookTitle {
+  font-size: 8px;
+  font-weight: bold;
+  margin-bottom: 3px;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.bookAuthor {
+  font-size: 6px;
+  font-weight: normal;
+  opacity: 0.8;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// BOOK SPINE STYLES
+.classic {
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, 
+      transparent 0%, 
+      rgba(255, 255, 255, 0.1) 20%, 
+      rgba(255, 255, 255, 0.2) 50%, 
+      rgba(255, 255, 255, 0.1) 80%, 
+      transparent 100%);
+    border-radius: 4px;
+    pointer-events: none;
+  }
+  
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+      repeating-linear-gradient(
+        0deg,
+        transparent 0px,
+        transparent 3px,
+        rgba(255, 255, 255, 0.03) 3px,
+        rgba(255, 255, 255, 0.03) 4px
+      );
+    border-radius: 4px;
+    pointer-events: none;
+  }
+}
+
+.modern {
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, 
+      transparent 0%, 
+      rgba(255, 255, 255, 0.15) 30%, 
+      rgba(255, 255, 255, 0.25) 50%, 
+      rgba(255, 255, 255, 0.15) 70%, 
+      transparent 100%);
+    border-radius: 4px;
+    pointer-events: none;
+  }
+  
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+      repeating-linear-gradient(
+        0deg,
+        transparent 0px,
+        transparent 2px,
+        rgba(255, 255, 255, 0.05) 2px,
+        rgba(255, 255, 255, 0.05) 3px
+      );
+    border-radius: 4px;
+    pointer-events: none;
+  }
+  
+  .bookTitle {
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: 0.5px;
+  }
+}
+
+.vintage {
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+      repeating-linear-gradient(
+        90deg,
+        transparent 0px,
+        transparent 2px,
+        rgba(255, 255, 255, 0.05) 2px,
+        rgba(255, 255, 255, 0.05) 4px
+      );
+    border-radius: 4px;
+    pointer-events: none;
+  }
+  
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+      repeating-linear-gradient(
+        0deg,
+        transparent 0px,
+        transparent 4px,
+        rgba(255, 255, 255, 0.04) 4px,
+        rgba(255, 255, 255, 0.04) 5px
+      );
+    border-radius: 4px;
+    pointer-events: none;
+  }
+}
+
+.minimal {
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, 
+      transparent 0%, 
+      rgba(255, 255, 255, 0.08) 40%, 
+      rgba(255, 255, 255, 0.12) 50%, 
+      rgba(255, 255, 255, 0.08) 60%, 
+      transparent 100%);
+    border-radius: 4px;
+    pointer-events: none;
+  }
+  
+  .bookTitle {
+    font-size: 8px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+  }
+  
+  .bookAuthor {
+    font-size: 6px;
+    font-weight: 400;
+    opacity: 0.7;
+  }
+}
+
+.bookshelfBase {
+  height: 40px;
+  background: linear-gradient(145deg, #C0C0C0, #A8A8A8, #D3D3D3);
+  border-radius: 0 0 8px 8px;
+  box-shadow: 
+    inset 0 2px 4px rgba(255, 255, 255, 0.3),
+    0 4px 8px rgba(0, 0, 0, 0.3);
+  border-top: 2px solid #696969;
+  position: relative;
+  
+  // METALLIC SHINE EFFECT
+  &::before {
+    content: '';
+    position: absolute;
+    bottom: 8px;
+    left: 10px;
+    right: 10px;
+    height: 8px;
+    background: linear-gradient(90deg, #C0C0C0, #A8A8A8, #D3D3D3, #A8A8A8, #C0C0C0);
+    border-radius: 0 0 8px 8px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+  }
+  
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    height: 20px;
+    background: radial-gradient(ellipse, rgba(0, 0, 0, 0.3) 0%, transparent 70%);
+    border-radius: 50%;
+    z-index: -1;
+  }
+  
+  // METALLIC SHINE LAYER
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 15px;
+    background: linear-gradient(
+      135deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.15) 20%,
+      rgba(255, 255, 255, 0.3) 40%,
+      rgba(255, 255, 255, 0.15) 60%,
+      transparent 80%
+    );
+    border-radius: 0 0 8px 8px;
+    pointer-events: none;
+    z-index: 2;
+    overflow: hidden;
+  }
+}
+
+.bookshelfLegs {
+  position: absolute;
+  bottom: 1px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 80px;
+  z-index: -1;
+}
+
+.bookshelfLeg {
+  width: 18px;
+  height: 25px;
+  background: linear-gradient(145deg, #C0C0C0, #A8A8A8, #D3D3D3);
+  border-radius: 0 0 9px 9px;
+  box-shadow: 
+    inset 0 2px 4px rgba(255, 255, 255, 0.4),
+    0 3px 6px rgba(0, 0, 0, 0.5);
+  border: 2px solid #A8A8A8;
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 3px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 6px;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 1px;
+  }
+  
+  &::after {
+    content: '';
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 0.5px;
+  }
+}
+
+// MODAL STYLES
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.modal {
+  background: linear-gradient(145deg, var(--neutral-background-strong), var(--neutral-background-medium));
+  border-radius: 16px;
+  padding: 2rem;
+  max-width: 500px;
+  width: 90vw;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.4),
+    0 0 0 1px var(--neutral-alpha-medium);
+  position: relative;
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.closeButton {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--neutral-on-background-weak);
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    background: var(--neutral-alpha-weak);
+    color: var(--neutral-on-background-strong);
+  }
+}
+
+.modalContent {
+  color: var(--neutral-on-background-strong);
+}
+
+.modalTitle {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  color: var(--brand-on-background-strong);
+}
+
+.modalAuthor {
+  font-size: 1rem;
+  color: var(--neutral-on-background-medium);
+  margin-bottom: 1.5rem;
+  font-style: italic;
+}
+
+.modalDescription {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--neutral-on-background-strong);
+  white-space: pre-line;
+}
+
+// RESPONSIVE DESIGN
+@media (max-width: 768px) {
+  .bookshelf {
+    width: 95vw;
+    height: 500px;
+  }
+  
+  .booksRow {
+    padding: 15px;
+    gap: 6px;
+  }
+  
+  .book {
+    min-width: 40px;
+  }
+  
+  .bookTitle {
+    font-size: 8px;
+  }
+  
+  .bookAuthor {
+    font-size: 6px;
+  }
+}
+
+@media (max-width: 480px) {
+  .bookshelf {
+    height: 400px;
+  }
+  
+  .booksRow {
+    padding: 10px;
+    gap: 4px;
+  }
+  
+  .book {
+    min-width: 35px;
+  }
+  
+  .bookTitle {
+    font-size: 7px;
+  }
+  
+  .bookAuthor {
+    font-size: 5px;
+  }
+} 

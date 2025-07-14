@@ -6,7 +6,7 @@ const person = {
   get name() {
     return `${this.firstName} ${this.lastName}`;
   },
-  role: "Machine Learning Engineer & Full Stack Developer",
+  role: "Recent CS Graduate & ML Engineer",
   avatar: "/images/avatar.jpg",
   email: "dylandhubert@outlook.com",
   location: "America/Los_Angeles", // Los Angeles timezone
@@ -45,7 +45,7 @@ const social = [
 
 const home = {
   path: "/",
-  image: "/images/og/home.jpg",
+  image: "/images/og/home.jpeg",
   label: "Home",
   title: `${person.name}'s Portfolio`,
   description: `Portfolio website showcasing my work as a ${person.role}`,
@@ -56,7 +56,7 @@ const home = {
 
   subline: (
     <>
-    Machine Learning Engineer & Full Stack Developer
+    Recent Computer Science Graduate & Machine Learning Engineer
     <br/>
     Building AI systems that bridge the gap between research and reality
     <br/>
@@ -99,7 +99,7 @@ const about = {
     title: "Introduction",
     description: (
       <>
-        Dylan is a Machine Learning Engineer and Full Stack Developer who transforms ideas into reality. His journey began with Python turtle graphics drawing polygons—a simple project that perfectly captured his core passion: creating things that bridge the gap between what&apos;s in his mind and tangible reality.
+        Dylan is a recent Computer Science graduate (May 2025) and Machine Learning Engineer who transforms ideas into reality. His journey began with Python turtle graphics drawing polygons—a simple project that perfectly captured his core passion: creating things that bridge the gap between what&apos;s in his mind and tangible reality.
         <br/><br/>
         Mentored by Dr. Leah Ding at American University, Dylan deepened his love for machine learning and discovered his talent for building systems that matter. This foundation led to cutting-edge research at NASA and building production-ready RAG systems that handle real-world, messy data.
         <br/><br/>
@@ -114,7 +114,7 @@ const about = {
       {
         company: "HHB AI Systems",
         timeframe: "06.01.2023 - Present",
-        role: "Co-Founder, Machine Learning Engineering & Software Developer",
+        role: "Co-Founder & ML Engineer",
         achievements: [
           <>
             Developed PB&J (Peanut-Butter-Jelly) dynamic document processing pipeline using three-phase approach: parsing, betterment, and JSON transformation for complex technical PDFs.
@@ -134,7 +134,7 @@ const about = {
       {
         company: "The Pitch Place",
         timeframe: "06.01.2023 - 02.01.2025",
-        role: "Machine Learning Engineering & Software Developer",
+        role: "ML Engineer & Software Developer",
         achievements: [
           <>
             Built semantic search system using both in-house (open source) and API models for journalist-editor matching platform, enabling content-based recommendations across writing style, formality, and topic preferences.
@@ -197,7 +197,19 @@ const about = {
     institutions: [
       {
         name: "American University, College of Arts & Sciences",
-        description: <>Bachelor of Science in Computer Science (2021-2025). GPA: 3.82. Teaching Assistant for Introduction to Machine Learning & Computer Systems. Dean&apos;s List Six Semesters, Cum Laude. Mentored by Dr. Leah Ding, who recognized early talent and guided research trajectory. Conducted undergraduate research on Total Solar Irradiance (TSI) prediction using CNN-Informer hybrid architectures and computer vision preprocessing for solar physics applications. Later expanded to 3D cloud reconstruction using perpendicular 2D views and transfer learning across satellite platforms.</>,
+        description: (
+          <>
+            <strong>Bachelor of Science in Computer Science</strong> (2021-2025)
+            <br/>
+            <strong>GPA:</strong> 3.82 | <strong>Honors:</strong> Cum Laude, Dean&apos;s List (6 semesters)
+            <br/>
+            <strong>Teaching Assistant:</strong> Introduction to Machine Learning & Computer Systems
+            <br/>
+            <strong>Research Mentor:</strong> Dr. Leah Ding - Guided research trajectory and early talent recognition
+            <br/>
+            <strong>Undergraduate Research:</strong> Total Solar Irradiance (TSI) prediction using CNN-Informer hybrid architectures and computer vision preprocessing for solar physics applications. Later expanded to 3D cloud reconstruction using perpendicular 2D views and transfer learning across satellite platforms.
+          </>
+        ),
       },
     ],
   },
@@ -552,6 +564,13 @@ const music = {
   ],
 };
 
+const library = {
+  path: "/library",
+  label: "LIBRARY",
+  title: `Library – ${person.name}`,
+  description: `A collection of books that have influenced ${person.name}'s thinking and work`,
+};
+
 const rag = {
   path: "/rag",
   label: "RAG",
@@ -559,4 +578,4 @@ const rag = {
   description: `Chat with an AI assistant that knows everything about ${person.name}&apos;s background, projects, and experience`,
 };
 
-export { person, social, newsletter, home, about, blog, work, gallery, music, rag, heroProjects };
+export { person, social, newsletter, home, about, blog, work, gallery, music, library, rag, heroProjects };

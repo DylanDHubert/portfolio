@@ -31,7 +31,7 @@ const CRTTV: React.FC<CRTTVProps> = ({ onNavigate, onOpenProject, onOpenBlog }) 
     {
       id: '1',
       role: 'assistant',
-      content: "Greetings. I am the portfolio expert. I contain complete knowledge of Dylan Huberts background, projects, and experience. Query me for information. I can also assist with navigation of this portfolio interface.",
+      content: "WELCOME. I am the portfolio expert. I contain complete knowledge of Dylan Hubert's background, projects, and experience— including his NASA research and building production AI systems for medical technology. Query me for info, or ask for navigation help. TRY: 'Tell me about NASA', 'Show me AI projects', OR 'What makes Dylan unique?'", // INITIAL MESSAGE IN ALL CAPS
       timestamp: new Date()
     }
   ]);
@@ -389,7 +389,8 @@ const CRTTV: React.FC<CRTTVProps> = ({ onNavigate, onOpenProject, onOpenBlog }) 
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 onKeyPress={handleKeyPress}
-                placeholder={isMobile ? "ASK ME ANYTHING ABOUT DYLAN" : "ASK ME ANYTHING ABOUT DYLAN, HIS PROJECTS, EXPERIENCE, ETC. (OR THIS WEBSITE!)"}
+                placeholder={isMobile ? "INPUT HERE..." : "INPUT HERE... ASK ME ANYTHING ABOUT DYLAN, HIS PROJECTS, EXPERIENCE, ETC. (OR THIS WEBSITE!)"}
+                
                 className={styles.chatInput}
                 disabled={isLoading || isStreaming}
               />
@@ -456,7 +457,7 @@ const CRTTV: React.FC<CRTTVProps> = ({ onNavigate, onOpenProject, onOpenBlog }) 
                 <input
                   type="range"
                   min="0"
-                  max="1"
+                  max="0.9"
                   step="0.1"
                   value={topP}
                   onChange={(e) => setTopP(parseFloat(e.target.value))}

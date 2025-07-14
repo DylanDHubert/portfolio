@@ -52,8 +52,97 @@ export default async function Project({
       src: person.avatar,
     })) || [];
 
+  // COMPREHENSIVE PROJECT STRUCTURED DATA FOR AI ACCESSIBILITY
+  const projectSchema = {
+    "@context": "https://schema.org",
+    "@type": "CreativeWork",
+    "name": post.metadata.title,
+    "description": post.metadata.summary,
+    "url": `${baseURL}${work.path}/${post.slug}`,
+    "datePublished": post.metadata.publishedAt,
+    "dateModified": post.metadata.publishedAt,
+    "author": {
+      "@type": "Person",
+      "name": person.name,
+      "url": `${baseURL}${about.path}`,
+      "image": `${baseURL}${person.avatar}`
+    },
+    "creator": {
+      "@type": "Person",
+      "name": person.name,
+      "url": `${baseURL}${about.path}`
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": person.name,
+      "url": `${baseURL}${about.path}`
+    },
+    "image": post.metadata.image || `/api/og/generate?title=${encodeURIComponent(post.metadata.title)}`,
+    "genre": "Portfolio Project",
+    "keywords": post.metadata.tags || ["machine learning", "AI", "portfolio", "project"],
+    "about": [
+      {
+        "@type": "Thing",
+        "name": "Machine Learning"
+      },
+      {
+        "@type": "Thing", 
+        "name": "Artificial Intelligence"
+      },
+      {
+        "@type": "Thing",
+        "name": "Software Development"
+      }
+    ],
+    "isPartOf": {
+      "@type": "WebSite",
+      "name": `${person.name}'s Portfolio`,
+      "url": baseURL
+    }
+  };
+
+  // ADDITIONAL SOFTWARE APPLICATION SCHEMA FOR TECH PROJECTS
+  const softwareSchema = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": post.metadata.title,
+    "description": post.metadata.summary,
+    "url": `${baseURL}${work.path}/${post.slug}`,
+    "applicationCategory": "Portfolio Project",
+    "operatingSystem": "Web",
+    "author": {
+      "@type": "Person",
+      "name": person.name,
+      "url": `${baseURL}${about.path}`
+    },
+    "creator": {
+      "@type": "Person", 
+      "name": person.name,
+      "url": `${baseURL}${about.path}`
+    },
+    "datePublished": post.metadata.publishedAt,
+    "dateModified": post.metadata.publishedAt,
+    "image": post.metadata.image || `/api/og/generate?title=${encodeURIComponent(post.metadata.title)}`,
+    "keywords": post.metadata.tags || ["machine learning", "AI", "portfolio", "project"]
+  };
+
   return (
     <Column as="section" maxWidth="m" horizontal="center" gap="l">
+      {/* COMPREHENSIVE STRUCTURED DATA FOR AI ACCESSIBILITY */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(projectSchema)
+        }}
+      />
+      
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(softwareSchema)
+        }}
+      />
+      
       <Schema
         as="blogPosting"
         baseURL={baseURL}
