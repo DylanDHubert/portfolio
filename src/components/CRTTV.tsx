@@ -50,6 +50,14 @@ const CRTTV: React.FC<CRTTVProps> = ({ onNavigate, onOpenProject, onOpenBlog }) 
   const [isMobile, setIsMobile] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
+  // HELPER FUNCTION TO FORMAT MESSAGES FOR API
+  const formatMessagesForAPI = (messages: Message[]): { role: 'user' | 'assistant'; content: string }[] => {
+    return messages.map(msg => ({
+      role: msg.role,
+      content: msg.content
+    }));
+  };
+
   const scrollToBottom = () => {
     // Temporarily disabled to test layout stability
     // messagesEndRef.current?.scrollIntoView({ behavior: "auto" });
@@ -136,13 +144,31 @@ const CRTTV: React.FC<CRTTVProps> = ({ onNavigate, onOpenProject, onOpenBlog }) 
       // LOG THE DIAL SETTINGS FOR VERIFICATION
       console.log('🎛️ Dial Settings:', { temperature, topP, maxTokens });
       
+      // FORMAT ALL PREVIOUS MESSAGES FOR API (EXCLUDING THE NEW ASSISTANT MESSAGE)
+      const conversationHistory = formatMessagesForAPI(messages);
+      
+      // ADD NEW USER MESSAGE TO CONVERSATION HISTORY
+      const newUserMessage = { role: 'user' as const, content: inputValue };
+      
+      // LOG CONVERSATION HISTORY BEING SENT
+      console.log('💬 Sending Conversation History:', {
+        historyLength: conversationHistory.length,
+        newMessage: newUserMessage,
+        totalMessages: conversationHistory.length + 1
+      });
+      
+      // ENSURE WE HAVE AT LEAST THE WELCOME MESSAGE
+      if (conversationHistory.length === 0) {
+        console.warn('⚠️ No conversation history found, this should not happen');
+      }
+      
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          message: inputValue,
+          messages: [...conversationHistory, newUserMessage], // SEND FULL CONVERSATION HISTORY
           temperature,
           topP,
           maxTokens,

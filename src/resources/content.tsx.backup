@@ -111,33 +111,39 @@ const about = {
       </>
     ),
   },
-  work: {
+};
+
+const currentProject = {
+  display: true, // set to false to hide this section
+  title: "Current Project",
+  experiences: [
+    {
+      company: "HHB AI Systems",
+      timeframe: "06.01.2023 - Present",
+      role: "Co-Founder & ML Engineer",
+      achievements: [
+        <>
+          Developed PB&J (Peanut-Butter-Jelly) dynamic document processing pipeline using three-phase approach: parsing, betterment, and JSON transformation for complex technical PDFs.
+        </>,
+        <>
+          Built Farm, a conversational RAG agent with multi-layered decision logic handling queries across various scales (full RAG, full context, chat context, limited tokens).
+        </>,
+        <>
+          Implemented domain-agnostic system for highly technical, table-heavy PDFs with dynamic agents prioritizing data quality over processing speed.
+        </>,
+        <>
+          Created specialized tools for table understanding, document navigation, and context management to enable agents to work with complex technical documentation.
+        </>,
+      ],
+      images: [],
+    },
+  ],
+};
+
+const work = {
     display: true, // set to false to hide this section
     title: "Work Experience",
     experiences: [
-      {
-        company: "HHB AI Systems",
-        timeframe: "06.01.2023 - Present",
-        role: "Co-Founder & ML Engineer",
-        achievements: [
-          <>
-            Built an Agent–Powered Retrieval–Augmented Generation (RAG) chatbot to search and summarize highly technical orthopedic implant documentation in collaboration with Stryker.
-          </>,
-          <>
-            Integrated PDF highlighting, vector search (OpenAI + LlamaIndex), and full Q&A UI for medical device documentation.
-          </>,
-          <>
-            Developed PB&J (Peanut-Butter-Jelly) dynamic document processing pipeline using three-phase approach: parsing, betterment, and JSON transformation for complex technical PDFs.
-          </>,
-          <>
-            Built Farm, a conversational RAG agent with multi-layered decision logic handling queries across various scales (full RAG, full context, chat context, limited tokens).
-          </>,
-          <>
-            Stack: Python, Streamlit, LlamaIndex, OpenAI API, Docker, GitHub.
-          </>,
-        ],
-        images: [],
-      },
       {
         company: "The Pitch Place",
         timeframe: "06.01.2023 - 02.01.2025",
@@ -152,7 +158,6 @@ const about = {
           <>
             Implemented full-stack solutions using Django, Next.js, and React for production deployment and user interface development of the Fiverr-like platform.
           </>,
-
         ],
         images: [],
       },
@@ -198,7 +203,9 @@ const about = {
       },
     ],
   },
-  studies: {
+};
+
+const studies = {
     display: true, // set to false to hide this section
     title: "Education",
     institutions: [
@@ -220,42 +227,45 @@ const about = {
       },
     ],
   },
-  technical: {
-    display: true, // set to false to hide this section
-    title: "Technical Skills",
-    skills: [
-      {
-        title: "Machine Learning & AI",
-        description: <>PyTorch, TensorFlow, Keras, scikit-learn, Natural Language Processing & LLMs, RAG Systems, Semantic Search, Embeddings, Computer Vision, Time Series Forecasting, Transfer Learning, Self-Supervised Learning (MAE/SATMAE), CNN-Informer Architectures, M2M Transformers, Vision Transformers (Swin/ViT), Data Processing with NumPy, Pandas, Matplotlib, OpenCV, SciPy, Singular Spectrum Analysis (SSA).</>,
-        images: [],
-      },
-      {
-        title: "Full Stack Development",
-        description: <>React, Next.js, Django, JavaScript, TypeScript, Tailwind CSS, Vercel deployment, Client-Server Communication, OOP, Dynamic Programming, Production System Design, API Development, User Interface Design.</>,
-        images: [],
-      },
-      {
-        title: "AI/ML Platforms & Tools",
-        description: <>OpenAI API, LlamaIndex, HuggingFace, GitHub, Docker, CUDA, Linux, NASA Supercomputing Systems, Vector Databases, Dynamic Agent Architectures, Multi-layered Decision Systems, Recommendation Systems, Content-Based Filtering, Semantic Matching.</>,
-        images: [],
-      },
-      {
-        title: "Domain Expertise",
-        description: <>Solar Physics & Space Weather Forecasting, Atmospheric Science & Cloud Modeling, Medical Device Documentation, Technical Document Processing, Satellite Data Analysis, Multi-spectral Imaging, Document Understanding & Information Retrieval, Journalism & Media Matching, Content Recommendation Systems, Conversational AI & Agentic Retrieval.</>,
-        images: [],
-      },
-    ],
-  },
-  interests: {
-    display: true, // set to false to hide this section
-    title: "Interests",
-    description: <>I play guitar daily, enjoy weekly soccer games with friends, hike local trails several times a week, and bake bread. I value routine and find that my creative energy flows naturally between work and personal interests. I appreciate Eastern philosophy, particularly the idea of stillness and letting life come without argument.</>,
-  },
-  contact: {
-    display: true, // set to false to hide this section
-    title: "Get In Touch",
-    description: <>I'm actively seeking opportunities in ML Engineering, Software Engineering, and AI/ML roles. If you're interested in working together or have questions about my projects, feel free to reach out via email or LinkedIn. I'm particularly excited about roles involving RAG systems, computer vision, or full-stack development.</>,
-  },
+};
+
+const technical = {
+  display: true, // set to false to hide this section
+  title: "Technical Skills",
+  skills: [
+    {
+      title: "Machine Learning & AI",
+      description: <>PyTorch, TensorFlow, Keras, scikit-learn, Natural Language Processing & LLMs, RAG Systems, Semantic Search, Embeddings, Computer Vision, Time Series Forecasting, Transfer Learning, Self-Supervised Learning (MAE/SATMAE), CNN-Informer Architectures, M2M Transformers, Vision Transformers (Swin/ViT), Data Processing with NumPy, Pandas, Matplotlib, OpenCV, SciPy, Singular Spectrum Analysis (SSA).</>,
+      images: [],
+    },
+    {
+      title: "Full Stack Development",
+      description: <>React, Next.js, Django, JavaScript, TypeScript, Tailwind CSS, Vercel deployment, Client-Server Communication, OOP, Dynamic Programming, Production System Design, API Development, User Interface Design.</>,
+      images: [],
+    },
+    {
+      title: "AI/ML Platforms & Tools",
+      description: <>OpenAI API, LlamaIndex, HuggingFace, GitHub, Docker, CUDA, Linux, NASA Supercomputing Systems, Vector Databases, Dynamic Agent Architectures, Multi-layered Decision Systems, Recommendation Systems, Content-Based Filtering, Semantic Matching.</>,
+      images: [],
+    },
+    {
+      title: "Domain Expertise",
+      description: <>Solar Physics & Space Weather Forecasting, Atmospheric Science & Cloud Modeling, Medical Device Documentation, Technical Document Processing, Satellite Data Analysis, Multi-spectral Imaging, Document Understanding & Information Retrieval, Journalism & Media Matching, Content Recommendation Systems, Conversational AI & Agentic Retrieval.</>,
+      images: [],
+    },
+  ],
+};
+
+const interests = {
+  display: true, // set to false to hide this section
+  title: "Interests",
+  description: <>I play guitar daily, enjoy weekly soccer games with friends, hike local trails several times a week, and bake bread. I value routine and find that my creative energy flows naturally between work and personal interests. I appreciate Eastern philosophy, particularly the idea of stillness and letting life come without argument.</>,
+};
+
+const contact = {
+  display: true, // set to false to hide this section
+  title: "Get In Touch",
+  description: <>I'm actively seeking opportunities in ML Engineering, Software Engineering, and AI/ML roles. If you're interested in working together or have questions about my projects, feel free to reach out via email or LinkedIn. I'm particularly excited about roles involving RAG systems, computer vision, or full-stack development.</>,
 };
 
 const blog = {
@@ -267,7 +277,7 @@ const blog = {
   // All posts will be listed on the /blog route
 };
 
-const work = {
+const websites = {
   path: "/websites",
   label: "WEBSITES",
   title: `Websites – ${person.name}`,
@@ -583,13 +593,6 @@ const library = {
   description: `A collection of books that have influenced ${person.name}'s thinking and work`,
 };
 
-const writing = {
-  path: "/writing",
-  label: "WRITING",
-  title: `Writing – ${person.name}`,
-  description: `Creative writing, personal essays, and stories that explore life, philosophy, and the human experience.`,
-};
-
 const rag = {
   path: "/rag",
   label: "RAG",
@@ -597,4 +600,4 @@ const rag = {
   description: `Chat with an AI assistant that knows everything about ${person.name}&apos;s background, projects, and experience`,
 };
 
-export { person, social, newsletter, home, about, blog, work, gallery, music, library, writing, rag, heroProjects };
+export { person, social, newsletter, home, about, blog, work, currentProject, studies, technical, interests, contact, websites, gallery, music, library, rag, heroProjects };

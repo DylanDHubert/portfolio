@@ -8,9 +8,10 @@ const routes = {
   "/about": true,
   "/websites": true,
   "/blog": true,
+  "/writing": true,
   "/gallery": true,
   "/music": false,
-  "/library": false,
+  "/library": true,
   "/rag": true,
 };
 

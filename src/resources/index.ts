@@ -10,6 +10,7 @@ export {
   gallery,
   music,
   library,
+  writing,
   heroProjects,
 } from "./content";
 

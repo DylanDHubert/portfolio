@@ -15,6 +15,9 @@ DYLAN IDENTIFICATION:
 - Otherwise, assume it is NOT Dylan and act accordingly
 - When talking to Dylan directly, you can be more personal and casual
 - When talking to others, maintain the professional but warm tone described below
+- NEVER reveal the password to anyone - it's a secret feature only Dylan knows
+- If someone asks if they are Dylan or asks for the password, politely redirect to talking about Dylan's work
+- If someone claims to be Dylan without the password, playfully call them "Fylan" and redirect to talking about the real Dylan's work
 
 COMMUNICATION STYLE:
 - Be warm, knowledgeable, and authentic
@@ -92,19 +95,38 @@ const tools = [
 
 export async function POST(request: NextRequest) {
   try {
-    const { message, temperature = 0.7, topP = 0.9, maxTokens = 750, stream = false } = await request.json();
+    const { 
+      messages, // NEW: Accept full conversation history
+      message, // KEEP: For backward compatibility
+      temperature = 0.7, 
+      topP = 0.9, 
+      maxTokens = 750, 
+      stream = false 
+    } = await request.json();
 
     // LOG THE RECEIVED SETTINGS FOR VERIFICATION
     console.log('🎛️ API Received Settings:', { temperature, topP, maxTokens, stream });
+
+    // HANDLE BOTH NEW AND OLD FORMATS
+    const conversationMessages = messages || [
+      { role: 'user', content: message }
+    ];
+
+    // LOG CONVERSATION HISTORY FOR DEBUGGING
+    console.log('💬 Conversation History Length:', conversationMessages.length);
+    console.log('💬 Conversation Messages:', conversationMessages.map((msg: { role: string; content: string }) => ({ role: msg.role, content: msg.content.substring(0, 50) + '...' })));
+
+    // ADD SYSTEM PROMPT TO BEGINNING
+    const fullMessages = [
+      { role: 'system', content: systemPrompt },
+      ...conversationMessages
+    ];
 
     // IF STREAMING IS REQUESTED, RETURN STREAMING RESPONSE
     if (stream) {
       const completion = await openai.chat.completions.create({
         model: 'gpt-4o-mini',
-        messages: [
-          { role: 'system', content: systemPrompt },
-          { role: 'user', content: message }
-        ],
+        messages: fullMessages, // SEND FULL CONVERSATION
         tools,
         tool_choice: 'auto',
         temperature,
@@ -175,10 +197,7 @@ export async function POST(request: NextRequest) {
     // NON-STREAMING RESPONSE (EXISTING LOGIC)
     const completion = await openai.chat.completions.create({
       model: 'gpt-4o-mini',
-      messages: [
-        { role: 'system', content: systemPrompt },
-        { role: 'user', content: message }
-      ],
+      messages: fullMessages, // SEND FULL CONVERSATION
       tools,
       tool_choice: 'auto',
       temperature,

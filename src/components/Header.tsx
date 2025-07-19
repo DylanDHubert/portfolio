@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 
 import { Fade, Flex, Line, ToggleButton } from "@once-ui-system/core";
 
-import { routes, display, person, about, blog, work, gallery, music, library } from "@/resources";
+import { routes, display, person, about, blog, work, gallery, music, library, writing } from "@/resources";
 import { ThemeToggle } from "./ThemeToggle";
 import { Logo } from "./Logo";
 import styles from "./Header.module.scss";
@@ -137,6 +137,24 @@ export const Header = () => {
                   />
                 </>
               )}
+              {routes["/writing"] && (
+                <>
+                  <ToggleButton
+                    className={`s-flex-hide ${styles.glowyNavButton}`}
+                    href="/writing"
+                    label={writing.label}
+                    selected={pathname.startsWith("/writing")}
+                    data-selected={pathname.startsWith("/writing")}
+                  />
+                  <ToggleButton
+                    className={`s-flex-show ${styles.glowyNavButton}`}
+                    href="/writing"
+                    selected={pathname.startsWith("/writing")}
+                    data-selected={pathname.startsWith("/writing")}
+                    prefixIcon="fileText2"
+                  />
+                </>
+              )}
               {routes["/gallery"] && (
                 <>
                   <ToggleButton
@@ -187,7 +205,7 @@ export const Header = () => {
                     href="/library"
                     selected={pathname.startsWith("/library")}
                     data-selected={pathname.startsWith("/library")}
-                    prefixIcon="bookOpen"
+                    prefixIcon="bookOpenCheck"
                   />
                 </>
               )}
