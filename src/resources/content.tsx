@@ -254,7 +254,7 @@ const about = {
   contact: {
     display: true, // set to false to hide this section
     title: "Get In Touch",
-    description: <>I'm actively seeking opportunities in ML Engineering, Software Engineering, and AI/ML roles. If you're interested in working together or have questions about my projects, feel free to reach out via email or LinkedIn. I'm particularly excited about roles involving RAG systems, computer vision, or full-stack development.</>,
+    description: <>I&apos;m actively seeking opportunities in ML Engineering, Software Engineering, and AI/ML roles. If you&apos;re interested in working together or have questions about my projects, feel free to reach out via email or LinkedIn. I&apos;m particularly excited about roles involving RAG systems, computer vision, or full-stack development.</>,
   },
 };
 

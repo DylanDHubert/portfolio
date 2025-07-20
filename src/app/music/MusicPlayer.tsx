@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { Column, Text, Button, Heading } from "@once-ui-system/core";
 import { music } from "@/resources";
 import styles from "./Music.module.scss";
+import Image from "next/image";
 
 interface Song {
   title: string;
@@ -127,10 +128,12 @@ export default function MusicPlayer() {
             >
               <div className={styles.coverContainer}>
                 {song.cover ? (
-                  <img
+                  <Image
                     src={song.cover}
                     alt={song.title + ' cover'}
                     className={styles.coverImage}
+                    width={200}
+                    height={200}
                   />
                 ) : (
                   <div className={styles.coverFallback}>

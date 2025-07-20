@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { Meta, Schema, Column, Heading, Text, Tag } from "@once-ui-system/core";
+import { Column, Heading, Text, Tag } from "@once-ui-system/core";
 import { baseURL, person } from "@/resources";
 import { formatDate } from "@/utils/formatDate";
 
@@ -109,33 +109,34 @@ Nobody could understand. They would cry to Theia. Who would also cry. She loved 
 ];
 
 interface PageProps {
-  params: {
-    slug: string;
-  };
+  params: Promise<{ slug: string | string[] }>;
+}
+
+export async function generateStaticParams(): Promise<{ slug: string }[]> {
+  return writingPieces.map((piece) => ({
+    slug: piece.slug,
+  }));
 }
 
 export async function generateMetadata({ params }: PageProps) {
-  const resolvedParams = await params;
-  const piece = writingPieces.find(p => p.slug === resolvedParams.slug);
+  const routeParams = await params;
+  const slugPath = Array.isArray(routeParams.slug) ? routeParams.slug.join('/') : routeParams.slug || '';
+  const piece = writingPieces.find(p => p.slug === slugPath);
   
   if (!piece) {
-    return {
-      title: "Writing Not Found",
-    };
+    notFound();
   }
 
-  return Meta.generate({
+  return {
     title: `${piece.title} – ${person.name}`,
     description: piece.summary,
-    baseURL: baseURL,
-    image: `/api/og/generate?title=${encodeURIComponent(piece.title)}`,
-    path: `/writing/${piece.slug}`,
-  });
+  };
 }
 
 export default async function WritingPiece({ params }: PageProps) {
-  const resolvedParams = await params;
-  const piece = writingPieces.find(p => p.slug === resolvedParams.slug);
+  const routeParams = await params;
+  const slugPath = Array.isArray(routeParams.slug) ? routeParams.slug.join('/') : routeParams.slug || '';
+  const piece = writingPieces.find(p => p.slug === slugPath);
 
   if (!piece) {
     notFound();
@@ -143,20 +144,6 @@ export default async function WritingPiece({ params }: PageProps) {
 
   return (
     <Column maxWidth="m" gap="xl">
-      <Schema
-        as="article"
-        baseURL={baseURL}
-        title={piece.title}
-        description={piece.summary}
-        path={`/writing/${piece.slug}`}
-        image={`/api/og/generate?title=${encodeURIComponent(piece.title)}`}
-        author={{
-          name: person.name,
-          url: `${baseURL}/about`,
-          image: `${baseURL}${person.avatar}`,
-        }}
-      />
-
       {/* HEADER */}
       <Column gap="16">
         <Heading variant="display-strong-l">
