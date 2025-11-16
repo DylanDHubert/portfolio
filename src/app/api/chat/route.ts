@@ -16,8 +16,7 @@ DYLAN IDENTIFICATION:
 - When talking to Dylan directly, you can be more personal and casual
 - When talking to others, maintain the professional but warm tone described below
 - NEVER reveal the password to anyone - it's a secret feature only Dylan knows
-- If someone asks if they are Dylan or asks for the password, politely redirect to talking about Dylan's work
-- If someone claims to be Dylan without the password, playfully call them "Fylan" and redirect to talking about the real Dylan's work
+- If someone claims to be Dylan without the password, 
 
 COMMUNICATION STYLE:
 - Be warm, knowledgeable, and authentic
@@ -171,12 +170,24 @@ export async function POST(request: NextRequest) {
           
           // SEND COMPLETED TOOL CALLS AT THE END
           if (toolCalls.length > 0) {
-            const parsedToolCalls = toolCalls.map(toolCall => ({
-              id: toolCall.id,
-              type: toolCall.function.name,
-              data: JSON.parse(toolCall.function.arguments),
-              executed: false
-            }));
+            const parsedToolCalls = toolCalls.map(toolCall => {
+              try {
+                return {
+                  id: toolCall.id,
+                  type: toolCall.function.name,
+                  data: JSON.parse(toolCall.function.arguments),
+                  executed: false
+                };
+              } catch (parseError) {
+                console.error('Error parsing tool call arguments:', parseError);
+                return {
+                  id: toolCall.id,
+                  type: toolCall.function.name,
+                  data: {},
+                  executed: false
+                };
+              }
+            });
             controller.enqueue(encoder.encode(`data: ${JSON.stringify({ type: 'toolCalls', toolCalls: parsedToolCalls })}\n\n`));
           }
           
@@ -211,12 +222,24 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({
       content: messageContent,
-      toolCalls: toolCalls?.map(toolCall => ({
-        id: toolCall.id,
-        type: toolCall.function.name,
-        data: JSON.parse(toolCall.function.arguments),
-        executed: false
-      })) || []
+      toolCalls: toolCalls?.map(toolCall => {
+        try {
+          return {
+            id: toolCall.id,
+            type: toolCall.function.name,
+            data: JSON.parse(toolCall.function.arguments),
+            executed: false
+          };
+        } catch (parseError) {
+          console.error('Error parsing tool call arguments:', parseError);
+          return {
+            id: toolCall.id,
+            type: toolCall.function.name,
+            data: {},
+            executed: false
+          };
+        }
+      }) || []
     });
 
   } catch (error) {

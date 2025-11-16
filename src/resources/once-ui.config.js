@@ -12,6 +12,7 @@ const routes = {
   "/gallery": true,
   "/music": false,
   "/library": false,
+  "/chart": true,
   "/rag": true,
 };
 

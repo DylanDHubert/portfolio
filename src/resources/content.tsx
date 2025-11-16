@@ -590,6 +590,13 @@ const writing = {
   description: `Creative writing, personal essays, and stories that explore life, philosophy, and the human experience.`,
 };
 
+const chart = {
+  path: "/chart",
+  label: "CHART",
+  title: `CHART: Coarse-to-Fine Transformer Traversal – ${person.name}`,
+  description: `A transformer-based approach to embedding search that learns to traverse hierarchical semantic trees`,
+};
+
 const rag = {
   path: "/rag",
   label: "RAG",
@@ -597,4 +604,4 @@ const rag = {
   description: `Chat with an AI assistant that knows everything about ${person.name}&apos;s background, projects, and experience`,
 };
 
-export { person, social, newsletter, home, about, blog, work, gallery, music, library, writing, rag, heroProjects };
+export { person, social, newsletter, home, about, blog, work, gallery, music, library, writing, chart, rag, heroProjects };

@@ -1,0 +1,141 @@
+// PURPLE/MAROON CONTAINER FOR CHART PAGE CARDS
+.chartCard {
+  background: linear-gradient(135deg, 
+    rgba(58, 28, 92, 0.95) 0%, 
+    rgba(109, 63, 214, 0.9) 50%, 
+    rgba(139, 92, 246, 0.85) 100%) !important;
+  border: 1px solid rgba(139, 92, 246, 0.3) !important;
+  box-shadow: 
+    0 0 20px rgba(139, 92, 246, 0.4),
+    0 0 40px rgba(139, 92, 246, 0.2),
+    inset 0 1px 2px rgba(255, 255, 255, 0.1) !important;
+  backdrop-filter: blur(10px) !important;
+  border-radius: 24px !important;
+  padding: 0 !important;
+  position: relative !important;
+  transition: all 0.3s ease !important;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(139, 92, 246, 0.05) 50%,
+      transparent 100%
+    );
+    border-radius: 24px;
+    pointer-events: none;
+    animation: chartScan 4s linear infinite;
+  }
+  
+  &:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 
+      0 0 25px rgba(139, 92, 246, 0.5),
+      0 0 50px rgba(139, 92, 246, 0.3),
+      inset 0 1px 2px rgba(255, 255, 255, 0.15) !important;
+  }
+}
+
+// LIGHT MODE MAROON CONTAINER FOR CHART PAGE CARDS
+[data-theme="light"] .chartCard {
+  background: linear-gradient(135deg, 
+    rgb(89, 0, 0) 0%, 
+    rgba(152, 0, 0, 0.9) 50%, 
+    rgba(255, 0, 0, 0.85) 100%) !important;
+  border: 1px solid rgba(153, 27, 27, 0.3) !important;
+  box-shadow: 
+    0 0 20px rgba(153, 27, 27, 0.4),
+    0 0 40px rgba(153, 27, 27, 0.2),
+    inset 0 1px 2px rgba(255, 255, 255, 0.1) !important;
+  
+  &::before {
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(153, 27, 27, 0.05) 50%,
+      transparent 100%
+    );
+  }
+  
+  &:hover {
+    box-shadow: 
+      0 0 25px rgba(153, 27, 27, 0.5),
+      0 0 50px rgba(153, 27, 27, 0.3),
+      inset 0 1px 2px rgba(255, 255, 255, 0.15) !important;
+  }
+}
+
+@keyframes chartScan {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+// TABLE CARD - FITS TABLE EXACTLY
+.tableCard {
+  display: inline-block !important;
+  padding: 0 !important;
+  
+  &::before {
+    border-radius: 24px !important;
+  }
+}
+
+// STYLING FOR COMPARISON TABLE
+.comparisonTable {
+  width: 100%;
+  padding: 16px 24px;
+  
+  :global(table) {
+    width: 100%;
+    border-collapse: collapse;
+    border: none !important;
+    margin: 0;
+  }
+  
+  :global(th),
+  :global(td) {
+    text-align: center !important;
+    vertical-align: middle !important;
+    padding: 16px 24px !important;
+    font-size: 1.125rem !important; // LARGER TEXT (18px equivalent)
+    line-height: 1.5 !important;
+    border: none !important;
+  }
+  
+  :global(th) {
+    font-weight: 600 !important;
+    font-size: 1.25rem !important; // LARGER TEXT FOR HEADERS (20px equivalent)
+    vertical-align: middle !important;
+    text-align: center !important;
+    
+    // ENSURE ANY NESTED ELEMENTS ARE ALSO CENTERED
+    & > * {
+      text-align: center !important;
+      display: block !important;
+      width: 100% !important;
+    }
+  }
+  
+  :global(td) {
+    font-size: 1rem !important; // LARGER TEXT FOR CELLS (16px equivalent)
+  }
+  
+  // REMOVE ALL BORDERS FROM TABLE ELEMENTS
+  :global(tr),
+  :global(thead),
+  :global(tbody),
+  :global(table *) {
+    border: none !important;
+  }
+}
+

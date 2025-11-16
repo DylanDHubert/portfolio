@@ -118,7 +118,7 @@ function parseStructuredContent(): string {
     structuredInfo.push("- Calvin and Hobbes (Bill Waterson) - Childhood and adulthood favorite, reminds to stay having fun");
     structuredInfo.push("- Astrix and Obelix (Goscinny & Uderzo) - Classic European cartoon");
     structuredInfo.push("- Tintin (Herge) - Another classic European cartoon");
-    structuredInfo.push("- Neuromancer (William Gibson) - Defined cyberpunk, influenced vision of future technology and AI systems");
+
     
     structuredInfo.push("\nNON-FICTION & LEARNING:");
     structuredInfo.push("- Sapiens (Yuval Noah Harari) - New perspective on systems we take for granted");
@@ -128,12 +128,7 @@ function parseStructuredContent(): string {
     structuredInfo.push("- Outliers (Malcolm Gladwell) - Thesis proved true through college experience");
     structuredInfo.push("- The Psychology of Money (Morgan Housel) - Fresh perspective on decision-making and human behavior");
     
-    structuredInfo.push("\nTECHNICAL & PROFESSIONAL:");
-    structuredInfo.push("- Design Patterns (Gang of Four) - Definitive guide to software design patterns, influences AI system design");
-    structuredInfo.push("- Refactoring (Martin Fowler) - Practical guide to code quality, valuable for complex AI systems");
-    structuredInfo.push("- The C Programming Language (Kernighan & Ritchie) - Fundamentals of systems programming and memory management");
-    structuredInfo.push("- Introduction to Algorithms (Cormen et al.) - Definitive algorithms textbook, essential for optimizing AI systems");
-    structuredInfo.push("- The Unix Programming Environment (Kernighan & Pike) - Unix philosophy, influences modular AI system design");
+
     
     return structuredInfo.join('\n');
   } catch (error) {
