@@ -277,8 +277,8 @@ export function D3Visual1() {
     // Get theme once at the start
     const theme = document.documentElement.getAttribute('data-theme') || 'dark';
     
-    const width = 800;
-    const height = 600;
+    const width = 810;
+    const height = 610;
     const margin = { top: 20, right: 25, bottom: 45, left: 45 };
     const innerWidth = width - margin.left - margin.right;
     const innerHeight = height - margin.top - margin.bottom;
@@ -548,8 +548,8 @@ export function D3Visual1() {
     // Remove existing tree overlay
     svg.selectAll(".tree-overlay").remove();
 
-    const width = 800;
-    const height = 600;
+    const width = 810;
+    const height = 610;
     const margin = { top: 20, right: 25, bottom: 45, left: 45 };
     const innerWidth = width - margin.left - margin.right;
     const innerHeight = height - margin.top - margin.bottom;
@@ -784,8 +784,8 @@ export function D3Visual1() {
       </Column>
       <svg
         ref={svgRef}
-        width={800}
-        height={600}
+        width={810}
+        height={610}
         style={{
           border: "1px solid var(--neutral-border-medium)",
           borderRadius: "8px",

@@ -319,8 +319,8 @@ export function D3Visual2() {
     const svg = d3.select(svgRef.current);
     svg.selectAll("*").remove();
     
-    const width = 800;
-    const height = 600;
+    const width = 810;
+    const height = 610;
     const margin = { top: 20, right: 25, bottom: 45, left: 45 };
     const innerWidth = width - margin.left - margin.right;
     const innerHeight = height - margin.top - margin.bottom;
@@ -351,6 +351,7 @@ export function D3Visual2() {
       normalizedY: (p.y - yMin) / (yMax - yMin || 1),
     }));
     
+    // Add padding to match viz1
     const padding = 0.05;
     
     const xScale = d3
@@ -360,7 +361,7 @@ export function D3Visual2() {
     
     const yScale = d3
       .scaleLinear()
-      .domain([1 + padding, 0 - padding])
+      .domain([1 + padding, 0 - padding]) // Inverted for SVG coordinates
       .range([0, innerHeight]);
     
     const g = svg
@@ -792,7 +793,7 @@ export function D3Visual2() {
       .attr("stroke-opacity", 0.3);
     
     // Add legend in top-right corner
-    const legendX = innerWidth - 190;
+    const legendX = innerWidth - 180;
     const legendY = 10;
     const legendSpacing = 18;
     let legendYOffset = 0;
@@ -1247,8 +1248,8 @@ export function D3Visual2() {
     // Remove existing tree overlay
     svg.selectAll(".tree-overlay").remove();
 
-    const width = 800;
-    const height = 600;
+    const width = 810;
+    const height = 610;
     const margin = { top: 20, right: 25, bottom: 45, left: 45 };
     const innerWidth = width - margin.left - margin.right;
     const innerHeight = height - margin.top - margin.bottom;
@@ -1526,18 +1527,16 @@ export function D3Visual2() {
           })}
         </div>
       </Column>
-      <div style={{ display: "flex", gap: "24px", flexWrap: "wrap", justifyContent: "center", width: "100%" }}>
-        <svg
-          ref={svgRef}
-          width={800}
-          height={600}
-          style={{
-            border: "1px solid var(--neutral-border-medium)",
-            borderRadius: "8px",
-            backgroundColor: "var(--neutral-surface-weak)",
-          }}
-        />
-      </div>
+      <svg
+        ref={svgRef}
+        width={810}
+        height={610}
+        style={{
+          border: "1px solid var(--neutral-border-medium)",
+          borderRadius: "8px",
+          backgroundColor: "var(--neutral-surface-weak)",
+        }}
+      />
     </Column>
   );
 }
