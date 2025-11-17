@@ -240,6 +240,7 @@ export function D3Visual1() {
   const svgRef = useRef<SVGSVGElement>(null);
   const [depth, setDepth] = useState(0);
   const [maxDepth, setMaxDepth] = useState(0);
+  const [treeExpanded, setTreeExpanded] = useState(false);
   
   // Generate data and build tree
   const { points, rootNodes, calculatedMaxDepth } = useMemo(() => {
@@ -273,9 +274,12 @@ export function D3Visual1() {
     const svg = d3.select(svgRef.current);
     svg.selectAll("*").remove();
     
+    // Get theme once at the start
+    const theme = document.documentElement.getAttribute('data-theme') || 'dark';
+    
     const width = 800;
     const height = 600;
-    const margin = { top: 20, right: 20, bottom: 40, left: 40 };
+    const margin = { top: 20, right: 25, bottom: 45, left: 45 };
     const innerWidth = width - margin.left - margin.right;
     const innerHeight = height - margin.top - margin.bottom;
     
@@ -316,10 +320,6 @@ export function D3Visual1() {
     
     // Color scale for clusters - use theme colors
     const getThemeColor = (index: number, total: number) => {
-      // Use CSS custom properties for theme-aware colors
-      const style = getComputedStyle(document.documentElement);
-      const theme = document.documentElement.getAttribute('data-theme') || 'dark';
-      
       // Create a gradient of theme colors based on active theme
       if (theme === 'light') {
         // Light theme: maroon/red gradient
@@ -406,7 +406,6 @@ export function D3Visual1() {
     // Draw centroids AFTER points so they appear on top
     normalizedClusters.forEach((cluster, idx) => {
       // Draw centroids with contrast colors (yellow for dark, turquoise for light)
-      const theme = document.documentElement.getAttribute('data-theme') || 'dark';
       const centroidColor = theme === 'light' 
         ? '#06b6d4' // Turquoise for light mode
         : '#fbbf24'; // Yellow for dark mode
@@ -421,9 +420,8 @@ export function D3Visual1() {
         .attr("stroke-width", 2);
     });
     
-    // Add axes with proper styling
-    const axisColor = getComputedStyle(document.documentElement)
-      .getPropertyValue('--neutral-text-medium') || '#666';
+    // Add axes with proper styling - theme-aware text colors
+    const axisColor = theme === 'light' ? '#000' : '#fff';
     
     // X-axis
     const xAxis = g.append("g")
@@ -469,29 +467,35 @@ export function D3Visual1() {
       .attr("stroke-opacity", 0.3);
     
     // Add legend in top-right corner
-    const legendX = innerWidth - 180;
-    const legendY = 20;
+    const legendX = innerWidth - 160;
+    const legendY = 10;
     const legendSpacing = 20;
     
     const legend = g.append("g")
       .attr("transform", `translate(${legendX}, ${legendY})`);
     
-    // Legend background
+    // Legend background - theme-aware (explicit colors with subtle tint)
+    // Slightly more colorful background - subtle tint
+    const legendBgColor = theme === 'light' ? '#f8f0f0' : '#1f1a25'; // Light red tint / dark purple tint
+    const legendTextColor = theme === 'light' ? '#000' : '#fff';
+    const legendBorderColor = theme === 'light' ? '#000' : '#fff'; // Match text color like tree
+    
     legend.append("rect")
       .attr("x", -10)
       .attr("y", -10)
       .attr("width", 170)
       .attr("height", 60)
-      .attr("fill", "var(--neutral-surface-weak)")
-      .attr("stroke", axisColor)
-      .attr("stroke-opacity", 0.3)
-      .attr("rx", 4);
+      .attr("fill", legendBgColor)
+      .attr("stroke", legendBorderColor)
+      .attr("stroke-width", 1.5)
+      .attr("stroke-opacity", 0.5)
+      .attr("rx", 6);
     
     // Legend title
     legend.append("text")
       .attr("x", 0)
       .attr("y", 5)
-      .attr("fill", axisColor)
+      .attr("fill", legendTextColor)
       .style("font-size", "12px")
       .style("font-weight", "bold")
       .text("Legend");
@@ -503,18 +507,17 @@ export function D3Visual1() {
       .attr("width", 12)
       .attr("height", 12)
       .attr("fill", colorScale(0))
-      .attr("stroke", axisColor)
+      .attr("stroke", legendBorderColor)
       .attr("stroke-opacity", 0.3);
     
     legend.append("text")
       .attr("x", 18)
       .attr("y", 25)
-      .attr("fill", axisColor)
+      .attr("fill", legendTextColor)
       .style("font-size", "11px")
       .text("Clusters");
     
     // Centroid example
-    const theme = document.documentElement.getAttribute('data-theme') || 'dark';
     const centroidColor = theme === 'light' ? '#06b6d4' : '#fbbf24';
     const strokeColor = getComputedStyle(document.documentElement)
       .getPropertyValue('--neutral-surface-strong').trim() || '#fff';
@@ -530,25 +533,242 @@ export function D3Visual1() {
     legend.append("text")
       .attr("x", 18)
       .attr("y", 38)
-      .attr("fill", axisColor)
+      .attr("fill", legendTextColor)
       .style("font-size", "11px")
       .text("Centroids");
     
   }, [points, rootNodes, depth]);
+
+  // TREE VISUALIZATION AS PICTURE-IN-PICTURE OVERLAY
+  useEffect(() => {
+    if (!svgRef.current || rootNodes.length === 0) return;
+
+    const svg = d3.select(svgRef.current);
+    
+    // Remove existing tree overlay
+    svg.selectAll(".tree-overlay").remove();
+
+    const width = 800;
+    const height = 600;
+    const margin = { top: 20, right: 25, bottom: 45, left: 45 };
+    const innerWidth = width - margin.left - margin.right;
+    const innerHeight = height - margin.top - margin.bottom;
+
+    // TREE OVERLAY POSITION AND SIZE
+    // When collapsed, show just a small tab in the corner
+    const treeBoxWidth = treeExpanded ? 300 : 40; // Small tab when collapsed
+    const treeBoxHeight = treeExpanded ? 300 : 30; // Small tab when collapsed
+    const treeX = margin.left + 20; // Top-left corner
+    const treeY = margin.top + 10;
+    
+    // Create overlay group with background
+    const treeOverlay = svg.append("g")
+      .attr("class", "tree-overlay")
+      .attr("transform", `translate(${treeX}, ${treeY})`);
+
+    // Background box with border - theme-aware (explicit colors with subtle tint)
+    // Get theme for tree overlay
+    const theme = document.documentElement.getAttribute('data-theme') || 'dark';
+    // Slightly more colorful background - subtle tint matching legend
+    const treeBgColor = theme === 'light' ? '#f8f0f0' : '#1f1a25'; // Light red tint / dark purple tint
+    const treeBorderColor = theme === 'light' ? '#000' : '#fff'; // Match text color
+    const treeTextColor = theme === 'light' ? '#000' : '#fff';
+    
+    treeOverlay.append("rect")
+      .attr("x", -10)
+      .attr("y", -10)
+      .attr("width", treeBoxWidth)
+      .attr("height", treeBoxHeight)
+      .attr("fill", treeBgColor)
+      .attr("stroke", treeBorderColor)
+      .attr("stroke-width", 1.5)
+      .attr("stroke-opacity", 0.5)
+      .attr("rx", 6)
+      .attr("opacity", 0.95)
+      .style("cursor", "pointer")
+      .on("click", () => setTreeExpanded(!treeExpanded));
+
+    // Only show tree content when expanded
+    if (treeExpanded) {
+      // Tree container with appropriate size
+      const treeWidth = treeBoxWidth - 20;
+      const treeHeight = treeBoxHeight - 30; // Leave room for title
+      const treeMargin = { top: 25, right: 10, bottom: 10, left: 10 };
+      const treeInnerWidth = treeWidth - treeMargin.left - treeMargin.right;
+      const treeInnerHeight = treeHeight - treeMargin.top - treeMargin.bottom;
+
+      const treeG = treeOverlay.append("g")
+        .attr("transform", `translate(${treeMargin.left}, ${treeMargin.top})`);
+
+    // CONVERT CLUSTER TREE TO D3 HIERARCHY FORMAT - SHOW FULL TREE
+    interface D3Node extends d3.HierarchyNode<any> {
+      clusterNode?: ClusterNode;
+      x?: number;
+      y?: number;
+    }
+
+    // Create a virtual root that contains all root clusters as children
+    const virtualRoot: any = {
+      id: -1,
+      depth: -1,
+      children: rootNodes.map((node, idx) => ({
+        id: node.id,
+        depth: node.depth,
+        clusterNode: node,
+        children: [],
+      })),
+    };
+
+    // Recursively build the FULL hierarchy (all depths)
+    function buildFullHierarchy(node: ClusterNode): any {
+      return {
+        id: node.id,
+        depth: node.depth,
+        clusterNode: node,
+        children: node.children.map(child => buildFullHierarchy(child)),
+      };
+    }
+
+    virtualRoot.children = rootNodes.map(node => buildFullHierarchy(node));
+
+    // Create D3 hierarchy
+    const root = d3.hierarchy(virtualRoot) as D3Node;
+    
+    // Create tree layout
+    const treeLayout = d3.tree<D3Node>()
+      .size([treeInnerHeight, treeInnerWidth])
+      .separation((a, b) => {
+        return (a.parent === b.parent ? 1 : 1.5) / Math.max(a.depth, 1);
+      });
+
+    const treeData = treeLayout(root);
+
+    // COLOR SCALE (same as scatter plot)
+    const colorScale = d3.scaleSequential(d3.interpolateViridis)
+      .domain([0, Math.max(rootNodes.length - 1, 1)]);
+    
+    const linkColor = theme === 'light' ? '#000' : '#fff'; // Match text color
+    const nodeColor = theme === 'light' ? '#06b6d4' : '#fbbf24';
+    const strokeColor = theme === 'light' ? '#000' : '#fff'; // Match text color
+    const highlightColor = theme === 'light' ? '#06b6d4' : '#fbbf24';
+
+    // DRAW LINKS (edges) - dim links to nodes deeper than current depth
+    const links = treeData.links();
+    treeG.selectAll(".tree-link")
+      .data(links)
+      .enter()
+      .append("path")
+      .attr("class", "tree-link")
+      .attr("d", d3.linkHorizontal<any, D3Node>()
+        .x((d: any) => d.y)
+        .y((d: any) => d.x))
+      .attr("fill", "none")
+      .attr("stroke", linkColor)
+      .attr("stroke-width", 1)
+      .attr("stroke-opacity", (d: any) => {
+        // Dim links to nodes deeper than current depth
+        if (d.target.data.depth > depth) {
+          return 0.2;
+        }
+        return 0.3;
+      });
+
+    // DRAW NODES
+    const nodes = treeData.descendants();
+    const nodeGroups = treeG.selectAll(".tree-node")
+      .data(nodes)
+      .enter()
+      .append("g")
+      .attr("class", "tree-node")
+      .attr("transform", (d: any) => `translate(${d.y},${d.x})`)
+      .style("cursor", "pointer");
+
+    // Draw node circles - SIZE DECREASES WITH DEPTH
+    const baseRadius = treeExpanded ? 5 : 3;
+    
+    nodeGroups
+      .filter((d: any) => d.data.id !== -1) // Skip virtual root
+      .append("circle")
+      .attr("r", (d: any) => {
+        // Nodes get smaller as depth increases
+        // Root (depth 0) = baseRadius, deeper nodes scale down
+        if (d.data.depth === 0) return baseRadius;
+        // Scale down: depth 1 = 0.8x, depth 2 = 0.6x, depth 3 = 0.4x, etc.
+        const scaleFactor = Math.max(0.3, 1 - (d.data.depth * 0.2));
+        return baseRadius * scaleFactor;
+      })
+      .attr("fill", (d: any) => {
+        // Highlight nodes at current depth with glow color
+        if (d.data.depth === depth) return highlightColor;
+        // Root nodes use the same node color (not colorScale)
+        if (d.data.depth === 0) return nodeColor;
+        return nodeColor;
+      })
+      .attr("stroke", strokeColor)
+      .attr("stroke-width", (d: any) => {
+        // Slightly thicker stroke for current depth, but not size increase
+        return d.data.depth === depth ? 1.5 : 1;
+      })
+      .attr("opacity", (d: any) => {
+        // Highlight nodes at current depth or on path up to current depth
+        // Only highlight if node depth <= current depth (path up to current level)
+        if (d.data.depth === depth) return 1;
+        // For nodes deeper than current depth, make them dimmer
+        if (d.data.depth > depth) return 0.3;
+        return 0.6;
+      });
+    }
+
+    // Add title - show full text when expanded, just "Tree" when collapsed
+    const titleText = treeOverlay.append("text")
+      .attr("text-anchor", "middle")
+      .attr("fill", treeTextColor)
+      .style("font-size", treeExpanded ? "11px" : "10px")
+      .style("font-weight", "bold")
+      .style("pointer-events", "none")
+      .text(treeExpanded ? "Tree View (click to collapse)" : "Tree");
+    
+    // Center text - adjust position based on expanded/collapsed state
+    if (treeExpanded) {
+      titleText.attr("x", treeBoxWidth / 2);
+      titleText.attr("y", 8);
+    } else {
+      // For collapsed, center in the box
+      // Rect is at -10, -10 with width treeBoxWidth, height treeBoxHeight
+      // Geometric center of rect: x = -10 + treeBoxWidth/2, y = -10 + treeBoxHeight/2
+      // For a 40x30 box: center is at x=10, y=5
+      titleText.attr("x", treeBoxWidth / 2 - 10);
+      titleText.attr("y", treeBoxHeight / 2 - 10);
+      titleText.style("dominant-baseline", "middle");
+      titleText.style("text-anchor", "middle");
+    }
+
+  }, [rootNodes, depth, treeExpanded]);
   
   const maxDepthValue = Math.max(maxDepth - 1, 0);
-  const buttonDepths = Array.from({ length: 5 }, (_, i) => {
-    if (maxDepthValue === 0) return 0;
-    return Math.floor((i / 4) * maxDepthValue);
-  });
+  // Create buttons for ALL depths from 0 to maxDepthValue
+  // If maxDepthValue is 5, we need 6 buttons: [0, 1, 2, 3, 4, 5]
+  const numButtons = maxDepthValue + 1;
+  const buttonDepths = Array.from({ length: numButtons }, (_, i) => i);
 
   return (
     <Column gap="m" horizontal="center" style={{ marginTop: "24px", marginBottom: "24px" }}>
       <Column gap="s" horizontal="center" style={{ width: "100%" }}>
         <div className={styles.depthButtons}>
           {buttonDepths.map((buttonDepth, idx) => {
-            // First button shows "Roots", last button shows "Leaves", others show depth number
-            const buttonLabel = idx === 0 ? "Roots" : idx === buttonDepths.length - 1 ? "Leaves" : buttonDepth.toString();
+            // First button shows "Roots", last button shows "Leaves" only if it's the actual max depth (not just maxDepthValue)
+            // maxDepthValue = maxDepth - 1, so if maxDepth is 6, maxDepthValue is 5
+            // We want "Leaves" only when buttonDepth equals the actual maximum depth in the tree
+            let buttonLabel: string;
+            if (idx === 0) {
+              buttonLabel = "Roots";
+            } else if (idx === buttonDepths.length - 1 && buttonDepth === maxDepthValue && maxDepthValue === maxDepth - 1) {
+              // Only show "Leaves" if this button is at the actual maximum depth
+              // Check if maxDepthValue represents the true leaves (maxDepth - 1)
+              buttonLabel = "Leaves";
+            } else {
+              buttonLabel = buttonDepth.toString();
+            }
             return (
               <button
                 key={idx}
