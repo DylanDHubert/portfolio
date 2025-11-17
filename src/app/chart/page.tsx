@@ -109,6 +109,24 @@ export default function ChartPage() {
             This project rests on two priors that, when combined, point to a very natural architectural idea.
           </Text>
           
+          {/* Two inline boxes for the two priors */}
+          <div style={{ display: "flex", gap: "12px", marginTop: "12px", marginBottom: "8px" }}>
+            <div className={styles.chartCard} style={{ flex: 1 }}>
+              <Column padding="24" vertical="center" horizontal="center" fillWidth>
+                <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", textAlign: "center" }}>
+                  {/* Content for first box - will be filled in */}
+                </Text>
+              </Column>
+            </div>
+            <div className={styles.chartCard} style={{ flex: 1 }}>
+              <Column padding="24" vertical="center" horizontal="center" fillWidth>
+                <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", textAlign: "center" }}>
+                  {/* Content for second box - will be filled in */}
+                </Text>
+              </Column>
+            </div>
+          </div>
+          
           <Column gap="s" style={{ marginTop: "8px" }}>
             <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
               <Text as="span" variant="body-default-xl" onBackground="brand-strong" style={{ lineHeight: "175%" }}>1. Embeddings contain real semantic information.</Text>

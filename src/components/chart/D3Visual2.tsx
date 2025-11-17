@@ -255,6 +255,22 @@ export function D3Visual2() {
   const [depth, setDepth] = useState(0);
   const [maxDepth, setMaxDepth] = useState(0);
   const [treeExpanded, setTreeExpanded] = useState(false);
+  const [mode, setMode] = useState<'CHART' | 'ANN'>('CHART'); // DEFAULT TO CHART
+  const [theme, setTheme] = useState<'light' | 'dark'>('dark');
+  
+  // Track theme changes
+  useEffect(() => {
+    const updateTheme = () => {
+      const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+      setTheme(currentTheme as 'light' | 'dark');
+    };
+    
+    updateTheme();
+    const observer = new MutationObserver(updateTheme);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+    
+    return () => observer.disconnect();
+  }, []);
   
   // Generate data and build tree
   const { points, rootNodes, queryPoint, relatedPoints, calculatedMaxDepth } = useMemo(() => {
@@ -442,9 +458,9 @@ export function D3Visual2() {
       onPath: isClusterOnPath(cluster, queryPoint, depth),
     }));
     
-    // Check which clusters contain related points
+    // Check which clusters contain related points (ONLY IN CHART MODE)
     const clustersWithRelated = normalizedClusters.map((cluster, idx) => {
-      const hasRelated = relatedPoints.some(rp => 
+      const hasRelated = mode === 'CHART' && relatedPoints.some(rp => 
         cluster.points.some(p => p.id === rp.id)
       );
       return { cluster, idx, hasRelated };
@@ -478,9 +494,12 @@ export function D3Visual2() {
     // Store path data for drawing later (on top)
     const queryPath = getCentroidPath(queryPoint, depth);
     const relatedPaths: Array<Array<{x: number, y: number} | null>> = [];
-    relatedPoints.forEach(relatedPoint => {
-      relatedPaths.push(getCentroidPath(relatedPoint, depth));
-    });
+    // ONLY BUILD RELATED PATHS IF IN CHART MODE
+    if (mode === 'CHART') {
+      relatedPoints.forEach(relatedPoint => {
+        relatedPaths.push(getCentroidPath(relatedPoint, depth));
+      });
+    }
     
     // Draw cluster hulls - dim non-path clusters, bright path clusters, highlight related clusters
     normalizedClusters.forEach((cluster, idx) => {
@@ -528,6 +547,7 @@ export function D3Visual2() {
     });
     
     // Draw all points (regular points, dimmed)
+    // Filter out related points (they're drawn separately above)
     g.selectAll(".point")
       .data(normalizedPoints.filter(p => 
         p.id !== queryPoint.id && !relatedPoints.some(rp => rp.id === p.id)
@@ -599,18 +619,191 @@ export function D3Visual2() {
       return { line1, line2, outline1, outline2 };
     };
     
-    // Draw related points as X markers (same style as query, just smaller)
+    // COLLECT ALL TARGETS (query + related) FOR TOOLTIPS
+    // Sort by Y position (top to bottom)
+    const allTargets = [
+      { ...queryNormalized, type: 'query', id: queryPoint.id },
+      ...relatedNormalized.map(p => ({ ...p, type: 'related', id: p.id }))
+    ].sort((a, b) => a.normalizedY - b.normalizedY); // Sort by Y (top to bottom)
+    
+    // DOCUMENT LABELS - assign based on position in sorted list (by Y position)
+    // User-specified labels for specific IDs
+    const specificLabels: Record<number, string> = {
+      500: "CHART",
+      6: "ANN",
+      9: "Learned Hierarchy",
+      2: "Clustering"
+    };
+    
+    // Labels for positions (top to bottom) - closer = more directly related, farther = more tangentially related
+    const positionLabels = [
+      "CHART", // Position 0 (query, should be replaced if query is not at top)
+      "ANN",
+      "Tree Structures", // Replaced duplicate "Learned Hierarchy"
+      "Clustering",
+      "Vector Search", // Swapped with Attention Mechanisms
+      "Tree Search",
+      "Semantic Retrieval", // Moved closer
+      "Information Retrieval", // Moved closer
+      "Attention Mechanisms", // Swapped with Vector Search
+      "Neural Networks",
+      "Learning Curriculums",
+      "Knowledge Graphs",
+      "Embedding Spaces",
+      "Search Algorithms"
+    ];
+    
+    // Create mapping from ID to label
+    const documentLabels: Record<number, string> = {};
+    allTargets.forEach((target, idx) => {
+      // First check if user specified a label for this ID
+      if (specificLabels[target.id]) {
+        documentLabels[target.id] = specificLabels[target.id];
+      } else if (idx < positionLabels.length) {
+        // Otherwise assign based on position
+        documentLabels[target.id] = positionLabels[idx];
+      } else {
+        // Fallback for any extra documents
+        documentLabels[target.id] = `Document ${target.id}`;
+      }
+    });
+    
+    // Helper function to get document label
+    const getDocumentLabel = (id: number, type: 'query' | 'related'): string => {
+      if (documentLabels[id]) {
+        return documentLabels[id];
+      }
+      return type === 'query' ? `Query Document ${id}` : `Document ${id}`;
+    };
+    
+    // LOG TARGETS FOR USER TO LABEL (sorted by Y position)
+    console.log('Targets sorted by Y position (top to bottom):');
+    allTargets.forEach((target, idx) => {
+      const targetType: 'query' | 'related' = target.type as 'query' | 'related';
+      console.log(`${idx + 1}. ${target.type === 'query' ? 'QUERY' : 'RELATED'} - ID: ${target.id}, Y: ${target.normalizedY.toFixed(3)}, Label: ${getDocumentLabel(target.id, targetType)}`);
+    });
+    
+    // Draw related points as X markers with tooltips
+    // In CHART mode: show with normal highlighting
+    // In ANN mode: show but dimmed (no highlights) to imply ANN is not great at finding them
     relatedNormalized.forEach(relPoint => {
       const x = xScale(relPoint.normalizedX);
       const y = yScale(relPoint.normalizedY);
       
-      // Single X marker (no shadow overlay)
-      drawX(x, y, 10, targetColor, 3, 1);
+      // Create invisible circle for tooltip interaction
+      const tooltipGroup = g.append("g")
+        .attr("class", "target-tooltip")
+        .style("cursor", "pointer");
+      
+      tooltipGroup.append("circle")
+        .attr("cx", x)
+        .attr("cy", y)
+        .attr("r", 15) // Larger hit area
+        .attr("fill", "transparent")
+        .attr("pointer-events", "all");
+      
+      // Tooltip (will be populated with labels later)
+      const tooltip = tooltipGroup.append("g")
+        .attr("class", "tooltip")
+        .style("opacity", 0)
+        .style("pointer-events", "none");
+      
+      const tooltipRect = tooltip.append("rect")
+        .attr("rx", 4)
+        .attr("fill", theme === 'light' ? '#fff' : '#333')
+        .attr("stroke", targetColor)
+        .attr("stroke-width", 1);
+      
+      const tooltipText = tooltip.append("text")
+        .attr("fill", theme === 'light' ? '#000' : '#fff')
+        .style("font-size", "12px")
+        .style("font-weight", "bold")
+        .text(getDocumentLabel(relPoint.id, 'related'));
+      
+      // Position tooltip above the point
+      tooltipText.each(function() {
+        const bbox = (this as SVGTextElement).getBBox();
+        tooltipRect
+          .attr("x", bbox.x - 6)
+          .attr("y", bbox.y - 4)
+          .attr("width", bbox.width + 12)
+          .attr("height", bbox.height + 8);
+      });
+      
+      tooltip.attr("transform", `translate(${x}, ${y - 20})`);
+      
+      // Show/hide tooltip on hover
+      tooltipGroup
+        .on("mouseover", function() {
+          tooltip.transition().style("opacity", 1);
+        })
+        .on("mouseout", function() {
+          tooltip.transition().style("opacity", 0);
+        });
+      
+      if (mode === 'CHART') {
+        // CHART MODE: Normal highlighting
+        drawX(x, y, 10, targetColor, 3, 1);
+      } else {
+        // ANN MODE: Show but dimmed (no highlights) - implies ANN is not great at finding them
+        drawX(x, y, 10, targetColor, 3, 0.3); // Dimmed opacity
+      }
     });
     
-    // Draw query point as X marker (same style but bigger)
+    // Draw query point as X marker with tooltip (same style but bigger)
     const queryX = xScale(queryNormalized.normalizedX);
     const queryY = yScale(queryNormalized.normalizedY);
+    
+    // Create invisible circle for tooltip interaction
+    const queryTooltipGroup = g.append("g")
+      .attr("class", "target-tooltip query")
+      .style("cursor", "pointer");
+    
+    queryTooltipGroup.append("circle")
+      .attr("cx", queryX)
+      .attr("cy", queryY)
+      .attr("r", 20) // Larger hit area for query
+      .attr("fill", "transparent")
+      .attr("pointer-events", "all");
+    
+    // Tooltip for query
+    const queryTooltip = queryTooltipGroup.append("g")
+      .attr("class", "tooltip")
+      .style("opacity", 0)
+      .style("pointer-events", "none");
+    
+    const queryTooltipRect = queryTooltip.append("rect")
+      .attr("rx", 4)
+      .attr("fill", theme === 'light' ? '#fff' : '#333')
+      .attr("stroke", targetColor)
+      .attr("stroke-width", 1);
+    
+    const queryTooltipText = queryTooltip.append("text")
+      .attr("fill", theme === 'light' ? '#000' : '#fff')
+      .style("font-size", "12px")
+      .style("font-weight", "bold")
+      .text(getDocumentLabel(queryPoint.id, 'query'));
+    
+    // Position tooltip above the point
+    queryTooltipText.each(function() {
+      const bbox = (this as SVGTextElement).getBBox();
+      queryTooltipRect
+        .attr("x", bbox.x - 6)
+        .attr("y", bbox.y - 4)
+        .attr("width", bbox.width + 12)
+        .attr("height", bbox.height + 8);
+    });
+    
+    queryTooltip.attr("transform", `translate(${queryX}, ${queryY - 25})`);
+    
+    // Show/hide tooltip on hover
+    queryTooltipGroup
+      .on("mouseover", function() {
+        queryTooltip.transition().style("opacity", 1);
+      })
+      .on("mouseout", function() {
+        queryTooltip.transition().style("opacity", 0);
+      });
     
     // Single X marker (no shadow overlay) - bigger size for query
     drawX(queryX, queryY, 16, targetColor, 3, 1);
@@ -656,30 +849,33 @@ export function D3Visual2() {
     }
     
     // Draw paths for each related point with flowing animation (same style as query)
-    relatedPaths.forEach(relatedPath => {
-      for (let d = 1; d <= depth; d++) {
-        const prevPoint = relatedPath[d - 1];
-        const currPoint = relatedPath[d];
-        if (prevPoint && currPoint) {
-          // Darken color based on depth: brightest for current depth, darker for previous
-          const lineColor = darkenColorByDepth(targetColor, depth, d);
-          // Shrink size based on depth: largest for current depth, smaller for previous
-          const sizeScale = getSizeScaleByDepth(depth, d);
-          
-          g.append("line")
-            .attr("x1", xScale(prevPoint.x))
-            .attr("y1", yScale(prevPoint.y))
-            .attr("x2", xScale(currPoint.x))
-            .attr("y2", yScale(currPoint.y))
-            .attr("stroke", lineColor)
-            .attr("stroke-width", 2 * sizeScale) // Scale stroke width
-            .attr("stroke-opacity", 0.6) // Fixed opacity
-            .attr("stroke-dasharray", "8,4")
-            .attr("stroke-dashoffset", 0)
-            .attr("class", "flowing-line-related");
+    // ONLY DRAW RELATED PATHS IF IN CHART MODE
+    if (mode === 'CHART') {
+      relatedPaths.forEach(relatedPath => {
+        for (let d = 1; d <= depth; d++) {
+          const prevPoint = relatedPath[d - 1];
+          const currPoint = relatedPath[d];
+          if (prevPoint && currPoint) {
+            // Darken color based on depth: brightest for current depth, darker for previous
+            const lineColor = darkenColorByDepth(targetColor, depth, d);
+            // Shrink size based on depth: largest for current depth, smaller for previous
+            const sizeScale = getSizeScaleByDepth(depth, d);
+            
+            g.append("line")
+              .attr("x1", xScale(prevPoint.x))
+              .attr("y1", yScale(prevPoint.y))
+              .attr("x2", xScale(currPoint.x))
+              .attr("y2", yScale(currPoint.y))
+              .attr("stroke", lineColor)
+              .attr("stroke-width", 2 * sizeScale) // Scale stroke width
+              .attr("stroke-opacity", 0.6) // Fixed opacity
+              .attr("stroke-dasharray", "8,4")
+              .attr("stroke-dashoffset", 0)
+              .attr("class", "flowing-line-related");
+          }
         }
-      }
-    });
+      });
+    }
     
     // Assign numbers to clusters on paths (for labeling)
     // Collect all clusters on paths across all depths
@@ -690,7 +886,8 @@ export function D3Visual2() {
       const clustersAtD = getClustersAtDepth(rootNodes, d);
       clustersAtD.forEach(cluster => {
         const isOnPath = isClusterOnPath(cluster, queryPoint, d);
-        const hasRelated = relatedPoints.some(rp => 
+        // ONLY CHECK RELATED POINTS IF IN CHART MODE
+        const hasRelated = mode === 'CHART' && relatedPoints.some(rp => 
           cluster.points.some(p => p.id === rp.id)
         );
         
@@ -852,16 +1049,16 @@ export function D3Visual2() {
       .attr("y", 24)
       .attr("fill", legendTextColor)
       .style("font-size", "11px")
-      .text("Query point");
+      .text("Query document");
     
-    // Related points (small X)
+    // Related documents (small X)
     drawLegendX(8, 38, 6, targetColor);
     legend.append("text")
       .attr("x", 18)
       .attr("y", 41)
       .attr("fill", legendTextColor)
       .style("font-size", "11px")
-      .text("Related points");
+      .text("Related documents");
     
     // Path lines
     legend.append("line")
@@ -897,9 +1094,9 @@ export function D3Visual2() {
       .attr("y", 75)
       .attr("fill", legendTextColor)
       .style("font-size", "11px")
-      .text("Centroids (darker = deeper)");
+      .text("Centroids");
     
-  }, [points, rootNodes, depth, queryPoint, relatedPoints]);
+  }, [points, rootNodes, depth, queryPoint, relatedPoints, mode]);
   
   // Draw attention sequence visualization
   useEffect(() => {
@@ -948,7 +1145,8 @@ export function D3Visual2() {
         
         previousNodes.forEach(cluster => {
           const isOnPath = isClusterOnPath(cluster, queryPoint, targetDepth - 1);
-          const hasRelated = relatedPoints.some(rp => 
+          // ONLY CHECK RELATED POINTS IF IN CHART MODE
+          const hasRelated = mode === 'CHART' && relatedPoints.some(rp => 
             cluster.points.some(p => p.id === rp.id)
           );
           
@@ -1006,32 +1204,133 @@ export function D3Visual2() {
       clusterToNumber.set(cluster, idx + 1);
     });
     
+    // CALCULATE COSINE SIMILARITY FOR ANN MODE
+    const calculateCosineSimilarity = (point1: {x: number, y: number}, point2: {x: number, y: number}): number => {
+      const dotProduct = point1.x * point2.x + point1.y * point2.y;
+      const magnitude1 = Math.sqrt(point1.x * point1.x + point1.y * point1.y);
+      const magnitude2 = Math.sqrt(point2.x * point2.x + point2.y * point2.y);
+      if (magnitude1 === 0 || magnitude2 === 0) return 0;
+      return dotProduct / (magnitude1 * magnitude2);
+    };
+    
+    // Normalize query point for similarity calculation (use normalized coordinates)
+    const queryNormalized = {
+      x: (queryPoint.x - Math.min(...points.map(p => p.x))) / (Math.max(...points.map(p => p.x)) - Math.min(...points.map(p => p.x)) || 1),
+      y: (queryPoint.y - Math.min(...points.map(p => p.y))) / (Math.max(...points.map(p => p.y)) - Math.min(...points.map(p => p.y)) || 1),
+    };
+    
     // Build sequence: [Query, ...clusters in attention at this depth]
-    const sequence: Array<{type: 'query' | 'cluster', cluster?: ClusterNode, number?: number, attention: number}> = [];
+    // For CHART: use attention scores, for ANN: use cosine similarity
+    const sequence: Array<{type: 'query' | 'cluster', cluster?: ClusterNode, number?: number, attention?: number, similarity?: number}> = [];
     
-    // Position 0: Query (always highest attention)
-    sequence.push({ type: 'query', attention: 1.0 });
+    // Position 0: Query (always highest attention/similarity)
+    if (mode === 'ANN') {
+      sequence.push({ type: 'query', similarity: 1.0 });
+    } else {
+      sequence.push({ type: 'query', attention: 1.0 });
+    }
     
-    // Positions 1-15: Clusters in attention (expanded from previous level)
-    clustersInAttention.forEach(cluster => {
-      const number = clusterToNumber.get(cluster);
-      if (number !== undefined) {
-        // Attention decreases for later positions (simulate attention weights)
-        const position = sequence.length;
-        const attention = position < MAX_SEQ_LENGTH ? 1.0 - (position * 0.05) : 0.1;
-        sequence.push({ type: 'cluster', cluster, number, attention: Math.max(0.1, attention) });
+    // Positions 1-15: Clusters in attention
+    if (mode === 'ANN') {
+      // ANN MODE: Use cosine similarity
+      clustersInAttention.forEach(cluster => {
+        const number = clusterToNumber.get(cluster);
+        if (number !== undefined) {
+          // Calculate cosine similarity between query and cluster centroid
+          const clusterNormalized = {
+            x: (cluster.centroid.x - Math.min(...points.map(p => p.x))) / (Math.max(...points.map(p => p.x)) - Math.min(...points.map(p => p.x)) || 1),
+            y: (cluster.centroid.y - Math.min(...points.map(p => p.y))) / (Math.max(...points.map(p => p.y)) - Math.min(...points.map(p => p.y)) || 1),
+          };
+          const similarity = calculateCosineSimilarity(queryNormalized, clusterNormalized);
+          // Normalize similarity to 0-1 range (cosine similarity is already -1 to 1, but we'll use 0-1)
+          const normalizedSimilarity = (similarity + 1) / 2; // Convert from [-1, 1] to [0, 1]
+          sequence.push({ type: 'cluster', cluster, number, similarity: normalizedSimilarity });
+        }
+      });
+      // Sort clusters by similarity (highest first) to show most similar first
+      sequence.sort((a, b) => {
+        if (a.type === 'query') return -1;
+        if (b.type === 'query') return 1;
+        return (b.similarity || 0) - (a.similarity || 0);
+      });
+    } else {
+      // CHART MODE: Use attention scores (original behavior)
+      clustersInAttention.forEach(cluster => {
+        const number = clusterToNumber.get(cluster);
+        if (number !== undefined) {
+          // Attention decreases for later positions (simulate attention weights)
+          const position = sequence.length;
+          const attention = position < MAX_SEQ_LENGTH ? 1.0 - (position * 0.05) : 0.1;
+          sequence.push({ type: 'cluster', cluster, number, attention: Math.max(0.1, attention) });
+        }
+      });
+    }
+    
+    // In ANN mode, show formula instead of boxes
+    if (mode === 'ANN') {
+      // HIERARCHICAL: Only show the 2 children of the selected parent at this level
+      // At depth 0: show root clusters (2 of them)
+      // At depth > 0: find the cluster on query path at depth-1, get its children
+      let clustersToShow: ClusterNode[] = [];
+      
+      if (depth === 0) {
+        // At root: show all root clusters (typically 2)
+        clustersToShow = getClustersAtDepth(rootNodes, 0);
+      } else {
+        // Find the cluster on query path at previous depth (the selected parent)
+        const clustersAtPrevDepth = getClustersAtDepth(rootNodes, depth - 1);
+        const selectedParent = clustersAtPrevDepth.find(cluster => 
+          isClusterOnPath(cluster, queryPoint, depth - 1)
+        );
+        
+        if (selectedParent && selectedParent.children.length > 0) {
+          // Get the children of the selected parent (these are at current depth)
+          clustersToShow = selectedParent.children;
+        } else {
+          // Fallback: show clusters in attention if we can't find parent
+          clustersToShow = clustersInAttention;
+        }
       }
-    });
-    
-    // Better spacing: larger boxes with more space between them
-    const clusterWidth = 45;
-    const boxHeight = clusterWidth; // Make boxes square
-    const clusterSpacing = 3; // Space between boxes
-    const totalWidth = (MAX_SEQ_LENGTH * clusterWidth) + ((MAX_SEQ_LENGTH - 1) * clusterSpacing);
-    const startX = (innerWidth - totalWidth) / 2; // Center the sequence
-    
-    // Draw all 16 positions
-    for (let i = 0; i < MAX_SEQ_LENGTH; i++) {
+      
+      // Get cluster numbers for the clusters to show (limit to 2 for binary tree)
+      const clusterNumbers = clustersToShow
+        .slice(0, 2) // Only show 2 (binary tree)
+        .map(cluster => clusterToNumber.get(cluster))
+        .filter((num): num is number => num !== undefined)
+        .sort((a, b) => a - b); // Sort ascending
+      
+      // Build formula showing cosine similarity with actual cluster indices
+      if (clusterNumbers.length > 0) {
+        const indicesStr = clusterNumbers.map(n => `cos(θ${n})`).join(", ");
+        const formulaLines = [
+          `cos(θᵢ) = (A · Bᵢ) / (||A|| × ||Bᵢ||)`,
+          `Select: max(${indicesStr})`
+        ];
+        
+        // Draw each line of the formula
+        formulaLines.forEach((line, idx) => {
+          g.append("text")
+            .attr("x", innerWidth / 2)
+            .attr("y", innerHeight / 2 - 10 + (idx * 35))
+            .attr("fill", axisColor)
+            .style("font-size", "18px")
+            .style("text-anchor", "middle")
+            .style("font-weight", "bold")
+            .style("font-family", "monospace")
+            .text(line);
+        });
+      }
+    } else {
+      // CHART MODE: Draw attention sequence boxes
+      // Better spacing: larger boxes with more space between them
+      const clusterWidth = 45;
+      const boxHeight = clusterWidth; // Make boxes square
+      const clusterSpacing = 3; // Space between boxes
+      const totalWidth = (MAX_SEQ_LENGTH * clusterWidth) + ((MAX_SEQ_LENGTH - 1) * clusterSpacing);
+      const startX = (innerWidth - totalWidth) / 2; // Center the sequence
+      
+      // Draw all 16 positions
+      for (let i = 0; i < MAX_SEQ_LENGTH; i++) {
       const x = startX + i * (clusterWidth + clusterSpacing);
       const y = innerHeight / 2;
       
@@ -1116,7 +1415,6 @@ export function D3Visual2() {
         // Query token does not have a depth label
       } else {
         // Cluster position
-        const attention = item.attention;
         const strokeWidth = 1; // Fixed 1px outline
         
         // Determine if this cluster will expand (on path = high attention = will expand)
@@ -1129,6 +1427,8 @@ export function D3Visual2() {
         
         // Get cluster color (need to find its index in clustersInAttention)
         const clusterIdx = clustersInAttention.findIndex(c => c === item.cluster);
+        
+        // CHART MODE: Use attention-based brightness (original behavior)
         const getThemeColor = (index: number, total: number, expandBrightness: boolean) => {
           // Add randomness to brightness (simulate natural attention score variation)
           // Use cluster index as seed for deterministic randomness
@@ -1204,7 +1504,7 @@ export function D3Visual2() {
           .attr("stroke", strokeColor)
           .attr("stroke-width", 1.5 * sizeScale); // Scale stroke width
         
-        // Number label (from 2D visualization)
+        // CHART MODE: Show number (from 2D visualization)
         g.append("text")
           .attr("x", x + clusterWidth / 2)
           .attr("y", y + boxHeight / 2 + 15)
@@ -1225,6 +1525,7 @@ export function D3Visual2() {
           .style("font-weight", "bold")
           .text(depthLabel);
       }
+      }
     }
     
     // Title - positioned higher to avoid collision with depth labels (2x higher than before)
@@ -1235,9 +1536,9 @@ export function D3Visual2() {
       .style("font-size", "12px")
       .style("text-anchor", "middle")
       .style("font-weight", "bold")
-      .text(`Attention Sequence (Depth ${depth})`);
+      .text(mode === 'ANN' ? `Cosine Similarity (Depth ${depth})` : `Attention Sequence (Depth ${depth})`);
     
-  }, [rootNodes, depth, queryPoint, relatedPoints, maxDepth]);
+  }, [rootNodes, depth, queryPoint, relatedPoints, maxDepth, mode]);
 
   // TREE VISUALIZATION AS PICTURE-IN-PICTURE OVERLAY WITH PATH HIGHLIGHTING
   useEffect(() => {
@@ -1361,10 +1662,13 @@ export function D3Visual2() {
         if (isClusterOnPath(node.data.clusterNode, queryPoint, node.data.depth)) {
           return true;
         }
-        // Check if on path to any related point
-        return relatedPoints.some(rp => 
-          isClusterOnPath(node.data.clusterNode, rp, node.data.depth)
-        );
+        // ONLY CHECK RELATED POINTS IF IN CHART MODE
+        if (mode === 'CHART') {
+          return relatedPoints.some(rp => 
+            isClusterOnPath(node.data.clusterNode, rp, node.data.depth)
+          );
+        }
+        return false;
       };
 
       // DRAW LINKS (edges) - highlight paths
@@ -1479,7 +1783,7 @@ export function D3Visual2() {
       titleText.style("text-anchor", "middle");
     }
 
-  }, [rootNodes, depth, queryPoint, relatedPoints, treeExpanded]);
+  }, [rootNodes, depth, queryPoint, relatedPoints, treeExpanded, mode]);
   
   const maxDepthValue = Math.max(maxDepth - 1, 0);
   // Create buttons for ALL depths from 0 to maxDepthValue
@@ -1490,6 +1794,23 @@ export function D3Visual2() {
   return (
     <Column gap="m" horizontal="center" style={{ marginTop: "24px", marginBottom: "24px" }}>
       <Column gap="s" horizontal="center" style={{ width: "100%" }}>
+        {/* Mode toggle */}
+        <div className={styles.depthButtons} style={{ marginBottom: "8px" }}>
+          <button
+            onClick={() => setMode('CHART')}
+            className={`${styles.depthButton} ${mode === 'CHART' ? styles.active : ''}`}
+            aria-label="CHART mode"
+          >
+            CHART
+          </button>
+          <button
+            onClick={() => setMode('ANN')}
+            className={`${styles.depthButton} ${mode === 'ANN' ? styles.active : ''}`}
+            aria-label="ANN mode"
+          >
+            ANN
+          </button>
+        </div>
         {/* Attention sequence visualization */}
         <svg
           ref={attentionSvgRef}
@@ -1537,6 +1858,37 @@ export function D3Visual2() {
           backgroundColor: "var(--neutral-surface-weak)",
         }}
       />
+      {/* Explanation text box - theme-aware with mode-based color */}
+      <div
+        style={{
+          width: "810px",
+          padding: "16px 20px",
+          borderRadius: "8px",
+          border: `1.5px solid ${mode === 'CHART' ? 'rgba(34, 197, 94, 0.5)' : 'rgba(239, 68, 68, 0.5)'}`,
+          backgroundColor: mode === 'CHART' 
+            ? (theme === 'light' ? '#f0fdf4' : '#0f1f15') // Light green tint / dark green tint
+            : (theme === 'light' ? '#fef2f2' : '#1f1515'), // Light red tint / dark red tint
+          color: theme === 'light' ? '#000' : '#fff',
+          fontSize: "14px",
+          lineHeight: "1.6",
+          marginTop: "12px",
+          textAlign: "center",
+        }}
+      >
+        {mode === 'CHART' ? (
+          <p style={{ margin: 0 }}>
+            <strong>CHART</strong> retrieves related concepts by learning relationships between embeddings. 
+            Through hierarchical traversal and attention mechanisms, it finds semantically related documents 
+            even when they are far apart in the embedding space.
+          </p>
+        ) : (
+          <p style={{ margin: 0 }}>
+            <strong>ANN</strong> only finds the closest documents based on cosine similarity. To retrieve 
+            related concepts, we need agentic dissemination of tasks because ANN cannot discover semantic 
+            relationships beyond nearest neighbors.
+          </p>
+        )}
+      </div>
     </Column>
   );
 }
