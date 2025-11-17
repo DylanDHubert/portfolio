@@ -631,17 +631,19 @@ export function D3Visual2() {
     // All paths use same styling
     // Draw query path with flowing animation
     for (let d = 1; d <= depth; d++) {
-      if (queryPath[d - 1] && queryPath[d]) {
+      const prevPoint = queryPath[d - 1];
+      const currPoint = queryPath[d];
+      if (prevPoint && currPoint) {
         // Darken color based on depth: brightest for current depth, darker for previous
         const lineColor = darkenColorByDepth(targetColor, depth, d);
         // Shrink size based on depth: largest for current depth, smaller for previous
         const sizeScale = getSizeScaleByDepth(depth, d);
         
         g.append("line")
-          .attr("x1", xScale(queryPath[d - 1].x))
-          .attr("y1", yScale(queryPath[d - 1].y))
-          .attr("x2", xScale(queryPath[d].x))
-          .attr("y2", yScale(queryPath[d].y))
+          .attr("x1", xScale(prevPoint.x))
+          .attr("y1", yScale(prevPoint.y))
+          .attr("x2", xScale(currPoint.x))
+          .attr("y2", yScale(currPoint.y))
           .attr("stroke", lineColor)
           .attr("stroke-width", 2 * sizeScale) // Scale stroke width
           .attr("stroke-opacity", 0.6) // Fixed opacity
@@ -654,17 +656,19 @@ export function D3Visual2() {
     // Draw paths for each related point with flowing animation (same style as query)
     relatedPaths.forEach(relatedPath => {
       for (let d = 1; d <= depth; d++) {
-        if (relatedPath[d - 1] && relatedPath[d]) {
+        const prevPoint = relatedPath[d - 1];
+        const currPoint = relatedPath[d];
+        if (prevPoint && currPoint) {
           // Darken color based on depth: brightest for current depth, darker for previous
           const lineColor = darkenColorByDepth(targetColor, depth, d);
           // Shrink size based on depth: largest for current depth, smaller for previous
           const sizeScale = getSizeScaleByDepth(depth, d);
           
           g.append("line")
-            .attr("x1", xScale(relatedPath[d - 1].x))
-            .attr("y1", yScale(relatedPath[d - 1].y))
-            .attr("x2", xScale(relatedPath[d].x))
-            .attr("y2", yScale(relatedPath[d].y))
+            .attr("x1", xScale(prevPoint.x))
+            .attr("y1", yScale(prevPoint.y))
+            .attr("x2", xScale(currPoint.x))
+            .attr("y2", yScale(currPoint.y))
             .attr("stroke", lineColor)
             .attr("stroke-width", 2 * sizeScale) // Scale stroke width
             .attr("stroke-opacity", 0.6) // Fixed opacity
@@ -751,7 +755,7 @@ export function D3Visual2() {
     
     const xAxis = g.append("g")
       .attr("transform", `translate(0,${innerHeight})`)
-      .call(d3.axisBottom(xScale).ticks(5).tickFormat(d => d.toFixed(1)));
+      .call(d3.axisBottom(xScale).ticks(5).tickFormat(d => Number(d).toFixed(1)));
     
     xAxis.attr("color", axisColor)
       .selectAll("text")
@@ -767,7 +771,7 @@ export function D3Visual2() {
       .text("Normalized X");
     
     const yAxis = g.append("g")
-      .call(d3.axisLeft(yScale).ticks(5).tickFormat(d => d.toFixed(1)));
+      .call(d3.axisLeft(yScale).ticks(5).tickFormat(d => Number(d).toFixed(1)));
     
     yAxis.attr("color", axisColor)
       .selectAll("text")
@@ -1115,7 +1119,7 @@ export function D3Visual2() {
         const hasRelated = item.cluster ? relatedPoints.some(rp => 
           item.cluster!.points.some(p => p.id === rp.id)
         ) : false;
-        const willExpand = (isOnPath || hasRelated) && item.cluster && item.cluster.children.length > 0;
+        const willExpand = Boolean((isOnPath || hasRelated) && item.cluster && item.cluster.children.length > 0);
         
         // Get cluster color (need to find its index in clustersInAttention)
         const clusterIdx = clustersInAttention.findIndex(c => c === item.cluster);

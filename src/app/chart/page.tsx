@@ -102,14 +102,14 @@ export default function ChartPage() {
       <Column style={{ margin: "auto" }} as="article" maxWidth="s" gap="m">
         {/* INTRODUCTION */}
         <Column gap="s">
-          <Heading as="h2" variant="heading-strong-xl" marginTop="12" marginBottom="6">
+          <Heading as="h2" variant="heading-strong-xl" style={{ marginTop: "12px", marginBottom: "6px" }}>
             Introduction — Two Priors
           </Heading>
           <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
             This project rests on two priors that, when combined, point to a very natural architectural idea.
           </Text>
           
-          <Column gap="s" marginTop="8">
+          <Column gap="s" style={{ marginTop: "8px" }}>
             <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
               <Text as="span" variant="body-default-xl" onBackground="brand-strong" style={{ lineHeight: "175%" }}>1. Embeddings contain real semantic information.</Text>
             </Text>
@@ -129,7 +129,7 @@ export default function ChartPage() {
             </div>
           </Column>
 
-          <Column gap="s" marginTop="8">
+          <Column gap="s" style={{ marginTop: "8px" }}>
             <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
               <Text as="span" variant="body-default-xl" onBackground="brand-strong" style={{ lineHeight: "175%" }}>2. Transformers learn relationships.</Text>
             </Text>
@@ -156,7 +156,7 @@ export default function ChartPage() {
 
         {/* THE OBVIOUS PROBLEM */}
         <Column gap="s">
-          <Heading as="h2" variant="heading-strong-xl" marginTop="12" marginBottom="6">
+          <Heading as="h2" variant="heading-strong-xl" style={{ marginTop: "12px", marginBottom: "6px" }}>
             The Obvious Problem With Applying Attention to a Corpus
           </Heading>
           <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
@@ -175,7 +175,7 @@ export default function ChartPage() {
           <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", marginTop: "8px" }}>
             We need a way to:
           </Text>
-          <Column as="ul" gap="xs" marginTop="4" style={{ listStyle: "none", paddingLeft: "0" }}>
+          <Column as="ul" gap="xs" style={{ listStyle: "none", paddingLeft: "0", marginTop: "4px" }}>
             <Text as="li" variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
               • Work at coarse scales first
             </Text>
@@ -193,7 +193,7 @@ export default function ChartPage() {
 
         {/* ORGANIZING THE EMBEDDING SPACE */}
         <Column gap="s">
-          <Heading as="h2" variant="heading-strong-xl" marginTop="12" marginBottom="6">
+          <Heading as="h2" variant="heading-strong-xl" style={{ marginTop: "12px", marginBottom: "6px" }}>
             Organizing the Embedding Space Into a Tree
           </Heading>
           <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
@@ -202,7 +202,7 @@ export default function ChartPage() {
           <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
             The tree is built very simply:
           </Text>
-          <Column as="ul" gap="xs" marginTop="4" style={{ listStyle: "none", paddingLeft: "0" }}>
+          <Column as="ul" gap="xs" style={{ listStyle: "none", paddingLeft: "0", marginTop: "4px" }}>
             <Text as="li" variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
               • Run recursive clustering (<InlineCode>k=2</InlineCode> or small <InlineCode>k</InlineCode>).
             </Text>
@@ -226,7 +226,7 @@ export default function ChartPage() {
 
         {/* TRAVERSAL */}
         <Column gap="s">
-          <Heading as="h2" variant="heading-strong-xl" marginTop="12" marginBottom="6">
+          <Heading as="h2" variant="heading-strong-xl" style={{ marginTop: "12px", marginBottom: "6px" }}>
             Traversal: How the Transformer Maintains Sequence Length
           </Heading>
           <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
@@ -238,7 +238,7 @@ export default function ChartPage() {
           <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", marginTop: "8px" }}>
             CHART does this by maintaining a fixed-size active set:
           </Text>
-          <Column as="ul" gap="xs" marginTop="4" style={{ listStyle: "none", paddingLeft: "0" }}>
+          <Column as="ul" gap="xs" style={{ listStyle: "none", paddingLeft: "0", marginTop: "4px" }}>
             <Text as="li" variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
               • Start with <InlineCode>K₀</InlineCode> top-level nodes (<InlineCode>K₀</InlineCode> ~ <InlineCode>64–128</InlineCode>).
             </Text>
@@ -284,14 +284,14 @@ export default function ChartPage() {
 
         {/* TRAINING */}
         <Column gap="xs">
-          <Heading as="h2" variant="heading-strong-xl" marginTop="12" marginBottom="4">
+          <Heading as="h2" variant="heading-strong-xl" style={{ marginTop: "12px", marginBottom: "4px" }}>
             Training Objectives: A Three-Stage Curriculum
           </Heading>
           <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
             Three stages build from basic localization to relational reasoning to embedding-space refinement. <Text as="span" variant="body-default-xl" onBackground="brand-strong" style={{ lineHeight: "175%" }}>The transformer never learns to manage sequence length</Text> — we enforce a fixed-size frontier at every step; the model only learns to navigate within that bounded set.
           </Text>
 
-          <Column gap="xs" marginTop="4">
+          <Column gap="xs" style={{ marginTop: "4px" }}>
             <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
               <Text as="span" variant="body-default-xl" onBackground="brand-strong" style={{ lineHeight: "175%" }}>A. Localization</Text> — Descend the hierarchy to locate a single document. For anchor A: start at root, present fixed-size candidate nodes, label exactly one correct path per step. Train with BCE (one positive, many negatives). Teaches basic tree geometry: given an embedding, find the correct coarse-to-fine route. No multi-path reasoning yet.
             </Text>
@@ -304,7 +304,7 @@ export default function ChartPage() {
             </div>
           </Column>
 
-          <Column gap="xs" marginTop="4">
+          <Column gap="xs" style={{ marginTop: "4px" }}>
             <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
               <Text as="span" variant="body-default-xl" onBackground="brand-strong" style={{ lineHeight: "175%" }}>B. Relational Localization</Text> — Generalize to find a document and its related documents. For anchor A, include neighbors: linked documents, reply-chains, citations, co-retrieved items, graph edges. Multiple frontier nodes may be correct → multi-label BCE. Each subtree gets <InlineCode>0/1</InlineCode> label for whether it leads toward any target (A, B, C, …). Teaches semantic routing: explore multiple paths toward meaningful neighbors. Traversal becomes reasoning, not just following.
             </Text>
@@ -317,7 +317,7 @@ export default function ChartPage() {
             </div>
           </Column>
 
-          <Column gap="xs" marginTop="4">
+          <Column gap="xs" style={{ marginTop: "4px" }}>
             <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
               <Text as="span" variant="body-default-xl" onBackground="brand-strong" style={{ lineHeight: "175%" }}>C. Embedding Refinement</Text> — Close the loop: reshape embedding space so learned paths become easier and coherent. Use InfoNCE for comparative pressure: pull anchors toward relational neighbors, push away from unrelated nodes, improve cluster coherence, align tree boundaries with semantic relationships. After updating embeddings: recompute coherence for affected leaf clusters only, split inconsistent clusters, merge overly tight ones, update centroids upward, leave rest untouched. Results in a self-correcting hierarchy that aligns with discovered relationships.
             </Text>
@@ -333,13 +333,13 @@ export default function ChartPage() {
 
         {/* PUTTING IT ALL TOGETHER */}
         <Column gap="s">
-          <Heading as="h2" variant="heading-strong-xl" marginTop="12" marginBottom="6">
+          <Heading as="h2" variant="heading-strong-xl" style={{ marginTop: "12px", marginBottom: "6px" }}>
             Now We Put It All Together — CHART
           </Heading>
           <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
             By this point, the system has all the necessary ingredients:
           </Text>
-          <Column as="ol" gap="s" marginTop="8" style={{ listStyle: "decimal", paddingLeft: "24px" }}>
+          <Column as="ol" gap="s" style={{ listStyle: "decimal", paddingLeft: "24px", marginTop: "8px" }}>
             <Text as="li" variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
               <Text as="span" variant="body-default-xl" onBackground="brand-strong" style={{ lineHeight: "175%" }}>A hierarchical semantic tree</Text> — built from clustering, storing centroids and summaries.
             </Text>
@@ -371,7 +371,7 @@ export default function ChartPage() {
 
         {/* WHY THIS MATTERS */}
         <Column gap="s">
-          <Heading as="h2" variant="heading-strong-xl" marginTop="12" marginBottom="6">
+          <Heading as="h2" variant="heading-strong-xl" style={{ marginTop: "12px", marginBottom: "6px" }}>
             Why This Matters
           </Heading>
           <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>

@@ -428,7 +428,7 @@ export function D3Visual1() {
     // X-axis
     const xAxis = g.append("g")
       .attr("transform", `translate(0,${innerHeight})`)
-      .call(d3.axisBottom(xScale).ticks(5).tickFormat(d => d.toFixed(1)));
+      .call(d3.axisBottom(xScale).ticks(5).tickFormat(d => Number(d).toFixed(1)));
     
     xAxis.attr("color", axisColor)
       .selectAll("text")
@@ -446,7 +446,7 @@ export function D3Visual1() {
     
     // Y-axis
     const yAxis = g.append("g")
-      .call(d3.axisLeft(yScale).ticks(5).tickFormat(d => d.toFixed(1)));
+      .call(d3.axisLeft(yScale).ticks(5).tickFormat(d => Number(d).toFixed(1)));
     
     yAxis.attr("color", axisColor)
       .selectAll("text")
