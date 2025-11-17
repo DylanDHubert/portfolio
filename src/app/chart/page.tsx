@@ -4,6 +4,8 @@ import { formatDate } from "@/utils/formatDate";
 import { ScrollToHash } from "@/components";
 import { D3Visual1, D3Visual2, D3Visual3 } from "@/components/chart/D3Placeholders";
 import styles from "./Chart.module.scss";
+import { ThemeAwareRedBox } from "./ThemeAwareRedBox";
+import { ThemeAwareGreenBox } from "./ThemeAwareGreenBox";
 
 export async function generateMetadata() {
   return Meta.generate({
@@ -112,16 +114,22 @@ export default function ChartPage() {
           {/* Two inline boxes for the two priors */}
           <div style={{ display: "flex", gap: "12px", marginTop: "12px", marginBottom: "8px" }}>
             <div className={styles.chartCard} style={{ flex: 1 }}>
-              <Column padding="24" vertical="center" horizontal="center" fillWidth>
+              <Column padding="24" vertical="center" horizontal="center" fillWidth gap="4">
+                <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", textAlign: "center", fontWeight: "bold" }}>
+                  EMBEDDINGS
+                </Text>
                 <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", textAlign: "center" }}>
-                  {/* Content for first box - will be filled in */}
+                  contain real semantic information.
                 </Text>
               </Column>
             </div>
             <div className={styles.chartCard} style={{ flex: 1 }}>
-              <Column padding="24" vertical="center" horizontal="center" fillWidth>
+              <Column padding="24" vertical="center" horizontal="center" fillWidth gap="4">
+                <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", textAlign: "center", fontWeight: "bold" }}>
+                  TRANSFORMERS
+                </Text>
                 <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", textAlign: "center" }}>
-                  {/* Content for second box - will be filled in */}
+                  learn relationships.
                 </Text>
               </Column>
             </div>
@@ -129,28 +137,17 @@ export default function ChartPage() {
           
           <Column gap="s" style={{ marginTop: "8px" }}>
             <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
-              <Text as="span" variant="body-default-xl" onBackground="brand-strong" style={{ lineHeight: "175%" }}>1. Embeddings contain real semantic information.</Text>
-            </Text>
-            <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
-              Models like BERT, OpenAI&apos;s text-embeddings, and all modern vector systems give us dense vectors that encode meaning surprisingly well.
-            </Text>
-            <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
               But a problem remains:
             </Text>
-            <div className={styles.chartCard} style={{ marginTop: "4px", marginBottom: "4px" }}>
-              <Column padding="24" vertical="center" horizontal="center" fillWidth>
-                <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", textAlign: "center" }}>
-                  Embeddings do not tell you how concepts relate, only how far apart they are.
-                  There is no hierarchy, no paths, no structure. Only distances.
-                </Text>
-              </Column>
-            </div>
+            <ThemeAwareRedBox>
+              <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", textAlign: "center", margin: 0 }}>
+                Embeddings do not tell you how concepts relate, only how far apart they are.
+                There is no hierarchy, no paths, no structure. Only distances.
+              </Text>
+            </ThemeAwareRedBox>
           </Column>
 
           <Column gap="s" style={{ marginTop: "8px" }}>
-            <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
-              <Text as="span" variant="body-default-xl" onBackground="brand-strong" style={{ lineHeight: "175%" }}>2. Transformers learn relationships.</Text>
-            </Text>
             <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
               Self-attention is fundamentally a learned relational operator — a dynamic, content-based graph over tokens.
             </Text>
@@ -170,16 +167,19 @@ export default function ChartPage() {
               </Text>
             </Column>
           </div>
+          
+          <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", marginTop: "8px" }}>
+            But a problem remains:
+          </Text>
+          <ThemeAwareRedBox>
+            <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", textAlign: "center", margin: 0 }}>
+              You cannot simply run attention directly over your entire embedding database.
+            </Text>
+          </ThemeAwareRedBox>
         </Column>
 
         {/* THE OBVIOUS PROBLEM */}
         <Column gap="s">
-          <Heading as="h2" variant="heading-strong-xl" style={{ marginTop: "12px", marginBottom: "6px" }}>
-            The Obvious Problem With Applying Attention to a Corpus
-          </Heading>
-          <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
-            You cannot simply run attention directly over your entire embedding database.
-          </Text>
           <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
             A corpus might have <InlineCode>10M–100M</InlineCode> embeddings.
           </Text>
@@ -214,9 +214,11 @@ export default function ChartPage() {
           <Heading as="h2" variant="heading-strong-xl" style={{ marginTop: "12px", marginBottom: "6px" }}>
             Organizing the Embedding Space Into a Tree
           </Heading>
-          <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
-            If we pre-organize the corpus into a tree, we can traverse coarse-to-fine without ever loading the full dataset.
-          </Text>
+          <ThemeAwareGreenBox>
+            <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", textAlign: "center", margin: 0 }}>
+              If we pre-organize the corpus into a tree, we can traverse coarse-to-fine without ever loading the full dataset.
+            </Text>
+          </ThemeAwareGreenBox>
           <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
             The tree is built very simply:
           </Text>
