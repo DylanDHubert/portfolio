@@ -24,8 +24,9 @@ export default function ChartPage() {
   const articleSchema = {
     "@context": "https://schema.org",
     "@type": "TechArticle",
-    "headline": "CHART: Coarse-to-Fine Transformer Traversal for Embedding Search",
-    "description": "A transformer-based approach to embedding search that learns to traverse hierarchical semantic trees",
+    "headline": "CHART: Coarse-to-Fine Hierarchical Attention for Recursive Traversal",
+    "alternativeHeadline": "C.H.A.R.T. - Coarse-to-Fine Hierarchical Attention for Recursive Traversal",
+    "description": "A transformer-based approach to embedding search that learns to traverse hierarchical semantic trees, enabling relationship-based retrieval instead of distance-based nearest neighbor search. CHART uses coarse-to-fine traversal with a fixed-size attention window to navigate embedding space in O(log N) time.",
     "url": `${baseURL}/chart`,
     "datePublished": publishedAt,
     "dateModified": publishedAt,
@@ -40,9 +41,23 @@ export default function ChartPage() {
       "name": person.name,
       "url": `${baseURL}/about`
     },
-    "image": `/api/og/generate?title=${encodeURIComponent("CHART: Coarse-to-Fine Transformer Traversal")}`,
+    "image": `/api/og/generate?title=${encodeURIComponent("CHART: Coarse-to-Fine Hierarchical Attention for Recursive Traversal")}`,
     "articleSection": "Machine Learning & AI",
-    "keywords": ["machine learning", "transformers", "embedding search", "RAG", "vector search", "semantic search", "attention mechanisms"],
+    "keywords": [
+      "machine learning", 
+      "transformers", 
+      "embedding search", 
+      "RAG", 
+      "vector search", 
+      "semantic search", 
+      "attention mechanisms",
+      "hierarchical clustering",
+      "coarse-to-fine traversal",
+      "relationship-based retrieval",
+      "neural information retrieval",
+      "transformer architecture",
+      "embedding space navigation"
+    ],
     "timeRequired": "PT10M",
     "about": [
       {
@@ -56,12 +71,29 @@ export default function ChartPage() {
       {
         "@type": "Thing",
         "name": "Embedding Search"
+      },
+      {
+        "@type": "Thing",
+        "name": "Hierarchical Clustering"
+      },
+      {
+        "@type": "Thing",
+        "name": "Attention Mechanisms"
+      },
+      {
+        "@type": "Thing",
+        "name": "Semantic Search"
       }
     ],
     "isPartOf": {
       "@type": "Blog",
       "name": `${person.name}'s Blog`,
       "url": `${baseURL}${blog.path}`
+    },
+    "mainEntity": {
+      "@type": "ResearchProject",
+      "name": "CHART",
+      "description": "A transformer-based embedding search system that learns to traverse hierarchical semantic trees using coarse-to-fine attention mechanisms"
     }
   };
 

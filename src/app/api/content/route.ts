@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getPosts } from '@/utils/utils';
 import { baseURL, person, social } from '@/resources';
+import { getContentContext } from '@/utils/contentParser';
 
 export async function GET() {
   // GET ALL CONTENT FOR AI ACCESSIBILITY
@@ -55,11 +56,27 @@ export async function GET() {
       challenges: extractChallenges(project.content)
     })),
 
+    // CHART RESEARCH POST
+    researchPosts: [{
+      title: "CHART: Coarse-to-Fine Hierarchical Attention for Recursive Traversal",
+      slug: "chart",
+      url: `${baseURL}/chart`,
+      summary: "A transformer-based approach to embedding search that learns to traverse hierarchical semantic trees, enabling relationship-based retrieval instead of distance-based nearest neighbor search.",
+      publishedAt: "2025-11-17",
+      tags: ["machine learning", "transformers", "embedding search", "RAG", "vector search", "semantic search", "attention mechanisms", "hierarchical clustering"],
+      category: "Machine Learning & AI Research",
+      content: getChartPageContent(), // FULL CONTENT FOR AI ANALYSIS
+      wordCount: getChartPageContent().split(' ').length,
+      topics: ["machine learning", "transformers", "embedding search", "hierarchical clustering", "attention mechanisms", "semantic search", "RAG", "vector search"],
+      technicalTerms: ["transformer", "embedding", "hierarchical clustering", "attention mechanism", "coarse-to-fine traversal", "BCE", "InfoNCE", "ANN", "cosine similarity", "semantic relationships"]
+    }],
+
     // STATISTICS FOR AI UNDERSTANDING
     statistics: {
       totalBlogPosts: blogPosts.length,
       totalProjects: projects.length,
-      totalContent: blogPosts.length + projects.length,
+      totalResearchPosts: 1, // CHART post
+      totalContent: blogPosts.length + projects.length + 1,
       averageBlogLength: Math.round(blogPosts.reduce((acc, post) => acc + post.content.split(' ').length, 0) / blogPosts.length),
       averageProjectLength: Math.round(projects.reduce((acc, project) => acc + project.content.split(' ').length, 0) / projects.length),
       mostCommonTopics: getMostCommonTopics([...blogPosts, ...projects]),
@@ -208,4 +225,15 @@ function getMostCommonTechnologies(content: any[]): string[] {
     .sort(([,a], [,b]) => b - a)
     .slice(0, 10)
     .map(([tech]) => tech);
+}
+
+// HELPER FUNCTION TO EXTRACT CHART PAGE CONTENT
+function getChartPageContent(): string {
+  const fullContent = getContentContext();
+  // EXTRACT CHART SECTION FROM PARSED CONTENT
+  const chartMatch = fullContent.match(/=== CHART RESEARCH POST ===([\s\S]*?)(?=\n\n|$)/);
+  if (chartMatch) {
+    return chartMatch[1].trim();
+  }
+  return "CHART: Coarse-to-Fine Hierarchical Attention for Recursive Traversal - A transformer-based approach to embedding search that learns to traverse hierarchical semantic trees.";
 } 

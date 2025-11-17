@@ -29,6 +29,10 @@ export function parseAllContent(): string {
     content.push(post.content);
   });
   
+  // Add CHART research post
+  content.push("=== CHART RESEARCH POST ===");
+  content.push(parseChartPage());
+  
   return content.join('\n\n');
 }
 
@@ -152,6 +156,75 @@ function parseAboutPage(): string {
   } catch (error) {
     console.error('Error parsing about page:', error);
     return 'About page content not available';
+  }
+}
+
+function parseChartPage(): string {
+  try {
+    const chartPath = path.join(process.cwd(), 'src/app/chart/page.tsx');
+    const chartContent = fs.readFileSync(chartPath, 'utf8');
+    
+    // EXTRACT KEY CONTENT FROM CHART PAGE
+    const chartInfo: string[] = [];
+    
+    chartInfo.push("CHART: Coarse-to-Fine Hierarchical Attention for Recursive Traversal");
+    chartInfo.push("Published: 2025-11-17");
+    chartInfo.push("Category: Machine Learning & AI Research");
+    chartInfo.push("URL: /chart");
+    chartInfo.push("");
+    
+    // EXTRACT MAIN SECTIONS
+    chartInfo.push("DESCRIPTION:");
+    chartInfo.push("A transformer-based approach to embedding search that learns to traverse hierarchical semantic trees, enabling relationship-based retrieval instead of distance-based nearest neighbor search.");
+    chartInfo.push("");
+    
+    chartInfo.push("KEY CONCEPTS:");
+    chartInfo.push("- Embeddings contain real semantic information");
+    chartInfo.push("- Transformers learn relationships");
+    chartInfo.push("- Problem: Embeddings only show distances, not relationships or hierarchy");
+    chartInfo.push("- Solution: Use transformers to learn how to navigate embedding space");
+    chartInfo.push("- Core insight: Pre-organize corpus into a hierarchical tree, then traverse coarse-to-fine");
+    chartInfo.push("");
+    
+    chartInfo.push("ARCHITECTURE:");
+    chartInfo.push("1. Hierarchical Semantic Tree: Built via recursive clustering (k=2), leaves contain documents, parents contain centroid embeddings");
+    chartInfo.push("2. Fixed-Size Frontier: Maintains bounded attention window (e.g., 128 tokens) regardless of corpus size");
+    chartInfo.push("3. Coarse-to-Fine Traversal: Start with root nodes, expand top attention nodes, replace with children, remove low attention nodes");
+    chartInfo.push("4. Three-Stage Training Curriculum:");
+    chartInfo.push("   A. Localization: Descend hierarchy to locate single document (Single-Target BCE)");
+    chartInfo.push("   B. Relational Localization: Find document and related documents (Multi-Target BCE)");
+    chartInfo.push("   C. Embedding Refinement: Reshape embedding space for coherent hierarchy (InfoNCE)");
+    chartInfo.push("");
+    
+    chartInfo.push("COMPUTATIONAL COMPLEXITY:");
+    chartInfo.push("- Time: O(log N) traversal time");
+    chartInfo.push("- Space: Only loads frontier, not full dataset");
+    chartInfo.push("- Attention: Fixed O(N²) where N is max_seq_len (bounded), not corpus size");
+    chartInfo.push("");
+    
+    chartInfo.push("KEY DIFFERENCES FROM TRADITIONAL ANN:");
+    chartInfo.push("- ANN: distance-based, flat, retrieves nearest neighbors");
+    chartInfo.push("- CHART: relationship-based, topological, retrieves meaningful connections");
+    chartInfo.push("- CHART learns semantic relationships between distant but related embeddings");
+    chartInfo.push("");
+    
+    chartInfo.push("CURRENT STATUS:");
+    chartInfo.push("- Core codebase written");
+    chartInfo.push("- Two datasets built (first was a dead end)");
+    chartInfo.push("- Initial training and evaluation loops running");
+    chartInfo.push("- Next post will cover: dataset construction, implementation details, initial results, and iterations");
+    chartInfo.push("");
+    
+    chartInfo.push("TECHNICAL DETAILS TO BE COVERED IN FOLLOW-UP:");
+    chartInfo.push("- Seeding the attention window: how initial sequence is populated and query embedding integrated");
+    chartInfo.push("- Embeddings as tokens: projection layers and tokenization strategy");
+    chartInfo.push("- Training dynamics: curriculum scheduling, stage-wise loss weighting, stabilization");
+    chartInfo.push("- Evaluation metrics: traversal interpretability and hierarchy coherence");
+    
+    return chartInfo.join('\n');
+  } catch (error) {
+    console.error('Error parsing chart page:', error);
+    return 'Chart page content not available';
   }
 }
 

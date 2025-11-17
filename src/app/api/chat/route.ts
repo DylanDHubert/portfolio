@@ -64,8 +64,8 @@ const tools = [
         properties: {
           path: {
             type: 'string',
-            description: 'The path to navigate to (e.g., /about, /blog, /music, /gallery)',
-            enum: ['/about', '/blog', '/music', '/gallery', '/websites']
+            description: 'The path to navigate to (e.g., /about, /blog, /music, /gallery, /chart)',
+            enum: ['/about', '/blog', '/music', '/gallery', '/websites', '/chart']
           }
         },
         required: ['path']
