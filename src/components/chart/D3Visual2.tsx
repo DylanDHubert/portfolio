@@ -251,6 +251,7 @@ function isClusterOnPath(cluster: ClusterNode, queryPoint: Point, currentDepth: 
 
 export function D3Visual2() {
   const svgRef = useRef<SVGSVGElement>(null);
+  const attentionSvgRef = useRef<SVGSVGElement>(null);
   const [depth, setDepth] = useState(0);
   const [maxDepth, setMaxDepth] = useState(0);
   
@@ -548,9 +549,33 @@ export function D3Visual2() {
       })
       .attr("opacity", 0.5); // Dim regular points
     
-    // Helper function to draw X marker
+    // Helper function to draw X marker with outline
     const drawX = (x: number, y: number, size: number, color: string, strokeWidth: number, opacity: number = 1) => {
       const halfSize = size / 2;
+      const outlineColor = getComputedStyle(document.documentElement)
+        .getPropertyValue('--neutral-surface-strong').trim() || '#fff';
+      const outlineWidth = 0.5; // Slight outline
+      
+      // Draw outline first (behind)
+      const outline1 = g.append("line")
+        .attr("x1", x - halfSize)
+        .attr("y1", y - halfSize)
+        .attr("x2", x + halfSize)
+        .attr("y2", y + halfSize)
+        .attr("stroke", outlineColor)
+        .attr("stroke-width", strokeWidth + outlineWidth * 2)
+        .attr("opacity", opacity * 0.8);
+      
+      const outline2 = g.append("line")
+        .attr("x1", x - halfSize)
+        .attr("y1", y + halfSize)
+        .attr("x2", x + halfSize)
+        .attr("y2", y - halfSize)
+        .attr("stroke", outlineColor)
+        .attr("stroke-width", strokeWidth + outlineWidth * 2)
+        .attr("opacity", opacity * 0.8);
+      
+      // Draw main X on top
       const line1 = g.append("line")
         .attr("x1", x - halfSize)
         .attr("y1", y - halfSize)
@@ -569,7 +594,7 @@ export function D3Visual2() {
         .attr("stroke-width", strokeWidth)
         .attr("opacity", opacity);
       
-      return { line1, line2 };
+      return { line1, line2, outline1, outline2 };
     };
     
     // Draw related points as X markers (same style as query, just smaller)
@@ -650,9 +675,11 @@ export function D3Visual2() {
       }
     });
     
-    // Draw centroids from all previous depths (on top of lines)
-    // Color darkens and size shrinks with depth: brightest/largest for current level, darker/smaller for previous depths
-    // All centroids at 100% opacity
+    // Assign numbers to clusters on paths (for labeling)
+    // Collect all clusters on paths across all depths
+    const clustersOnPath: Array<{cluster: ClusterNode, depth: number, number: number}> = [];
+    let clusterNumber = 1; // Start from 1 (0 is reserved for query)
+    
     for (let d = 0; d <= depth; d++) {
       const clustersAtD = getClustersAtDepth(rootNodes, d);
       clustersAtD.forEach(cluster => {
@@ -661,32 +688,61 @@ export function D3Visual2() {
           cluster.points.some(p => p.id === rp.id)
         );
         
-        // Only draw centroids that are on a path
         if (isOnPath || hasRelated) {
-          const normalizedCentroid = {
-            x: (cluster.centroid.x - xMin) / (xMax - xMin || 1),
-            y: (cluster.centroid.y - yMin) / (yMax - yMin || 1),
-          };
-          
-          // Darken color based on depth: brightest for current depth, darker for previous
-          const centroidColor = darkenColorByDepth(targetColor, depth, d);
-          // Shrink size based on depth: largest for current depth, smaller for previous
-          const sizeScale = getSizeScaleByDepth(depth, d);
-          
-          const strokeColor = getComputedStyle(document.documentElement)
-            .getPropertyValue('--neutral-surface-strong').trim() || '#fff';
-          
-          g.append("circle")
-            .attr("cx", xScale(normalizedCentroid.x))
-            .attr("cy", yScale(normalizedCentroid.y))
-            .attr("r", 6 * sizeScale) // Scale radius based on depth
-            .attr("fill", centroidColor) // Darkened based on depth
-            .attr("stroke", strokeColor)
-            .attr("stroke-width", 2.5 * sizeScale) // Scale stroke width
-            .attr("opacity", 1.0); // 100% opacity for all centroids
+          clustersOnPath.push({ cluster, depth: d, number: clusterNumber++ });
         }
       });
     }
+    
+    // Create a map from cluster to number for easy lookup
+    const clusterToNumber = new Map<ClusterNode, number>();
+    clustersOnPath.forEach(({ cluster, number }) => {
+      clusterToNumber.set(cluster, number);
+    });
+    
+    // Draw centroids from all previous depths (on top of lines)
+    // Color darkens and size shrinks with depth: brightest/largest for current level, darker/smaller for previous depths
+    // All centroids at 100% opacity
+    clustersOnPath.forEach(({ cluster, depth: d, number }) => {
+      const normalizedCentroid = {
+        x: (cluster.centroid.x - xMin) / (xMax - xMin || 1),
+        y: (cluster.centroid.y - yMin) / (yMax - yMin || 1),
+      };
+      
+      // Darken color based on depth: brightest for current depth, darker for previous
+      const centroidColor = darkenColorByDepth(targetColor, depth, d);
+      // Shrink size based on depth: largest for current depth, smaller for previous
+      const sizeScale = getSizeScaleByDepth(depth, d);
+      
+      const strokeColor = getComputedStyle(document.documentElement)
+        .getPropertyValue('--neutral-surface-strong').trim() || '#fff';
+      
+      g.append("circle")
+        .attr("cx", xScale(normalizedCentroid.x))
+        .attr("cy", yScale(normalizedCentroid.y))
+        .attr("r", 6 * sizeScale) // Scale radius based on depth
+        .attr("fill", centroidColor) // Darkened based on depth
+        .attr("stroke", strokeColor)
+        .attr("stroke-width", 2.5 * sizeScale) // Scale stroke width
+        .attr("opacity", 1.0); // 100% opacity for all centroids
+      
+      // Add number label next to centroid - larger and more visible
+      // Use targetColor (already computed from theme) for high visibility
+      const numberColor = targetColor; // Use target color for high visibility
+      // strokeColor already declared above for centroid circle
+      
+      const numberText = g.append("text")
+        .attr("x", xScale(normalizedCentroid.x) + 12 * sizeScale)
+        .attr("y", yScale(normalizedCentroid.y) + 5)
+        .attr("fill", numberColor)
+        .style("font-size", `${16 * sizeScale}px`) // Larger font size
+        .style("font-weight", "bold")
+        .style("stroke", strokeColor)
+        .style("stroke-width", `${2 * sizeScale}px`)
+        .style("stroke-opacity", 0.8)
+        .style("paint-order", "stroke fill") // Draw stroke first, then fill
+        .text(number.toString());
+    });
     
     
     // Add axes
@@ -834,6 +890,345 @@ export function D3Visual2() {
     
   }, [points, rootNodes, depth, queryPoint, relatedPoints]);
   
+  // Draw attention sequence visualization
+  useEffect(() => {
+    if (!attentionSvgRef.current || rootNodes.length === 0) return;
+    
+    const svg = d3.select(attentionSvgRef.current);
+    svg.selectAll("*").remove();
+    
+    const width = 800;
+    const height = 120;
+    const margin = { top: 60, right: 20, bottom: 40, left: 20 };
+    const innerWidth = width - margin.left - margin.right;
+    const innerHeight = height - margin.top - margin.bottom;
+    
+    const g = svg
+      .append("g")
+      .attr("transform", `translate(${margin.left},${margin.top})`);
+    
+    const MAX_SEQ_LENGTH = 16;
+    const theme = document.documentElement.getAttribute('data-theme') || 'dark';
+    const targetColor = theme === 'light' ? '#06b6d4' : '#fbbf24';
+    const axisColor = getComputedStyle(document.documentElement)
+      .getPropertyValue('--neutral-text-medium') || '#666';
+    
+    // Get clusters that should be in attention at this depth
+    // CHART works by: expand only top α fraction (α ~ 0.25) based on attention scores
+    // The attention window contains: unexpanded nodes from previous level + children of expanded nodes
+    // Example: at level 2 we have 8 nodes, 5 get expanded → level 3 shows: 3 (unexpanded from level 2) + 10 (children of 5 expanded)
+    
+    let clustersInAttention: ClusterNode[] = [];
+    
+    // Helper function to get clusters in attention at a given depth
+    // Returns: unexpanded nodes from previous level + children of expanded nodes
+    const getAttentionAtDepth = (targetDepth: number): {nodes: ClusterNode[], expanded: ClusterNode[], unexpanded: ClusterNode[]} => {
+      if (targetDepth === 0) {
+        // At root: show all root clusters (K₀ nodes), all are "in attention" (none expanded yet)
+        const rootClusters = getClustersAtDepth(rootNodes, 0);
+        return { nodes: rootClusters, expanded: [], unexpanded: rootClusters };
+      } else {
+        // Get attention from previous depth
+        const prevAttention = getAttentionAtDepth(targetDepth - 1);
+        const previousNodes = prevAttention.nodes;
+        
+        // Determine which nodes got expanded (on path = high attention = expanded)
+        const expanded: ClusterNode[] = [];
+        const unexpanded: ClusterNode[] = [];
+        
+        previousNodes.forEach(cluster => {
+          const isOnPath = isClusterOnPath(cluster, queryPoint, targetDepth - 1);
+          const hasRelated = relatedPoints.some(rp => 
+            cluster.points.some(p => p.id === rp.id)
+          );
+          
+          if ((isOnPath || hasRelated) && cluster.children.length > 0) {
+            // This cluster got expanded (high attention)
+            expanded.push(cluster);
+          } else {
+            // This cluster did NOT get expanded (stays in attention window)
+            unexpanded.push(cluster);
+          }
+        });
+        
+        // Get children of expanded nodes
+        const childrenOfExpanded: ClusterNode[] = [];
+        expanded.forEach(cluster => {
+          childrenOfExpanded.push(...cluster.children);
+        });
+        
+        // Attention window = unexpanded nodes + children of expanded nodes
+        const nodes = [...unexpanded, ...childrenOfExpanded];
+        return { nodes, expanded, unexpanded };
+      }
+    };
+    
+    if (depth === 0) {
+      // At root: show all root clusters (K₀ nodes)
+      clustersInAttention = getClustersAtDepth(rootNodes, 0);
+    } else if (depth === maxDepth - 1) {
+      // At Leaves level: show both leaf clusters AND their parents that were NOT expanded
+      const prevAttention = getAttentionAtDepth(depth - 1);
+      const unexpandedParents = prevAttention.unexpanded;
+      const leafClusters = getClustersAtDepth(rootNodes, depth);
+      
+      // Show: unexpanded parents + leaf clusters
+      clustersInAttention = [...unexpandedParents, ...leafClusters];
+    } else {
+      // At intermediate depths: unexpanded nodes from previous + children of expanded nodes
+      const attention = getAttentionAtDepth(depth);
+      clustersInAttention = attention.nodes;
+    }
+    
+    // Assign numbers to ALL clusters across all depths (for consistent labeling)
+    const allClusters: Array<{cluster: ClusterNode, depth: number}> = [];
+    for (let d = 0; d <= maxDepth; d++) {
+      const clustersAtD = getClustersAtDepth(rootNodes, d);
+      clustersAtD.forEach(cluster => {
+        allClusters.push({ cluster, depth: d });
+      });
+    }
+    
+    // Create mapping: cluster -> number (1-based, 0 is query)
+    // Number clusters depth-first: all at depth 0, then all at depth 1, etc.
+    const clusterToNumber = new Map<ClusterNode, number>();
+    allClusters.forEach(({ cluster }, idx) => {
+      clusterToNumber.set(cluster, idx + 1);
+    });
+    
+    // Build sequence: [Query, ...clusters in attention at this depth]
+    const sequence: Array<{type: 'query' | 'cluster', cluster?: ClusterNode, number?: number, attention: number}> = [];
+    
+    // Position 0: Query (always highest attention)
+    sequence.push({ type: 'query', attention: 1.0 });
+    
+    // Positions 1-15: Clusters in attention (expanded from previous level)
+    clustersInAttention.forEach(cluster => {
+      const number = clusterToNumber.get(cluster);
+      if (number !== undefined) {
+        // Attention decreases for later positions (simulate attention weights)
+        const position = sequence.length;
+        const attention = position < MAX_SEQ_LENGTH ? 1.0 - (position * 0.05) : 0.1;
+        sequence.push({ type: 'cluster', cluster, number, attention: Math.max(0.1, attention) });
+      }
+    });
+    
+    // Better spacing: larger boxes with more space between them
+    const clusterWidth = 45;
+    const boxHeight = clusterWidth; // Make boxes square
+    const clusterSpacing = 3; // Space between boxes
+    const totalWidth = (MAX_SEQ_LENGTH * clusterWidth) + ((MAX_SEQ_LENGTH - 1) * clusterSpacing);
+    const startX = (innerWidth - totalWidth) / 2; // Center the sequence
+    
+    // Draw all 16 positions
+    for (let i = 0; i < MAX_SEQ_LENGTH; i++) {
+      const x = startX + i * (clusterWidth + clusterSpacing);
+      const y = innerHeight / 2;
+      
+      const item = sequence[i];
+      const isEmpty = !item;
+      
+      if (isEmpty) {
+        // Empty slot
+        g.append("rect")
+          .attr("x", x)
+          .attr("y", y - boxHeight / 2)
+          .attr("width", clusterWidth)
+          .attr("height", boxHeight)
+          .attr("fill", "none")
+          .attr("stroke", axisColor)
+          .attr("stroke-width", 1)
+          .attr("stroke-opacity", 0.2)
+          .attr("stroke-dasharray", "2,2")
+          .attr("rx", 4);
+      } else if (item.type === 'query') {
+        // Query position (always highest attention)
+        g.append("rect")
+          .attr("x", x)
+          .attr("y", y - boxHeight / 2)
+          .attr("width", clusterWidth)
+          .attr("height", boxHeight)
+          .attr("fill", "var(--neutral-surface-weak)")
+          .attr("stroke", targetColor)
+          .attr("stroke-width", 1) // Fixed 1px outline
+          .attr("rx", 4);
+        
+        // Query X marker (centered in box) with outline
+        const halfSize = 10;
+        const outlineColor = getComputedStyle(document.documentElement)
+          .getPropertyValue('--neutral-surface-strong').trim() || '#fff';
+        const outlineWidth = 0.5;
+        
+        // Draw outline first (behind)
+        g.append("line")
+          .attr("x1", x + clusterWidth / 2 - halfSize)
+          .attr("y1", y - halfSize)
+          .attr("x2", x + clusterWidth / 2 + halfSize)
+          .attr("y2", y + halfSize)
+          .attr("stroke", outlineColor)
+          .attr("stroke-width", 2.5 + outlineWidth * 2)
+          .attr("opacity", 0.8);
+        g.append("line")
+          .attr("x1", x + clusterWidth / 2 - halfSize)
+          .attr("y1", y + halfSize)
+          .attr("x2", x + clusterWidth / 2 + halfSize)
+          .attr("y2", y - halfSize)
+          .attr("stroke", outlineColor)
+          .attr("stroke-width", 2.5 + outlineWidth * 2)
+          .attr("opacity", 0.8);
+        
+        // Draw main X on top
+        g.append("line")
+          .attr("x1", x + clusterWidth / 2 - halfSize)
+          .attr("y1", y - halfSize)
+          .attr("x2", x + clusterWidth / 2 + halfSize)
+          .attr("y2", y + halfSize)
+          .attr("stroke", targetColor)
+          .attr("stroke-width", 2.5);
+        g.append("line")
+          .attr("x1", x + clusterWidth / 2 - halfSize)
+          .attr("y1", y + halfSize)
+          .attr("x2", x + clusterWidth / 2 + halfSize)
+          .attr("y2", y - halfSize)
+          .attr("stroke", targetColor)
+          .attr("stroke-width", 2.5);
+        
+        // Label
+        g.append("text")
+          .attr("x", x + clusterWidth / 2)
+          .attr("y", y + boxHeight / 2 + 15)
+          .attr("fill", axisColor)
+          .style("font-size", "11px")
+          .style("text-anchor", "middle")
+          .style("font-weight", "bold")
+          .text("Query");
+        
+        // Query token does not have a depth label
+      } else {
+        // Cluster position
+        const attention = item.attention;
+        const strokeWidth = 1; // Fixed 1px outline
+        
+        // Determine if this cluster will expand (on path = high attention = will expand)
+        const clusterDepth = item.cluster?.depth ?? depth;
+        const isOnPath = item.cluster ? isClusterOnPath(item.cluster, queryPoint, clusterDepth) : false;
+        const hasRelated = item.cluster ? relatedPoints.some(rp => 
+          item.cluster!.points.some(p => p.id === rp.id)
+        ) : false;
+        const willExpand = (isOnPath || hasRelated) && item.cluster && item.cluster.children.length > 0;
+        
+        // Get cluster color (need to find its index in clustersInAttention)
+        const clusterIdx = clustersInAttention.findIndex(c => c === item.cluster);
+        const getThemeColor = (index: number, total: number, expandBrightness: boolean) => {
+          // Add randomness to brightness (simulate natural attention score variation)
+          // Use cluster index as seed for deterministic randomness
+          const randomSeed = (index * 17 + clusterDepth * 31) % 100;
+          const randomVariation = (randomSeed / 100) * 8 - 4; // -4 to +4 variation
+          
+          if (theme === 'light') {
+            const hue = 0;
+            const saturation = 70;
+            // Brighter if will expand, dimmer if not, with random variation
+            const baseLightness = 30 + (index / total) * 25;
+            const baseAdjustment = expandBrightness ? 15 : -10;
+            const lightness = baseLightness + baseAdjustment + randomVariation;
+            return `hsl(${hue}, ${saturation}%, ${Math.max(20, Math.min(60, lightness))}%)`;
+          } else {
+            const hue = 270;
+            const saturation = 60;
+            // Brighter if will expand, dimmer if not, with random variation
+            const baseLightness = 40 + (index / total) * 30;
+            const baseAdjustment = expandBrightness ? 15 : -15;
+            const lightness = baseLightness + baseAdjustment + randomVariation;
+            return `hsl(${hue}, ${saturation}%, ${Math.max(25, Math.min(70, lightness))}%)`;
+          }
+        };
+        const bgColor = clusterIdx >= 0 ? getThemeColor(clusterIdx, clustersInAttention.length, willExpand) : "var(--neutral-surface-weak)";
+        
+        g.append("rect")
+          .attr("x", x)
+          .attr("y", y - boxHeight / 2)
+          .attr("width", clusterWidth)
+          .attr("height", boxHeight)
+          .attr("fill", bgColor)
+          .attr("stroke", targetColor)
+          .attr("stroke-width", strokeWidth) // Fixed 1px outline
+          .attr("rx", 4);
+        
+        // Centroid circle - apply depth-based darkening and size scaling
+        // clusterDepth already declared above (used for willExpand calculation)
+        
+        // Darken color based on depth: brightest for current depth, darker for previous
+        const darkenColorByDepth = (hex: string, currentDepth: number, targetDepth: number): string => {
+          if (currentDepth === 0 || targetDepth === currentDepth) {
+            return hex;
+          }
+          const r = parseInt(hex.slice(1, 3), 16);
+          const g = parseInt(hex.slice(3, 5), 16);
+          const b = parseInt(hex.slice(5, 7), 16);
+          const darkenFactor = 0.4 + (0.6 * (targetDepth / currentDepth));
+          const newR = Math.round(r * darkenFactor);
+          const newG = Math.round(g * darkenFactor);
+          const newB = Math.round(b * darkenFactor);
+          return `#${newR.toString(16).padStart(2, '0')}${newG.toString(16).padStart(2, '0')}${newB.toString(16).padStart(2, '0')}`;
+        };
+        // Shrink size based on depth: largest for current depth, smaller for previous
+        const getSizeScaleByDepth = (currentDepth: number, targetDepth: number): number => {
+          if (currentDepth === 0 || targetDepth === currentDepth) {
+            return 1.0;
+          }
+          return 0.6 + (0.4 * (targetDepth / currentDepth));
+        };
+        
+        const baseCentroidColor = theme === 'light' ? '#06b6d4' : '#fbbf24';
+        const centroidColor = darkenColorByDepth(baseCentroidColor, depth, clusterDepth);
+        const sizeScale = getSizeScaleByDepth(depth, clusterDepth);
+        const strokeColor = getComputedStyle(document.documentElement)
+          .getPropertyValue('--neutral-surface-strong').trim() || '#fff';
+        
+        g.append("circle")
+          .attr("cx", x + clusterWidth / 2)
+          .attr("cy", y) // Centered vertically in box
+          .attr("r", 6 * sizeScale) // Scale radius based on depth
+          .attr("fill", centroidColor) // Darkened based on depth
+          .attr("stroke", strokeColor)
+          .attr("stroke-width", 1.5 * sizeScale); // Scale stroke width
+        
+        // Number label (from 2D visualization)
+        g.append("text")
+          .attr("x", x + clusterWidth / 2)
+          .attr("y", y + boxHeight / 2 + 15)
+          .attr("fill", axisColor)
+          .style("font-size", "12px")
+          .style("text-anchor", "middle")
+          .style("font-weight", "bold")
+          .text(item.number?.toString() || "");
+        
+        // Depth label - use actual cluster depth, not selected depth (clusterDepth already declared above)
+        const depthLabel = clusterDepth === 0 ? "Root" : clusterDepth === maxDepth - 1 ? "Leaves" : clusterDepth.toString();
+        g.append("text")
+          .attr("x", x + clusterWidth / 2)
+          .attr("y", y - boxHeight / 2 - 8)
+          .attr("fill", axisColor)
+          .style("font-size", "10px")
+          .style("text-anchor", "middle")
+          .style("font-weight", "bold")
+          .text(depthLabel);
+      }
+    }
+    
+    // Title - positioned higher to avoid collision with depth labels (2x higher than before)
+    g.append("text")
+      .attr("x", innerWidth / 2)
+      .attr("y", -40)
+      .attr("fill", axisColor)
+      .style("font-size", "12px")
+      .style("text-anchor", "middle")
+      .style("font-weight", "bold")
+      .text(`Attention Sequence (Depth ${depth})`);
+    
+  }, [rootNodes, depth, queryPoint, relatedPoints, maxDepth]);
+  
   const maxDepthValue = Math.max(maxDepth - 1, 0);
   const buttonDepths = Array.from({ length: 5 }, (_, i) => {
     if (maxDepthValue === 0) return 0;
@@ -843,6 +1238,18 @@ export function D3Visual2() {
   return (
     <Column gap="m" horizontal="center" style={{ marginTop: "24px", marginBottom: "24px" }}>
       <Column gap="s" horizontal="center" style={{ width: "100%" }}>
+        {/* Attention sequence visualization */}
+        <svg
+          ref={attentionSvgRef}
+          width={800}
+          height={120}
+          style={{
+            border: "1px solid var(--neutral-border-medium)",
+            borderRadius: "8px",
+            backgroundColor: "var(--neutral-surface-weak)",
+            marginBottom: "12px",
+          }}
+        />
         <div className={styles.depthButtons}>
           {buttonDepths.map((buttonDepth, idx) => {
             // First button shows "Roots", last button shows "Leaves", others show depth number
