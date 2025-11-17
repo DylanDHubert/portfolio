@@ -2,8 +2,10 @@
 
 import { useEffect, useRef, useState, useMemo } from "react";
 import * as d3 from "d3";
-import { Column } from "@once-ui-system/core";
+import { Column, Text } from "@once-ui-system/core";
 import styles from "./D3Visual1.module.scss";
+import { ThemeAwareGreenBox } from "@/app/chart/ThemeAwareGreenBox";
+import { ThemeAwareRedBox } from "@/app/chart/ThemeAwareRedBox";
 
 interface Point {
   x: number;
@@ -1859,36 +1861,19 @@ export function D3Visual2() {
         }}
       />
       {/* Explanation text box - theme-aware with mode-based color */}
-      <div
-        style={{
-          width: "810px",
-          padding: "16px 20px",
-          borderRadius: "8px",
-          border: `1.5px solid ${mode === 'CHART' ? 'rgba(34, 197, 94, 0.5)' : 'rgba(239, 68, 68, 0.5)'}`,
-          backgroundColor: mode === 'CHART' 
-            ? (theme === 'light' ? '#f0fdf4' : '#0f1f15') // Light green tint / dark green tint
-            : (theme === 'light' ? '#fef2f2' : '#1f1515'), // Light red tint / dark red tint
-          color: theme === 'light' ? '#000' : '#fff',
-          fontSize: "14px",
-          lineHeight: "1.6",
-          marginTop: "12px",
-          textAlign: "center",
-        }}
-      >
-        {mode === 'CHART' ? (
-          <p style={{ margin: 0 }}>
-            <strong>CHART</strong> retrieves related concepts by learning relationships between embeddings. 
-            Through hierarchical traversal and attention mechanisms, it finds semantically related documents 
-            even when they are far apart in the embedding space.
-          </p>
-        ) : (
-          <p style={{ margin: 0 }}>
-            <strong>ANN</strong> only finds the closest documents based on cosine similarity. To retrieve 
-            related concepts, we need agentic dissemination of tasks because ANN cannot discover semantic 
-            relationships beyond nearest neighbors.
-          </p>
-        )}
-      </div>
+      {mode === 'CHART' ? (
+        <ThemeAwareGreenBox>
+          <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", textAlign: "center", margin: 0 }}>
+            <Text as="span" variant="body-default-xl" onBackground="brand-strong" style={{ lineHeight: "175%", textAlign: "center" }}>CHART</Text> retrieves related concepts by learning relationships between embeddings. Through hierarchical traversal and attention mechanisms, it finds semantically related documents even when they are far apart in the embedding space.
+          </Text>
+        </ThemeAwareGreenBox>
+      ) : (
+        <ThemeAwareRedBox>
+          <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", textAlign: "center", margin: 0 }}>
+            <Text as="span" variant="body-default-xl" onBackground="brand-strong" style={{ lineHeight: "175%", textAlign: "center" }}>ANN</Text> only finds the closest documents based on cosine similarity. To retrieve related concepts, we need agentic dissemination of tasks because ANN cannot discover semantic relationships beyond nearest neighbors.
+          </Text>
+        </ThemeAwareRedBox>
+      )}
     </Column>
   );
 }
