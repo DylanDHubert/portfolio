@@ -731,6 +731,107 @@ export function D3Visual2() {
       .attr("stroke", axisColor)
       .attr("stroke-opacity", 0.3);
     
+    // Add legend in top-right corner
+    const legendX = innerWidth - 200;
+    const legendY = 20;
+    const legendSpacing = 18;
+    let legendYOffset = 0;
+    
+    const legend = g.append("g")
+      .attr("transform", `translate(${legendX}, ${legendY})`);
+    
+    // Legend background
+    legend.append("rect")
+      .attr("x", -10)
+      .attr("y", -10)
+      .attr("width", 190)
+      .attr("height", 100)
+      .attr("fill", "var(--neutral-surface-weak)")
+      .attr("stroke", axisColor)
+      .attr("stroke-opacity", 0.3)
+      .attr("rx", 4);
+    
+    // Legend title
+    legend.append("text")
+      .attr("x", 0)
+      .attr("y", 5)
+      .attr("fill", axisColor)
+      .style("font-size", "12px")
+      .style("font-weight", "bold")
+      .text("Legend");
+    
+    // Query point (large X)
+    const drawLegendX = (x: number, y: number, size: number, color: string) => {
+      const halfSize = size / 2;
+      legend.append("line")
+        .attr("x1", x - halfSize)
+        .attr("y1", y - halfSize)
+        .attr("x2", x + halfSize)
+        .attr("y2", y + halfSize)
+        .attr("stroke", color)
+        .attr("stroke-width", 2);
+      legend.append("line")
+        .attr("x1", x - halfSize)
+        .attr("y1", y + halfSize)
+        .attr("x2", x + halfSize)
+        .attr("y2", y - halfSize)
+        .attr("stroke", color)
+        .attr("stroke-width", 2);
+    };
+    
+    drawLegendX(8, 20, 10, targetColor);
+    legend.append("text")
+      .attr("x", 18)
+      .attr("y", 24)
+      .attr("fill", axisColor)
+      .style("font-size", "11px")
+      .text("Query point");
+    
+    // Related points (small X)
+    drawLegendX(8, 38, 6, targetColor);
+    legend.append("text")
+      .attr("x", 18)
+      .attr("y", 41)
+      .attr("fill", axisColor)
+      .style("font-size", "11px")
+      .text("Related points");
+    
+    // Path lines
+    legend.append("line")
+      .attr("x1", 0)
+      .attr("y1", 54)
+      .attr("x2", 12)
+      .attr("y2", 54)
+      .attr("stroke", targetColor)
+      .attr("stroke-width", 2)
+      .attr("stroke-opacity", 0.6)
+      .attr("stroke-dasharray", "4,2");
+    
+    legend.append("text")
+      .attr("x", 18)
+      .attr("y", 58)
+      .attr("fill", axisColor)
+      .style("font-size", "11px")
+      .text("Paths");
+    
+    // Centroids
+    const strokeColor = getComputedStyle(document.documentElement)
+      .getPropertyValue('--neutral-surface-strong').trim() || '#fff';
+    legend.append("circle")
+      .attr("cx", 6)
+      .attr("cy", 72)
+      .attr("r", 4)
+      .attr("fill", targetColor)
+      .attr("stroke", strokeColor)
+      .attr("stroke-width", 1.5);
+    
+    legend.append("text")
+      .attr("x", 18)
+      .attr("y", 75)
+      .attr("fill", axisColor)
+      .style("font-size", "11px")
+      .text("Centroids (darker = deeper)");
+    
   }, [points, rootNodes, depth, queryPoint, relatedPoints]);
   
   const maxDepthValue = Math.max(maxDepth - 1, 0);

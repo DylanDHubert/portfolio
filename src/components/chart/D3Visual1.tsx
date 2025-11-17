@@ -468,6 +468,72 @@ export function D3Visual1() {
       .attr("stroke", axisColor)
       .attr("stroke-opacity", 0.3);
     
+    // Add legend in top-right corner
+    const legendX = innerWidth - 180;
+    const legendY = 20;
+    const legendSpacing = 20;
+    
+    const legend = g.append("g")
+      .attr("transform", `translate(${legendX}, ${legendY})`);
+    
+    // Legend background
+    legend.append("rect")
+      .attr("x", -10)
+      .attr("y", -10)
+      .attr("width", 170)
+      .attr("height", 60)
+      .attr("fill", "var(--neutral-surface-weak)")
+      .attr("stroke", axisColor)
+      .attr("stroke-opacity", 0.3)
+      .attr("rx", 4);
+    
+    // Legend title
+    legend.append("text")
+      .attr("x", 0)
+      .attr("y", 5)
+      .attr("fill", axisColor)
+      .style("font-size", "12px")
+      .style("font-weight", "bold")
+      .text("Legend");
+    
+    // Cluster example
+    legend.append("rect")
+      .attr("x", 0)
+      .attr("y", 15)
+      .attr("width", 12)
+      .attr("height", 12)
+      .attr("fill", colorScale(0))
+      .attr("stroke", axisColor)
+      .attr("stroke-opacity", 0.3);
+    
+    legend.append("text")
+      .attr("x", 18)
+      .attr("y", 25)
+      .attr("fill", axisColor)
+      .style("font-size", "11px")
+      .text("Clusters");
+    
+    // Centroid example
+    const theme = document.documentElement.getAttribute('data-theme') || 'dark';
+    const centroidColor = theme === 'light' ? '#06b6d4' : '#fbbf24';
+    const strokeColor = getComputedStyle(document.documentElement)
+      .getPropertyValue('--neutral-surface-strong').trim() || '#fff';
+    
+    legend.append("circle")
+      .attr("cx", 6)
+      .attr("cy", 35)
+      .attr("r", 4)
+      .attr("fill", centroidColor)
+      .attr("stroke", strokeColor)
+      .attr("stroke-width", 1.5);
+    
+    legend.append("text")
+      .attr("x", 18)
+      .attr("y", 38)
+      .attr("fill", axisColor)
+      .style("font-size", "11px")
+      .text("Centroids");
+    
   }, [points, rootNodes, depth]);
   
   const maxDepthValue = Math.max(maxDepth - 1, 0);
