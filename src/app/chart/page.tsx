@@ -258,36 +258,42 @@ export default function ChartPage() {
           <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", marginTop: "8px" }}>
             CHART does this by maintaining a fixed-size active set:
           </Text>
-          <Column as="ul" gap="xs" style={{ listStyle: "none", paddingLeft: "0", marginTop: "4px" }}>
-            <Text as="li" variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
-              • Start with <InlineCode>K₀</InlineCode> top-level nodes (<InlineCode>K₀</InlineCode> ~ <InlineCode>64–128</InlineCode>).
-            </Text>
-            <Text as="li" variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
-              • Run one transformer step.
-            </Text>
-            <Text as="li" variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
-              • Compute attention scores over these nodes.
-            </Text>
-            <Text as="li" variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
-              • Expand only the top <InlineCode>α</InlineCode> fraction (<InlineCode>α</InlineCode> ~ <InlineCode>0.25</InlineCode>).
-            </Text>
-            <Text as="li" variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
-              • Replace each expanded node with its children.
-            </Text>
-            <Text as="li" variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
-              • Trim back to a fixed size K for the next step.
-            </Text>
-          </Column>
+          <div className={styles.chartCard} style={{ marginTop: "4px", marginBottom: "4px" }}>
+            <Column padding="24" vertical="center" horizontal="center" fillWidth>
+              <Column as="ul" gap="xs" style={{ listStyle: "none", paddingLeft: "0", margin: 0, width: "100%" }}>
+                <Text as="li" variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
+                  • Start with <InlineCode>max_seq_len (K₀)</InlineCode> root nodes with tokens being the embedding (centroids).
+                </Text>
+                <Text as="li" variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
+                  • Run one encoder forward pass.
+                </Text>
+                <Text as="li" variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
+                  • Compute attention scores over these nodes.
+                </Text>
+                <Text as="li" variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
+                  • Expand only the top <InlineCode>α</InlineCode> fraction (<InlineCode>α~0.25</InlineCode>).
+                </Text>
+                <Text as="li" variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
+                  • Replace each expanded node with its children.
+                </Text>
+                <Text as="li" variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
+                  • Remove low attention nodes to reduce sequence length back to <InlineCode>max_seq_len</InlineCode> for the next step.
+                </Text>
+              </Column>
+            </Column>
+          </div>
           <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", marginTop: "8px" }}>
             This creates a bounded attention window, e.g.:
           </Text>
           <div className={styles.chartCard} style={{ marginTop: "4px", marginBottom: "4px" }}>
             <Column padding="24" vertical="center" horizontal="center" fillWidth>
               <Text variant="body-default-l" onBackground="neutral-medium" style={{ fontFamily: "monospace", lineHeight: "175%", textAlign: "center" }}>
-                Step 0: <InlineCode>64</InlineCode> top nodes<br />
-                Step 1: Expand <InlineCode>16</InlineCode> → replace with ≈ <InlineCode>64</InlineCode> children<br />
-                Step 2: Expand <InlineCode>16</InlineCode> → replace with ≈ <InlineCode>64</InlineCode> children<br />
-                ...
+                STEP 0: <InlineCode>64</InlineCode> root nodes<br />
+                STEP 1: Expand <InlineCode>16</InlineCode>: replace with the <InlineCode>32</InlineCode> children, then remove <InlineCode>16</InlineCode> low attention nodes.<br />
+                ...<br />
+                STEP N: Expand <InlineCode>16</InlineCode>: replace with the <InlineCode>32</InlineCode> children, then remove <InlineCode>16</InlineCode> low attention nodes.<br />
+                STOP: When nodes are stable in the input sequence, or all nodes are leaves. <br />
+                MAX STEPS: <InlineCode>LogK₀(N)</InlineCode>.
               </Text>
             </Column>
           </div>
