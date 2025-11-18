@@ -361,19 +361,18 @@
   }
 }
 
-// MOBILE WARNING POPUP - FULL SCREEN WITH PADDING
+// MOBILE WARNING POPUP - BANNER AT TOP
 .mobileWarning {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  bottom: 0;
   z-index: 1000;
-  padding: 24px;
+  padding: 16px;
   display: flex;
   justify-content: center;
-  align-items: center;
-  animation: fadeIn 0.3s ease-out;
+  align-items: flex-start;
+  animation: slideDown 0.3s ease-out;
   pointer-events: all;
   background: rgba(0, 0, 0, 0.7);
   backdrop-filter: blur(8px);
@@ -383,14 +382,17 @@
   }
 }
 
-@keyframes fadeIn {
+@keyframes slideDown {
   from {
     opacity: 0;
+    transform: translateY(-20px);
   }
   to {
     opacity: 1;
+    transform: translateY(0);
   }
 }
+
 
 .mobileWarningContent {
   background: linear-gradient(135deg, 
@@ -403,12 +405,10 @@
     0 0 60px rgba(220, 38, 38, 0.4),
     inset 0 1px 2px rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(10px);
-  border-radius: 24px;
-  padding: 48px 32px;
+  border-radius: 16px;
+  padding: 24px 32px;
   width: 100%;
   max-width: 100%;
-  height: 100%;
-  max-height: 100%;
   pointer-events: all;
   position: relative;
   display: flex;
@@ -430,7 +430,7 @@
       rgba(255, 255, 255, 0.05) 50%,
       transparent 100%
     );
-    border-radius: 24px;
+    border-radius: 16px;
     pointer-events: none;
     animation: chartScan 4s linear infinite;
   }
