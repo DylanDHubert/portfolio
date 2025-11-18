@@ -28,7 +28,7 @@ export function MobileWarning() {
     <div className={styles.mobileWarning}>
       <div className={styles.mobileWarningContent}>
         <div className={styles.mobileWarningIcon}>
-          <Icon name="warning" size={48} />
+          <Icon name="warning" size="xl" />
         </div>
         <Text variant="body-default-l" onBackground="neutral-medium" style={{ lineHeight: "175%", textAlign: "center", margin: 0, fontWeight: 600 }}>
           Mobile View Notice

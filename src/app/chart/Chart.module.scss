@@ -440,6 +440,12 @@
   margin-bottom: 24px;
   color: rgba(255, 255, 255, 0.95);
   filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.5));
+  
+  // MAKE ICON LARGER
+  :global(svg) {
+    width: 48px !important;
+    height: 48px !important;
+  }
 }
 
 // LIGHT MODE MOBILE WARNING - RED THEME
