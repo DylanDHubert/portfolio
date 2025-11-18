@@ -98,7 +98,7 @@ export default function ChartPage() {
   };
 
   return (
-    <Column as="section" maxWidth="m" horizontal="center" gap="l">
+    <Column className={styles.chartPage} as="section" maxWidth="m" horizontal="center" gap="l">
       {/* COMPREHENSIVE STRUCTURED DATA FOR AI ACCESSIBILITY */}
       <script
         type="application/ld+json"
@@ -133,7 +133,7 @@ export default function ChartPage() {
         </Text>
       </Column>
 
-      <Column style={{ margin: "auto" }} as="article" maxWidth="s" gap="m">
+      <Column className={styles.mobileContent} style={{ margin: "auto" }} as="article" maxWidth="s" gap="m">
         {/* INTRODUCTION */}
         <Column gap="s">
           <Heading as="h2" variant="heading-strong-xl" style={{ marginTop: "12px", marginBottom: "6px" }}>
@@ -144,7 +144,7 @@ export default function ChartPage() {
           </Text>
           
           {/* Two inline boxes for the two priors */}
-          <div style={{ display: "flex", gap: "12px", marginTop: "12px", marginBottom: "8px" }}>
+          <div className={styles.twoPriorBoxes} style={{ display: "flex", gap: "12px", marginTop: "12px", marginBottom: "8px" }}>
             <div className={styles.chartCard} style={{ flex: 1 }}>
               <Column padding="24" vertical="center" horizontal="center" fillWidth gap="4">
                 <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", textAlign: "center", fontWeight: "bold" }}>
@@ -270,7 +270,9 @@ export default function ChartPage() {
           </Text>
 
           {/* D3 VISUAL 1 */}
-          <D3Visual1 />
+          <div className={styles.d3Wrapper}>
+            <D3Visual1 />
+          </div>
         </Column>
 
         {/* TRAVERSAL */}
@@ -331,7 +333,9 @@ export default function ChartPage() {
           </Text>
 
           {/* D3 VISUAL 2 */}
-          <D3Visual2 />
+          <div className={styles.d3Wrapper}>
+            <D3Visual2 />
+          </div>
         </Column>
 
         {/* TRAINING */}
