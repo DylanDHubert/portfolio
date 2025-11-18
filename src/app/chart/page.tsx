@@ -6,6 +6,7 @@ import { D3Visual1, D3Visual2, D3Visual3 } from "@/components/chart/D3Placeholde
 import styles from "./Chart.module.scss";
 import { ThemeAwareRedBox } from "./ThemeAwareRedBox";
 import { ThemeAwareGreenBox } from "./ThemeAwareGreenBox";
+import { MobileWarning } from "./MobileWarning";
 
 export async function generateMetadata() {
   return Meta.generate({
@@ -99,6 +100,9 @@ export default function ChartPage() {
 
   return (
     <Column className={styles.chartPage} as="section" maxWidth="m" horizontal="center" gap="l">
+      {/* MOBILE WARNING POPUP */}
+      <MobileWarning />
+      
       {/* COMPREHENSIVE STRUCTURED DATA FOR AI ACCESSIBILITY */}
       <script
         type="application/ld+json"

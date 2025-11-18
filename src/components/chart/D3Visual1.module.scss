@@ -82,22 +82,23 @@
   }
 }
 
-// MOBILE ONLY: MAKE NUMBER BUTTONS NARROWER (NOT ROOTS/LEAVES)
+// MOBILE ONLY: TWO SIZES - NUMBER BUTTONS SMALL, ROOTS/LEAVES LARGER
 @media (max-width: 768px) {
   .depthButton {
-    // NUMBER BUTTONS (NOT FIRST OR LAST) - ONLY AS WIDE AS PADDING
+    // NUMBER BUTTONS (NOT FIRST OR LAST) - FIXED SMALL SIZE
     &:not(:first-child):not(:last-child) {
-      min-width: auto !important;
-      width: auto !important;
-      padding: 8px 12px !important;
+      min-width: 36px !important;
+      width: 36px !important;
+      padding: 8px 4px !important;
     }
     
-    // ROOTS AND LEAVES KEEP ORIGINAL SIZE
+    // ROOTS AND LEAVES - FIXED LARGER SIZE (SAME AS EACH OTHER)
     &:first-child,
     &:last-child {
-      // KEEP ORIGINAL STYLING
+      min-width: 70px !important;
+      width: 70px !important;
+      padding: 8px 12px !important;
     }
   }
-  
 }
 

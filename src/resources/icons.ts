@@ -34,6 +34,8 @@ import {
   FileImage, 
   FileBadge, 
   FileCode2,
+  FileKey,
+  AlertTriangle,
   Github,
   Linkedin,
   Mail,
@@ -76,6 +78,9 @@ export const iconLibrary: Record<string, IconType> = {
   fileImage: FileImage,
   fileBadge: FileBadge,
   fileCode2: FileCode2,
+  fileKey: FileKey,
+  alertTriangle: AlertTriangle,
+  warning: AlertTriangle,
   // Lucide React social icons
   lucideGithub: Github,
   lucideLinkedin: Linkedin,

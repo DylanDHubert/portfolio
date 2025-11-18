@@ -223,7 +223,7 @@ export const Header = () => {
                     href="/chart"
                     selected={pathname.startsWith("/chart")}
                     data-selected={pathname.startsWith("/chart")}
-                    prefixIcon="fileType2"
+                    prefixIcon="fileKey"
                   />
                 </>
               )}
