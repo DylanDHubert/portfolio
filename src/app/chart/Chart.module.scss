@@ -345,12 +345,19 @@
     }
     
     // ATTENTION SEQUENCE SVG (800x120) - COMPENSATE FOR SCALED HEIGHT
+    // BUT ALSO REDUCE SPACE TO DEPTH BUTTONS
     :global(svg[width="800"]) {
-      margin-bottom: -43.2px; // (120 * 0.36 = 43.2px reduction)
+      margin-bottom: 4px !important; // OVERRIDE INLINE 12px, REDUCE TO 4px
     }
     
     // ALLOW WRAPPER TO ACCOMMODATE SCALED CONTENT
     overflow: visible;
+    
+    // REDUCE GAP IN COLUMN THAT CONTAINS ATTENTION SEQUENCE AND DEPTH BUTTONS
+    // TARGET INNER COLUMN WITH gap="s" IN D3VISUAL2
+    :global([class*="Column"][gap="s"]) {
+      gap: 4px !important; // REDUCE FROM 12px TO 4px
+    }
   }
 }
 

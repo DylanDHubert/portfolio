@@ -82,3 +82,22 @@
   }
 }
 
+// MOBILE ONLY: MAKE NUMBER BUTTONS NARROWER (NOT ROOTS/LEAVES)
+@media (max-width: 768px) {
+  .depthButton {
+    // NUMBER BUTTONS (NOT FIRST OR LAST) - ONLY AS WIDE AS PADDING
+    &:not(:first-child):not(:last-child) {
+      min-width: auto !important;
+      width: auto !important;
+      padding: 8px 12px !important;
+    }
+    
+    // ROOTS AND LEAVES KEEP ORIGINAL SIZE
+    &:first-child,
+    &:last-child {
+      // KEEP ORIGINAL STYLING
+    }
+  }
+  
+}
+
