@@ -488,41 +488,49 @@ export function SphereVisualization2() {
     const pointsMesh = new THREE.Points(pointGeometry, pointMaterial);
     scene.add(pointsMesh);
     
-    // Generate gradient colors: Purple (roots) -> Red -> Orange -> Orange-Yellow (leaves)
-    // Using dark theme colors: Purple (#6d3fd6 / rgb(109, 63, 214)) -> Red -> Orange -> Yellow (#fbbf24 / rgb(251, 191, 36))
+    // Generate gradient colors based on theme
+    // Light mode: Maroon (roots) -> Turquoise (leaves)
+    // Dark mode: Purple (roots) -> Red -> Orange -> Yellow (leaves)
     const depthColors = new Map<number, THREE.Color>();
     const getCentroidColor = (depth: number): THREE.Color => {
       if (!depthColors.has(depth)) {
-        // Interpolate from purple (roots) to orange-yellow (leaves)
-        // Use actual RGB values from theme to avoid green
         const ratio = maxDepthValue === 0 ? 0 : depth / maxDepthValue;
-        
-        // Theme colors (RGB 0-255)
-        // Purple (roots): rgb(109, 63, 214) - from rgba(109, 63, 214, 0.9)
-        // Red: rgb(255, 0, 0)
-        // Orange: rgb(255, 165, 0)
-        // Yellow (leaves): rgb(251, 191, 36) - from rgba(251, 191, 36, 0.8)
         
         let r: number, g: number, b: number;
         
-        if (ratio <= 0.33) {
-          // Purple to Red: rgb(109, 63, 214) -> rgb(255, 0, 0)
-          const t = ratio / 0.33;
-          r = 109 + (t * (255 - 109));
-          g = 63 - (t * 63);
-          b = 214 - (t * 214);
-        } else if (ratio <= 0.66) {
-          // Red to Orange: rgb(255, 0, 0) -> rgb(255, 165, 0)
-          const t = (ratio - 0.33) / 0.33;
-          r = 255;
-          g = t * 165;
-          b = 0;
+        if (theme === 'light') {
+          // LIGHT MODE: Maroon to Turquoise gradient
+          // Maroon (roots): rgb(128, 0, 0)
+          // Turquoise (leaves): rgb(64, 224, 208)
+          r = 128 + (ratio * (64 - 128));
+          g = 0 + (ratio * (224 - 0));
+          b = 0 + (ratio * (208 - 0));
         } else {
-          // Orange to Yellow: rgb(255, 165, 0) -> rgb(251, 191, 36)
-          const t = (ratio - 0.66) / 0.34;
-          r = 255 - (t * (255 - 251));
-          g = 165 + (t * (191 - 165));
-          b = t * 36;
+          // DARK MODE: Purple to Red -> Orange -> Yellow gradient
+          // Purple (roots): rgb(109, 63, 214)
+          // Red: rgb(255, 0, 0)
+          // Orange: rgb(255, 165, 0)
+          // Yellow (leaves): rgb(251, 191, 36)
+          
+          if (ratio <= 0.33) {
+            // Purple to Red: rgb(109, 63, 214) -> rgb(255, 0, 0)
+            const t = ratio / 0.33;
+            r = 109 + (t * (255 - 109));
+            g = 63 - (t * 63);
+            b = 214 - (t * 214);
+          } else if (ratio <= 0.66) {
+            // Red to Orange: rgb(255, 0, 0) -> rgb(255, 165, 0)
+            const t = (ratio - 0.33) / 0.33;
+            r = 255;
+            g = t * 165;
+            b = 0;
+          } else {
+            // Orange to Yellow: rgb(255, 165, 0) -> rgb(251, 191, 36)
+            const t = (ratio - 0.66) / 0.34;
+            r = 255 - (t * (255 - 251));
+            g = 165 + (t * (191 - 165));
+            b = t * 36;
+          }
         }
         
         // Convert to 0-1 range for THREE.Color
