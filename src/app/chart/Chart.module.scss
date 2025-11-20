@@ -5,6 +5,13 @@
   }
 }
 
+// LIGHT MODE ORDERED LIST MARKER COLOR FOR ENTIRE PAGE
+[data-theme="light"] .chartPage {
+  :global(ol li::marker) {
+    color: #fecaca !important;
+  }
+}
+
 // PURPLE/MAROON CONTAINER FOR CHART PAGE CARDS
 .chartCard {
   background: linear-gradient(135deg, 
@@ -91,6 +98,11 @@
     color: #fecaca !important; /* Light red/white like blog page */
   }
   
+  // Light mode ordered list marker color
+  :global(ol li::marker) {
+    color: #fecaca !important;
+  }
+  
   // Light mode table text color
   .comparisonTable {
     :global(th),
@@ -150,12 +162,14 @@
     font-size: 1.25rem !important; // LARGER TEXT FOR HEADERS (20px equivalent)
     vertical-align: middle !important;
     text-align: center !important;
+    color: inherit !important; // Ensure headers use same color as table cells
     
     // ENSURE ANY NESTED ELEMENTS ARE ALSO CENTERED
     & > * {
       text-align: center !important;
       display: block !important;
       width: 100% !important;
+      color: inherit !important;
     }
   }
   
@@ -313,6 +327,11 @@
     
     :global(li) {
       margin-bottom: 4px !important;
+    }
+    
+    // MOBILE: ORDERED LIST MARKER COLOR
+    :global(ol li::marker) {
+      color: inherit !important;
     }
     
     // MOBILE: REDUCE INLINE CODE SIZE

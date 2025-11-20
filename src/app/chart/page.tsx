@@ -306,13 +306,13 @@ export default function ChartPage() {
                     </Text>
                     <Column gap="xs" style={{ marginTop: "8px" }}>
                       <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", margin: 0 }}>
-                        <Text as="span" variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>direction = meaning</Text>
+                        <Text as="span" variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>direction is approximately meaning</Text>
                       </Text>
                       <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", margin: 0 }}>
-                        <Text as="span" variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>angle = semantic distance</Text>
+                        <Text as="span" variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>angle is approximately semantic distance</Text>
                       </Text>
                       <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", margin: 0 }}>
-                        <Text as="span" variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>cosine similarity ≈ geodesic proximity on the sphere</Text>
+                        <Text as="span" variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>cosine similarity is approximately geodesic proximity on the sphere</Text>
                       </Text>
                     </Column>
                     <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", marginTop: "8px", margin: 0 }}>
@@ -504,18 +504,16 @@ export default function ChartPage() {
           </Column>
 
           <Column gap="xs" style={{ marginTop: "4px" }}>
+            <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", textAlign: "center", marginBottom: "8px" }}>
+              D. ROTATING THE HYPERSPHERE
+            </Text>
             <div className={styles.chartCard} style={{ marginTop: "0", marginBottom: "0" }}>
               <Column padding="24" gap="s">
                 <details>
-                  <summary style={{ cursor: "pointer", listStyle: "none" }}>
-                    <Column gap="xs">
-                      <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", textAlign: "center" }}>
-                        D. ROTATING THE HYPERSPHERE
-                      </Text>
-                      <Text variant="body-default-l" onBackground="neutral-medium" style={{ lineHeight: "175%", textAlign: "center", fontStyle: "italic" }}>
-                        Click to expand
-                      </Text>
-                    </Column>
+                  <summary style={{ cursor: "pointer", listStyle: "none", textAlign: "center" }}>
+                    <Text variant="body-default-l" onBackground="neutral-medium" style={{ lineHeight: "175%", textAlign: "center", fontStyle: "italic" }}>
+                      Click to expand
+                    </Text>
                   </summary>
                   <Column gap="s" style={{ marginTop: "8px" }}>
                     <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
@@ -590,7 +588,7 @@ export default function ChartPage() {
               <Text as="span" variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>A hierarchical semantic tree</Text>— built from clustering, storing centroids and summaries.
             </Text>
             <Text as="li" variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
-              <Text as="span" variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>A transformer that reasons over a fixed-size frontier</Text>— stepping coarse → medium → fine.
+              <Text as="span" variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>A transformer that reasons over a fixed-size frontier</Text>— stepping coarse to medium to fine.
             </Text>
             <Text as="li" variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
               <Text as="span" variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>A training loop that uses real relational structure</Text>— to teach traversal.
@@ -665,7 +663,7 @@ export default function ChartPage() {
                   rows: [
                     ["moves through the hierarchy", "moves across the surface"],
                     ["Nodes are spherical clusters (cones) at multiple resolutions.", "Edges connect specific embeddings."],
-                    ["Traversal is coarse → fine.", "Search is greedy, jumping from one point to the next."],
+                    ["Traversal is coarse to fine.", "Search is greedy, jumping from one point to the next."],
                     ["Transformer decides which cones to refine.", "No notion of scale or resolution."],
                     ["Sequence length stays bounded.", "No hierarchy."],
                     ["Structure reflects the real geometry of the hypersphere.", "No geometric structure beyond local neighborhoods."]
@@ -706,90 +704,100 @@ export default function ChartPage() {
             </div>
           </div>
 
-          <details style={{ marginTop: "12px" }}>
-            <summary style={{ cursor: "pointer" }}>
-              <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
-                <Text as="span" variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>Why CHART outperforms HNSW on spherical embeddings (technical)</Text>
-              </Text>
-            </summary>
-            <Column gap="s" style={{ marginTop: "16px", paddingLeft: "16px" }}>
-              <Column gap="xs">
-                <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
-                  1. Embeddings lie on a hypersphere
-                </Text>
-                <Text variant="body-default-l" onBackground="neutral-medium" style={{ lineHeight: "175%", paddingLeft: "16px" }}>
-                  Due to LayerNorm + normalization, embeddings cluster on a unit sphere.
-                </Text>
-                <Text variant="body-default-l" onBackground="neutral-medium" style={{ lineHeight: "175%", paddingLeft: "16px" }}>
-                  Cosine (angle) is the true distance— Euclidean distance is misleading.
-                </Text>
-              </Column>
+          <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", textAlign: "center", marginTop: "12px", marginBottom: "8px" }}>
+            Why CHART outperforms HNSW on spherical embeddings (technical)
+          </Text>
+          <div className={styles.chartCard} style={{ marginTop: "0", marginBottom: "0" }}>
+            <Column padding="24" gap="s">
+              <details>
+                <summary style={{ cursor: "pointer", listStyle: "none", textAlign: "center" }}>
+                  <Text variant="body-default-l" onBackground="neutral-medium" style={{ lineHeight: "175%", textAlign: "center", fontStyle: "italic" }}>
+                    Click to expand
+                  </Text>
+                </summary>
+                <Column gap="s" style={{ marginTop: "8px" }}>
+                  <Column gap="xs">
+                    <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
+                      1. Embeddings lie on a hypersphere
+                    </Text>
+                    <Text variant="body-default-l" onBackground="neutral-medium" style={{ lineHeight: "175%", paddingLeft: "16px" }}>
+                      Due to LayerNorm + normalization, embeddings cluster on a unit sphere.
+                    </Text>
+                    <Text variant="body-default-l" onBackground="neutral-medium" style={{ lineHeight: "175%", paddingLeft: "16px" }}>
+                      Cosine (angle) is the true distance— Euclidean distance is misleading.
+                    </Text>
+                  </Column>
 
-              <Column gap="xs" style={{ marginTop: "8px" }}>
-                <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
-                  2. HNSW ignores the spherical manifold
-                </Text>
-                <Text variant="body-default-l" onBackground="neutral-medium" style={{ lineHeight: "175%", paddingLeft: "16px" }}>
-                  It treats vectors as points in flat space and builds random small-world hops.
-                </Text>
-                <Text variant="body-default-l" onBackground="neutral-medium" style={{ lineHeight: "175%", paddingLeft: "16px" }}>
-                  No angular partitions.
-                </Text>
-                <Text variant="body-default-l" onBackground="neutral-medium" style={{ lineHeight: "175%", paddingLeft: "16px" }}>
-                  No coarse-to-fine refinement.
-                </Text>
-                <Text variant="body-default-l" onBackground="neutral-medium" style={{ lineHeight: "175%", paddingLeft: "16px" }}>
-                  Purely local.
-                </Text>
-              </Column>
+                  <Column gap="xs" style={{ marginTop: "8px" }}>
+                    <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
+                      2. HNSW ignores the spherical manifold
+                    </Text>
+                    <Text variant="body-default-l" onBackground="neutral-medium" style={{ lineHeight: "175%", paddingLeft: "16px" }}>
+                      It treats vectors as points in flat space and builds random small-world hops.
+                    </Text>
+                    <Text variant="body-default-l" onBackground="neutral-medium" style={{ lineHeight: "175%", paddingLeft: "16px" }}>
+                      No angular partitions.
+                    </Text>
+                    <Text variant="body-default-l" onBackground="neutral-medium" style={{ lineHeight: "175%", paddingLeft: "16px" }}>
+                      No coarse-to-fine refinement.
+                    </Text>
+                    <Text variant="body-default-l" onBackground="neutral-medium" style={{ lineHeight: "175%", paddingLeft: "16px" }}>
+                      Purely local.
+                    </Text>
+                  </Column>
 
-              <Column gap="xs" style={{ marginTop: "8px" }}>
-                <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
-                  3. CHART builds spherical caps (&quot;cones&quot;)
-                </Text>
-                <Text variant="body-default-l" onBackground="neutral-medium" style={{ lineHeight: "175%", paddingLeft: "16px" }}>
-                  Spherical k-means partitions the hypersphere into directional regions.
-                </Text>
-                <Text variant="body-default-l" onBackground="neutral-medium" style={{ lineHeight: "175%", paddingLeft: "16px" }}>
-                  Parents: wide angles.
-                </Text>
-                <Text variant="body-default-l" onBackground="neutral-medium" style={{ lineHeight: "175%", paddingLeft: "16px" }}>
-                  Children: narrow angles.
-                </Text>
-              </Column>
+                  <Column gap="xs" style={{ marginTop: "8px" }}>
+                    <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
+                      3. CHART builds spherical caps (&quot;cones&quot;)
+                    </Text>
+                    <Text variant="body-default-l" onBackground="neutral-medium" style={{ lineHeight: "175%", paddingLeft: "16px" }}>
+                      Spherical k-means partitions the hypersphere into directional regions.
+                    </Text>
+                    <Text variant="body-default-l" onBackground="neutral-medium" style={{ lineHeight: "175%", paddingLeft: "16px" }}>
+                      Parents: wide angles.
+                    </Text>
+                    <Text variant="body-default-l" onBackground="neutral-medium" style={{ lineHeight: "175%", paddingLeft: "16px" }}>
+                      Children: narrow angles.
+                    </Text>
+                  </Column>
 
-              <Column gap="xs" style={{ marginTop: "8px" }}>
-                <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
-                  4. CHART introduces a radial dimension
-                </Text>
-                <Text variant="body-default-l" onBackground="neutral-medium" style={{ lineHeight: "175%", paddingLeft: "16px" }}>
-                  Not coordinates inside the sphere—
-                </Text>
-                <Text variant="body-default-l" onBackground="neutral-medium" style={{ lineHeight: "175%", paddingLeft: "16px" }}>
-                  but an inward hierarchy of resolutions, which HNSW cannot represent.
-                </Text>
-              </Column>
+                  <Column gap="xs" style={{ marginTop: "8px" }}>
+                    <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
+                      4. CHART introduces a radial dimension
+                    </Text>
+                    <Text variant="body-default-l" onBackground="neutral-medium" style={{ lineHeight: "175%", paddingLeft: "16px" }}>
+                      Not coordinates inside the sphere—
+                    </Text>
+                    <Text variant="body-default-l" onBackground="neutral-medium" style={{ lineHeight: "175%", paddingLeft: "16px" }}>
+                      but an inward hierarchy of resolutions, which HNSW cannot represent.
+                    </Text>
+                  </Column>
 
-              <Column gap="xs" style={{ marginTop: "8px" }}>
-                <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
-                  5. Transformers are angular routers
-                </Text>
-                <Text variant="body-default-l" onBackground="neutral-medium" style={{ lineHeight: "175%", paddingLeft: "16px" }}>
-                  Attention uses dot products = cosine = geodesic similarity.
-                </Text>
-                <Text variant="body-default-l" onBackground="neutral-medium" style={{ lineHeight: "175%", paddingLeft: "16px" }}>
-                  So transformers are natively aligned with CHART&apos;s cone structure.
-                </Text>
-              </Column>
+                  <Column gap="xs" style={{ marginTop: "8px" }}>
+                    <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
+                      5. Transformers are angular routers
+                    </Text>
+                    <Text variant="body-default-l" onBackground="neutral-medium" style={{ lineHeight: "175%", paddingLeft: "16px" }}>
+                      Attention uses dot products is approximately cosine is approximately geodesic similarity.
+                    </Text>
+                    <Text variant="body-default-l" onBackground="neutral-medium" style={{ lineHeight: "175%", paddingLeft: "16px" }}>
+                      So transformers are natively aligned with CHART&apos;s cone structure.
+                    </Text>
+                  </Column>
 
-              <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", marginTop: "12px" }}>
-                HNSW cannot exploit the geometric structure because it doesn&apos;t build one.
-              </Text>
-              <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
-                CHART is designed around it.
-              </Text>
+                  <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", marginTop: "12px" }}>
+                    HNSW cannot exploit the geometric structure because it doesn&apos;t build one.
+                  </Text>
+                  <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
+                    CHART is designed around it.
+                  </Text>
+                  <Text variant="body-default-l" onBackground="neutral-medium" style={{ lineHeight: "175%", textAlign: "center", fontStyle: "italic", marginTop: "8px" }}>
+                    Click to collapse
+                  </Text>
+                </Column>
+              </details>
             </Column>
-          </details>
+          </div>
         </Column>
 
 

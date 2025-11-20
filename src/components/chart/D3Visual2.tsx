@@ -1864,13 +1864,13 @@ export function D3Visual2() {
       {mode === 'CHART' ? (
         <ThemeAwareGreenBox>
           <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", textAlign: "center", margin: 0 }}>
-            <Text as="span" variant="body-default-xl" onBackground="brand-strong" style={{ lineHeight: "175%", textAlign: "center" }}>CHART</Text> retrieves related concepts by learning relationships between embeddings. Through hierarchical traversal and attention mechanisms, it finds semantically related documents even when they are far apart in the embedding space.
+            CHART retrieves related concepts by learning relationships between embeddings. Through hierarchical traversal and attention mechanisms, it finds semantically related documents even when they are far apart in the embedding space.
           </Text>
         </ThemeAwareGreenBox>
       ) : (
         <ThemeAwareRedBox>
           <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", textAlign: "center", margin: 0 }}>
-            <Text as="span" variant="body-default-xl" onBackground="brand-strong" style={{ lineHeight: "175%", textAlign: "center" }}>ANN</Text> only finds the closest documents based on cosine similarity. To retrieve related concepts, we need agentic dissemination of tasks because ANN cannot discover semantic relationships beyond nearest neighbors.
+            ANN only finds the closest documents based on cosine similarity. To retrieve related concepts, we need agentic dissemination of tasks because ANN cannot discover semantic relationships beyond nearest neighbors.
           </Text>
         </ThemeAwareRedBox>
       )}
