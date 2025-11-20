@@ -374,8 +374,7 @@
   align-items: flex-start;
   animation: slideDown 0.3s ease-out;
   pointer-events: all;
-  background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(8px);
+  background: transparent;
   
   @media (min-width: 769px) {
     display: none;
