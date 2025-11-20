@@ -330,18 +330,18 @@ export function SphereVisualization() {
   useEffect(() => {
     if (!containerRef.current) return;
     
-    const width = 810;
-    const height = 610;
+    const width = 550;
+    const height = 550;
     
     // Scene
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x1a1a1a); // Dark background
+    scene.background = null; // Clear/transparent background
     
     // Add depth fog for atmospheric effect
     // Fog starts at near distance and fully obscures at far distance
     const fogNear = 2; // Start fading at distance 2
     const fogFar = 6; // Fully fogged at distance 6
-    scene.fog = new THREE.Fog(0x1a1a1a, fogNear, fogFar); // Match fog color to background
+    scene.fog = new THREE.Fog(0x000000, fogNear, fogFar); // Black fog for transparent background
     
     sceneRef.current = scene;
     
@@ -352,8 +352,9 @@ export function SphereVisualization() {
     camera.lookAt(0, 0, 0); // Look at center where sphere is
     cameraRef.current = camera;
     
-    // Renderer
-    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    // Renderer with transparent background
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setClearColor(0x000000, 0); // Clear background with alpha 0
     renderer.setSize(width, height);
     renderer.setPixelRatio(window.devicePixelRatio);
     containerRef.current.appendChild(renderer.domElement);
@@ -415,20 +416,17 @@ export function SphereVisualization() {
       }
     });
     
-    // Update background color and fog based on theme
-    if (theme === 'light') {
-      scene.background = new THREE.Color(0xf5f5f5);
-      scene.fog = new THREE.Fog(0xf5f5f5, 2, 6); // Light theme fog
-    } else {
-      scene.background = new THREE.Color(0x1a1a1a);
-      scene.fog = new THREE.Fog(0x1a1a1a, 2, 6); // Dark theme fog
-    }
+    // Keep background clear/transparent but add fog for depth
+    scene.background = null;
+    const fogNear = 2; // Start fading at distance 2
+    const fogFar = 6; // Fully fogged at distance 6
+    scene.fog = new THREE.Fog(0x000000, fogNear, fogFar); // Black fog for transparent background
     
     // Sphere radii for nested spheres
     // REVERSED: Leaves (max depth) on outer, roots (depth 0) on inner
     // Use equal gaps between sphere surfaces for visually linear spacing
-    const outerRadius = 1.5; // Points on outer sphere (reduced from 2.0)
-    const minRadius = 0.08; // Smallest inner radius (for root, reduced from 0.1)
+    const outerRadius = 1.1; // Points on outer sphere (reduced to fit viewport)
+    const minRadius = 0.06; // Smallest inner radius (for root, scaled proportionally)
     const numInnerSpheres = 6; // Number of inner sphere levels
     
     // Calculate equal gaps between sphere surfaces for linear visual spacing
@@ -462,10 +460,27 @@ export function SphereVisualization() {
     
     pointGeometry.setAttribute('position', new THREE.Float32BufferAttribute(pointPositions, 3));
     
+    // Create circular texture for points
+    const canvas = document.createElement('canvas');
+    canvas.width = 64;
+    canvas.height = 64;
+    const context = canvas.getContext('2d')!;
+    const gradient = context.createRadialGradient(32, 32, 0, 32, 32, 32);
+    gradient.addColorStop(0, 'rgba(255, 255, 255, 0.8)');
+    gradient.addColorStop(0.5, 'rgba(255, 255, 255, 0.6)');
+    gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+    context.fillStyle = gradient;
+    context.fillRect(0, 0, 64, 64);
+    const texture = new THREE.CanvasTexture(canvas);
+    
     const pointMaterial = new THREE.PointsMaterial({
       size: 0.05,
       color: pointColor,
       sizeAttenuation: true,
+      map: texture,
+      transparent: true,
+      opacity: 0.7,
+      alphaTest: 0.1,
     });
     
     const pointsMesh = new THREE.Points(pointGeometry, pointMaterial);
@@ -668,11 +683,9 @@ export function SphereVisualization() {
     <div
       ref={containerRef}
       style={{
-        border: "1px solid var(--neutral-border-medium)",
-        borderRadius: "8px",
-        backgroundColor: "var(--neutral-surface-weak)",
-        width: "810px",
-        height: "610px",
+        backgroundColor: "transparent",
+        width: "550px",
+        height: "550px",
         position: "relative",
         flexShrink: 0,
         overflow: "hidden",

@@ -6,6 +6,7 @@ import { D3Visual1, D3Visual2, D3Visual3 } from "@/components/chart/D3Placeholde
 import styles from "./Chart.module.scss";
 import { ThemeAwareRedBox } from "./ThemeAwareRedBox";
 import { ThemeAwareGreenBox } from "./ThemeAwareGreenBox";
+import { ExpandableRedBox } from "./ExpandableRedBox";
 import { MobileWarning } from "./MobileWarning";
 
 export async function generateMetadata() {
@@ -115,11 +116,11 @@ export default function ChartPage() {
         as="blogPosting"
         baseURL={baseURL}
         path="/chart"
-        title="CHART: Coarse-to-Fine Heirarchical Attention for Recursive Traversal"
+        title="CHART: Coarse-to-Fine Hierarchical Attention for Recursive Traversal"
         description="A transformer-based approach to embedding search that learns to traverse hierarchical semantic trees"
         datePublished={publishedAt}
         dateModified={publishedAt}
-        image={`/api/og/generate?title=${encodeURIComponent("CHART: Coarse-to-Fine Heirarchical Attention for Recursive Traversal")}`}
+        image={`/api/og/generate?title=${encodeURIComponent("CHART: Coarse-to-Fine Hierarchical Attention for Recursive Traversal")}`}
         author={{
           name: person.name,
           url: `${baseURL}/about`,
@@ -131,7 +132,7 @@ export default function ChartPage() {
         <Button data-border="rounded" href="/blog" variant="tertiary" weight="default" size="s" prefixIcon="chevronLeft">
           Blog
         </Button>
-        <Heading variant="display-strong-m">C.H.A.R.T.<br />Coarse-to-Fine Heirarchical Attention for Recursive Traversal</Heading>
+        <Heading variant="display-strong-m">C.H.A.R.T.<br />Coarse-to-Fine Hierarchical Attention for Recursive Traversal</Heading>
         <Text variant="body-default-l" onBackground="neutral-weak">
           {formatDate(publishedAt)}
         </Text>
@@ -245,7 +246,7 @@ export default function ChartPage() {
         {/* ORGANIZING THE EMBEDDING SPACE */}
         <Column gap="s">
           <Heading as="h2" variant="heading-strong-xl" style={{ marginTop: "12px", marginBottom: "6px" }}>
-            HEIRARCHY: Organizing the Embedding Space Into a Tree
+            HIERARCHY: Organizing the Embedding Space Into a Tree
           </Heading>
           <ThemeAwareGreenBox>
             <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", textAlign: "center", margin: 0 }}>
@@ -259,6 +260,90 @@ export default function ChartPage() {
             <Text as="li" variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
               + Recursively cluster the embeddings... <InlineCode>k₀ = 2</InlineCode>.
             </Text>
+            <Text as="li" variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
+              + Because embeddings live on a high-dimensional sphere, clustering must respect angular geometry—not Euclidean distance.
+            </Text>
+            <div style={{ marginTop: "8px", marginBottom: "8px" }}>
+              <ExpandableRedBox
+                collapsedContent={
+                  <Column gap="s">
+                    <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", textAlign: "center", margin: 0 }}>
+                      Use cosine similarity (not Euclidean distance) when clustering.
+                    </Text>
+                    <Text variant="body-default-l" onBackground="neutral-medium" style={{ lineHeight: "175%", textAlign: "center", margin: 0, fontStyle: "italic" }}>
+                      Click to expand
+                    </Text>
+                  </Column>
+                }
+                expandedContent={
+                  <Column gap="m" style={{ textAlign: "left" }}>
+                    <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", textAlign: "center", margin: 0, fontWeight: "bold" }}>
+                      Use cosine similarity (not Euclidean distance) when clustering.
+                    </Text>
+                    <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", margin: 0 }}>
+                      Embeddings produced by modern models (after LayerNorm) naturally collapse onto a hypersphere, meaning:
+                    </Text>
+                    <Column gap="xs" style={{ marginTop: "8px" }}>
+                      <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", margin: 0 }}>
+                        <Text as="span" variant="body-default-xl" onBackground="brand-strong" style={{ lineHeight: "175%" }}>direction = meaning</Text>
+                      </Text>
+                      <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", margin: 0 }}>
+                        <Text as="span" variant="body-default-xl" onBackground="brand-strong" style={{ lineHeight: "175%" }}>angle = semantic distance</Text>
+                      </Text>
+                      <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", margin: 0 }}>
+                        <Text as="span" variant="body-default-xl" onBackground="brand-strong" style={{ lineHeight: "175%" }}>cosine similarity ≈ geodesic proximity on the sphere</Text>
+                      </Text>
+                    </Column>
+                    <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", marginTop: "8px", margin: 0 }}>
+                      Clustering with cosine ensures each node in the hierarchy represents a spherical cap (a directional cone), which aligns with how transformers interpret embeddings internally.
+                    </Text>
+                    <div style={{ marginTop: "16px", paddingTop: "16px", borderTop: "1px solid rgba(239, 68, 68, 0.3)" }}>
+                      <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", margin: 0, fontWeight: "bold" }}>
+                        Modern neural networks don't operate in flat Euclidean space.
+                      </Text>
+                      <Column gap="s" style={{ marginTop: "12px" }}>
+                        <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", margin: 0 }}>
+                          <Text as="span" variant="body-default-xl" onBackground="brand-strong" style={{ lineHeight: "175%" }}>1. LayerNorm forces every token onto a constant-norm shell</Text>
+                        </Text>
+                        <Text variant="body-default-l" onBackground="neutral-medium" style={{ lineHeight: "175%", margin: 0, paddingLeft: "16px" }}>
+                          LayerNorm normalizes hidden states at nearly every layer, which removes magnitude information and pushes representations toward a uniform radius.
+                        </Text>
+                      </Column>
+                      <Column gap="s" style={{ marginTop: "12px" }}>
+                        <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", margin: 0 }}>
+                          <Text as="span" variant="body-default-xl" onBackground="brand-strong" style={{ lineHeight: "175%" }}>2. Embedding models normalize outputs</Text>
+                        </Text>
+                        <Text variant="body-default-l" onBackground="neutral-medium" style={{ lineHeight: "175%", margin: 0, paddingLeft: "16px" }}>
+                          Text, image, and multimodal encoders (OpenAI, CLIP, LLaMA, etc.) commonly L2-normalize final vectors to make cosine similarity meaningful.
+                        </Text>
+                      </Column>
+                      <Column gap="s" style={{ marginTop: "12px" }}>
+                        <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", margin: 0 }}>
+                          <Text as="span" variant="body-default-xl" onBackground="brand-strong" style={{ lineHeight: "175%" }}>3. High-dimensional geometry concentrates mass on a sphere</Text>
+                        </Text>
+                        <Text variant="body-default-l" onBackground="neutral-medium" style={{ lineHeight: "175%", margin: 0, paddingLeft: "16px" }}>
+                          In high dimensions, random vectors automatically lie near the unit sphere — making angular distance the only stable signal.
+                        </Text>
+                      </Column>
+                      <Column gap="s" style={{ marginTop: "16px", paddingTop: "12px", borderTop: "1px solid rgba(239, 68, 68, 0.3)" }}>
+                        <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", margin: 0, fontWeight: "bold" }}>
+                          Together, these effects mean:
+                        </Text>
+                        <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", margin: 0, fontStyle: "italic" }}>
+                          embeddings don't live in a flat space; they live on a high-dimensional sphere.
+                        </Text>
+                        <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", marginTop: "12px", margin: 0 }}>
+                          This is why CHART builds directional (cosine-based) clusters, not Euclidean ones — and why its hierarchy naturally reflects the geometry that transformers already expect.
+                        </Text>
+                      </Column>
+                      <Text variant="body-default-l" onBackground="neutral-medium" style={{ lineHeight: "175%", textAlign: "center", marginTop: "16px", fontStyle: "italic" }}>
+                        Click to collapse
+                      </Text>
+                    </div>
+                  </Column>
+                }
+              />
+            </div>
             <Text as="li" variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
               + Leaves contain chunks/documents.
             </Text>
@@ -325,7 +410,7 @@ export default function ChartPage() {
                 ...<br />
                 STEP N: Expand <InlineCode>16</InlineCode>: replace with the <InlineCode>32</InlineCode> children, then remove <InlineCode>16</InlineCode> low attention nodes.<br />
                 STOP: When nodes are stable in the input sequence, or all nodes are leaves. <br />
-                MAX STEPS: <InlineCode>LogK₀(N)</InlineCode>.
+                MAX STEPS: <InlineCode>LogN</InlineCode>.
               </Text>
             </Column>
           </div>
@@ -335,6 +420,13 @@ export default function ChartPage() {
           <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
             THIS IS CHART&apos;S CORE COMPUTATIONAL TRICK.
           </Text>
+          <div style={{ marginTop: "8px", marginBottom: "4px" }}>
+            <ThemeAwareGreenBox>
+              <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", textAlign: "center", margin: 0 }}>
+                Transformers operate on cosine similarity internally, so CHART's spherical hierarchy is the geometry transformers naturally expect.
+              </Text>
+            </ThemeAwareGreenBox>
+          </div>
 
           {/* D3 VISUAL 2 */}
           <div className={styles.d3Wrapper}>
@@ -345,7 +437,7 @@ export default function ChartPage() {
         {/* TRAINING */}
         <Column gap="xs">
           <Heading as="h2" variant="heading-strong-xl" style={{ marginTop: "12px", marginBottom: "4px" }}>
-            TRAININGs: A Three-Stage Curriculum
+            TRAINING: A Three-Stage Curriculum
           </Heading>
           <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
             Three stages build from basic localization to relational reasoning to embedding-space refinement. <Text as="span" variant="body-default-xl" onBackground="brand-strong" style={{ lineHeight: "175%" }}>The transformer never learns to manage sequence length</Text>— we enforce a fixed-size frontier at every step; the model only learns to navigate within that bounded set.
@@ -384,8 +476,81 @@ export default function ChartPage() {
             <div className={styles.chartCard} style={{ marginTop: "4px", marginBottom: "4px" }}>
               <Column padding="24" vertical="center" horizontal="center" fillWidth>
                 <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", textAlign: "center" }}>
-                  Reshape the embedding space for a more meaningful heirarchical structure. InfoNCE.
+                  Reshape the embedding space for a more meaningful hierarchical structure. InfoNCE.
                 </Text>
+              </Column>
+            </div>
+          </Column>
+
+          <Column gap="xs" style={{ marginTop: "4px" }}>
+            <div className={styles.chartCard} style={{ marginTop: "0", marginBottom: "0" }}>
+              <Column padding="24" gap="s">
+                <details>
+                  <summary style={{ cursor: "pointer", listStyle: "none" }}>
+                    <Column gap="xs">
+                      <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", textAlign: "center", fontWeight: "bold" }}>
+                        D. ROTATING THE HYPERSPHERE
+                      </Text>
+                      <Text variant="body-default-l" onBackground="neutral-medium" style={{ lineHeight: "175%", textAlign: "center", fontStyle: "italic" }}>
+                        Click to expand
+                      </Text>
+                    </Column>
+                  </summary>
+                  <Column gap="s" style={{ marginTop: "8px" }}>
+                    <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
+                      Because modern embeddings are L2-normalized, they all lie on the surface of a high-dimensional hypersphere.
+                    </Text>
+                    <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
+                      This sphere has a powerful symmetry:
+                    </Text>
+                    <ThemeAwareGreenBox>
+                      <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", textAlign: "center", margin: 0 }}>
+                        Rotate the entire space around the origin, and all cosine distances stay the same.
+                      </Text>
+                    </ThemeAwareGreenBox>
+                    <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", marginTop: "8px" }}>
+                      This symmetry leads to two useful ideas:
+                    </Text>
+                    <Column gap="s" style={{ marginTop: "8px" }}>
+                      <Column gap="xs">
+                        <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", fontWeight: "bold" }}>
+                          • Random Rotations (augmentation)
+                        </Text>
+                        <Text variant="body-default-l" onBackground="neutral-medium" style={{ lineHeight: "175%", paddingLeft: "16px" }}>
+                          Rotate all embeddings by a random orthogonal matrix during training.
+                        </Text>
+                        <Text variant="body-default-l" onBackground="neutral-medium" style={{ lineHeight: "175%", paddingLeft: "16px" }}>
+                          This does not change meaning—
+                        </Text>
+                        <Text variant="body-default-l" onBackground="neutral-medium" style={{ lineHeight: "175%", paddingLeft: "16px" }}>
+                          it simply shows the model different coordinate frames of the same manifold, improving rotational robustness.
+                        </Text>
+                      </Column>
+                      <Column gap="xs" style={{ marginTop: "8px" }}>
+                        <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", fontWeight: "bold" }}>
+                          • Learnable Rotation (alignment)
+                        </Text>
+                        <Text variant="body-default-l" onBackground="neutral-medium" style={{ lineHeight: "175%", paddingLeft: "16px" }}>
+                          Alternatively, let CHART learn a global rotation that "spins" the sphere into a more convenient orientation—
+                        </Text>
+                        <Text variant="body-default-l" onBackground="neutral-medium" style={{ lineHeight: "175%", paddingLeft: "16px" }}>
+                          reducing cluster overlap and sharpening directional cones.
+                        </Text>
+                      </Column>
+                    </Column>
+                    <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", marginTop: "12px" }}>
+                      Both ideas exploit the fact that CHART works with directional geometry, not raw coordinates—
+                    </Text>
+                    <ThemeAwareRedBox>
+                      <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", textAlign: "center", margin: 0 }}>
+                        something HNSW cannot take advantage of.
+                      </Text>
+                    </ThemeAwareRedBox>
+                    <Text variant="body-default-l" onBackground="neutral-medium" style={{ lineHeight: "175%", textAlign: "center", fontStyle: "italic", marginTop: "8px" }}>
+                      Click to collapse
+                    </Text>
+                  </Column>
+                </details>
               </Column>
             </div>
           </Column>
@@ -419,7 +584,7 @@ export default function ChartPage() {
           <div className={styles.chartCard} style={{ marginTop: "4px", marginBottom: "4px" }}>
             <Column padding="24" vertical="center" horizontal="center" fillWidth>
               <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", textAlign: "center" }}>
-                A transformer that traverses embedding space in <InlineCode>O(LogK₀(N))</InlineCode> time,
+                A transformer that traverses embedding space in <InlineCode>O(LogN)</InlineCode> time,
                 learning relationships between distant but semantically related embeddings.
               </Text>
             </Column>
@@ -451,6 +616,164 @@ export default function ChartPage() {
               </Text>
             </Column>
           </div>
+        </Column>
+
+        {/* CHART vs. HNSW */}
+        <Column gap="s">
+          <Heading as="h2" variant="heading-strong-xl" style={{ marginTop: "12px", marginBottom: "6px" }}>
+            CHART vs. HNSW — Why Hierarchy Beats Surface Hopping
+          </Heading>
+          <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
+            Most vector search systems today (like HNSW) treat the embedding space as if it were flat.
+          </Text>
+          <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
+            They build a small-world graph on the surface of the latent space and navigate by hopping from neighbor to neighbor.
+          </Text>
+          <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", marginTop: "8px" }}>
+            CHART takes a completely different approach:
+          </Text>
+
+          <div className={`${styles.chartCard} ${styles.tableCard}`} style={{ marginTop: "12px", marginBottom: "4px" }}>
+            <div className={styles.comparisonTable}>
+              <Table
+                data={{
+                  headers: [
+                    { content: "CHART", key: "chart" },
+                    { content: "HNSW", key: "hnsw" }
+                  ],
+                  rows: [
+                    ["moves through the hierarchy", "moves across the surface"],
+                    ["Nodes are spherical clusters (cones) at multiple resolutions.", "Edges connect specific embeddings."],
+                    ["Traversal is coarse → fine.", "Search is greedy, jumping from one point to the next."],
+                    ["Transformer decides which cones to refine.", "No notion of scale or resolution."],
+                    ["Sequence length stays bounded.", "No hierarchy."],
+                    ["Structure reflects the real geometry of the hypersphere.", "No geometric structure beyond local neighborhoods."]
+                  ]
+                }}
+              />
+            </div>
+          </div>
+
+          <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", marginTop: "12px" }}>
+            The difference is not a data structure tweak — it's a geometric shift.
+          </Text>
+          <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
+            HNSW navigates lateral connections on the sphere.
+          </Text>
+          <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
+            CHART navigates hierarchical regions of the sphere.
+          </Text>
+          <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", marginTop: "8px" }}>
+            This is what makes CHART fundamentally different:
+          </Text>
+          <div className={styles.chartCard} style={{ marginTop: "8px", marginBottom: "4px" }}>
+            <Column padding="24" gap="s">
+              <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", textAlign: "center" }}>
+                <Text as="span" variant="body-default-xl" onBackground="brand-strong" style={{ lineHeight: "175%" }}>HNSW: nearest-neighbor hops.</Text>
+              </Text>
+              <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", textAlign: "center" }}>
+                <Text as="span" variant="body-default-xl" onBackground="brand-strong" style={{ lineHeight: "175%" }}>CHART: semantic descent.</Text>
+              </Text>
+              <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", textAlign: "center", marginTop: "8px" }}>
+                One searches for proximity.
+              </Text>
+              <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", textAlign: "center" }}>
+                One searches for meaningful direction.
+              </Text>
+            </Column>
+          </div>
+
+          <details style={{ marginTop: "12px" }}>
+            <summary style={{ cursor: "pointer", fontWeight: "bold" }}>
+              <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
+                <Text as="span" variant="body-default-xl" onBackground="brand-strong" style={{ lineHeight: "175%" }}>Why CHART outperforms HNSW on spherical embeddings (technical)</Text>
+              </Text>
+            </summary>
+            <Column gap="s" style={{ marginTop: "16px", paddingLeft: "16px" }}>
+              <Column gap="xs">
+                <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", fontWeight: "bold" }}>
+                  1. Embeddings lie on a hypersphere
+                </Text>
+                <Text variant="body-default-l" onBackground="neutral-medium" style={{ lineHeight: "175%", paddingLeft: "16px" }}>
+                  Due to LayerNorm + normalization, embeddings cluster on a unit sphere.
+                </Text>
+                <Text variant="body-default-l" onBackground="neutral-medium" style={{ lineHeight: "175%", paddingLeft: "16px" }}>
+                  Cosine (angle) is the true distance — Euclidean distance is misleading.
+                </Text>
+              </Column>
+
+              <Column gap="xs" style={{ marginTop: "8px" }}>
+                <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", fontWeight: "bold" }}>
+                  2. HNSW ignores the spherical manifold
+                </Text>
+                <Text variant="body-default-l" onBackground="neutral-medium" style={{ lineHeight: "175%", paddingLeft: "16px" }}>
+                  It treats vectors as points in flat space and builds random small-world hops.
+                </Text>
+                <Text variant="body-default-l" onBackground="neutral-medium" style={{ lineHeight: "175%", paddingLeft: "16px" }}>
+                  No angular partitions.
+                </Text>
+                <Text variant="body-default-l" onBackground="neutral-medium" style={{ lineHeight: "175%", paddingLeft: "16px" }}>
+                  No coarse-to-fine refinement.
+                </Text>
+                <Text variant="body-default-l" onBackground="neutral-medium" style={{ lineHeight: "175%", paddingLeft: "16px" }}>
+                  Purely local.
+                </Text>
+              </Column>
+
+              <Column gap="xs" style={{ marginTop: "8px" }}>
+                <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", fontWeight: "bold" }}>
+                  3. CHART builds spherical caps ("cones")
+                </Text>
+                <Text variant="body-default-l" onBackground="neutral-medium" style={{ lineHeight: "175%", paddingLeft: "16px" }}>
+                  Spherical k-means partitions the hypersphere into directional regions.
+                </Text>
+                <Text variant="body-default-l" onBackground="neutral-medium" style={{ lineHeight: "175%", paddingLeft: "16px" }}>
+                  Parents → wide angles.
+                </Text>
+                <Text variant="body-default-l" onBackground="neutral-medium" style={{ lineHeight: "175%", paddingLeft: "16px" }}>
+                  Children → narrow angles.
+                </Text>
+              </Column>
+
+              <Column gap="xs" style={{ marginTop: "8px" }}>
+                <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", fontWeight: "bold" }}>
+                  4. CHART introduces a radial dimension
+                </Text>
+                <Text variant="body-default-l" onBackground="neutral-medium" style={{ lineHeight: "175%", paddingLeft: "16px" }}>
+                  Not coordinates inside the sphere —
+                </Text>
+                <Text variant="body-default-l" onBackground="neutral-medium" style={{ lineHeight: "175%", paddingLeft: "16px" }}>
+                  but an inward hierarchy of resolutions, which HNSW cannot represent.
+                </Text>
+              </Column>
+
+              <Column gap="xs" style={{ marginTop: "8px" }}>
+                <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", fontWeight: "bold" }}>
+                  5. Transformers are angular routers
+                </Text>
+                <Text variant="body-default-l" onBackground="neutral-medium" style={{ lineHeight: "175%", paddingLeft: "16px" }}>
+                  Attention uses dot products = cosine = geodesic similarity.
+                </Text>
+                <Text variant="body-default-l" onBackground="neutral-medium" style={{ lineHeight: "175%", paddingLeft: "16px" }}>
+                  So transformers are natively aligned with CHART's cone structure.
+                </Text>
+              </Column>
+
+              <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", marginTop: "12px", fontWeight: "bold" }}>
+                HNSW cannot exploit the geometric structure because it doesn't build one.
+              </Text>
+              <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", fontWeight: "bold" }}>
+                CHART is literally designed around it.
+              </Text>
+            </Column>
+          </details>
+        </Column>
+
+        {/* WHY THIS MATTERS (continued with comparison table) */}
+        <Column gap="s">
+          <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", marginTop: "8px" }}>
+            COMPARISON:
+          </Text>
           <div className={`${styles.chartCard} ${styles.tableCard}`} style={{ marginTop: "8px", marginBottom: "4px" }}>
             <div className={styles.comparisonTable}>
               <Table
