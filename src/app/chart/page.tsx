@@ -299,7 +299,7 @@ export default function ChartPage() {
                     </Text>
                     <div style={{ marginTop: "16px", paddingTop: "16px", borderTop: "1px solid rgba(239, 68, 68, 0.3)" }}>
                       <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", margin: 0, fontWeight: "bold" }}>
-                        Modern neural networks don't operate in flat Euclidean space.
+                        Modern neural networks don&apos;t operate in flat Euclidean space.
                       </Text>
                       <Column gap="s" style={{ marginTop: "12px" }}>
                         <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", margin: 0 }}>
@@ -330,7 +330,7 @@ export default function ChartPage() {
                           Together, these effects mean:
                         </Text>
                         <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", margin: 0, fontStyle: "italic" }}>
-                          embeddings don't live in a flat space; they live on a high-dimensional sphere.
+                          embeddings don&apos;t live in a flat space; they live on a high-dimensional sphere.
                         </Text>
                         <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", marginTop: "12px", margin: 0 }}>
                           This is why CHART builds directional (cosine-based) clusters, not Euclidean ones — and why its hierarchy naturally reflects the geometry that transformers already expect.
@@ -423,7 +423,7 @@ export default function ChartPage() {
           <div style={{ marginTop: "8px", marginBottom: "4px" }}>
             <ThemeAwareGreenBox>
               <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", textAlign: "center", margin: 0 }}>
-                Transformers operate on cosine similarity internally, so CHART's spherical hierarchy is the geometry transformers naturally expect.
+                Transformers operate on cosine similarity internally, so CHART&apos;s spherical hierarchy is the geometry transformers naturally expect.
               </Text>
             </ThemeAwareGreenBox>
           </div>
@@ -531,7 +531,7 @@ export default function ChartPage() {
                           • Learnable Rotation (alignment)
                         </Text>
                         <Text variant="body-default-l" onBackground="neutral-medium" style={{ lineHeight: "175%", paddingLeft: "16px" }}>
-                          Alternatively, let CHART learn a global rotation that "spins" the sphere into a more convenient orientation—
+                          Alternatively, let CHART learn a global rotation that &quot;spins&quot; the sphere into a more convenient orientation—
                         </Text>
                         <Text variant="body-default-l" onBackground="neutral-medium" style={{ lineHeight: "175%", paddingLeft: "16px" }}>
                           reducing cluster overlap and sharpening directional cones.
@@ -655,7 +655,7 @@ export default function ChartPage() {
           </div>
 
           <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", marginTop: "12px" }}>
-            The difference is not a data structure tweak — it's a geometric shift.
+            The difference is not a data structure tweak — it&apos;s a geometric shift.
           </Text>
           <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
             HNSW navigates lateral connections on the sphere.
@@ -722,7 +722,7 @@ export default function ChartPage() {
 
               <Column gap="xs" style={{ marginTop: "8px" }}>
                 <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", fontWeight: "bold" }}>
-                  3. CHART builds spherical caps ("cones")
+                  3. CHART builds spherical caps (&quot;cones&quot;)
                 </Text>
                 <Text variant="body-default-l" onBackground="neutral-medium" style={{ lineHeight: "175%", paddingLeft: "16px" }}>
                   Spherical k-means partitions the hypersphere into directional regions.
@@ -755,12 +755,12 @@ export default function ChartPage() {
                   Attention uses dot products = cosine = geodesic similarity.
                 </Text>
                 <Text variant="body-default-l" onBackground="neutral-medium" style={{ lineHeight: "175%", paddingLeft: "16px" }}>
-                  So transformers are natively aligned with CHART's cone structure.
+                  So transformers are natively aligned with CHART&apos;s cone structure.
                 </Text>
               </Column>
 
               <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", marginTop: "12px", fontWeight: "bold" }}>
-                HNSW cannot exploit the geometric structure because it doesn't build one.
+                HNSW cannot exploit the geometric structure because it doesn&apos;t build one.
               </Text>
               <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", fontWeight: "bold" }}>
                 CHART is literally designed around it.

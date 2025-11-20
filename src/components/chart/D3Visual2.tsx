@@ -1540,7 +1540,7 @@ export function D3Visual2() {
       .style("font-weight", "bold")
       .text(mode === 'ANN' ? `Cosine Similarity (Depth ${depth})` : `Attention Sequence (Depth ${depth})`);
     
-  }, [rootNodes, depth, queryPoint, relatedPoints, maxDepth, mode]);
+  }, [rootNodes, depth, queryPoint, relatedPoints, maxDepth, mode, points]);
 
   // TREE VISUALIZATION AS PICTURE-IN-PICTURE OVERLAY WITH PATH HIGHLIGHTING
   useEffect(() => {

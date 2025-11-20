@@ -372,10 +372,12 @@ export function SphereVisualization() {
     directionalLight2.position.set(-5, -5, -5);
     scene.add(directionalLight2);
     
-    // Cleanup
+    // Cleanup - capture ref values to avoid stale closure
+    const container = containerRef.current;
+    const domElement = renderer.domElement;
     return () => {
-      if (containerRef.current && renderer.domElement) {
-        containerRef.current.removeChild(renderer.domElement);
+      if (container && domElement) {
+        container.removeChild(domElement);
       }
       renderer.dispose();
     };
@@ -558,10 +560,10 @@ export function SphereVisualization() {
         // Map centroid to sphere
         const centroidPos = mapToSphere(cluster.centroid, xMin, xMax, yMin, yMax, radius);
         
-        // Scale size by inverse of depth: leaves (max depth) = 1.0, root (depth 0) = 0.1
-        // Linear interpolation: size = 0.1 + (d / maxDepthValue) * 0.9
-        const sizeScale = maxDepthValue === 0 ? 1.0 : 0.1 + (d / maxDepthValue) * 0.9;
-        const centroidRadius = 0.04 * sizeScale; // 50% smaller (was 0.08, now 0.04)
+        // Scale size by inverse of depth: leaves (max depth) = smaller, root (depth 0) = smallest
+        // Linear interpolation: size = 0.1 + (d / maxDepthValue) * 0.5 (reduced from 0.9 to make outer ones smaller)
+        const sizeScale = maxDepthValue === 0 ? 1.0 : 0.1 + (d / maxDepthValue) * 0.5;
+        const centroidRadius = 0.025 * sizeScale; // Smaller base size
         
         // Create centroid sphere with glow effect
         const centroidGeometry = new THREE.SphereGeometry(centroidRadius, 16, 16);
@@ -609,7 +611,7 @@ export function SphereVisualization() {
           
           const lineMaterial = new THREE.MeshStandardMaterial({
             color: lineColor,
-            opacity: 0.75, // Less transparent (0.75 instead of 0.5)
+            opacity: 0.9, // Less transparent - more visible
             transparent: true,
           });
           
