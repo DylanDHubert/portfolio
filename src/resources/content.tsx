@@ -116,9 +116,26 @@ const about = {
     title: "Work Experience",
     experiences: [
       {
+        company: "NanaWall",
+        timeframe: "10.30.2025 - Present",
+        role: "Software Engineering Intern",
+        achievements: [
+          <>
+            Automating business-side systems and processes to improve operational efficiency and reduce manual workflows.
+          </>,
+          <>
+            Working with Salesforce to streamline customer relationship management and business operations.
+          </>,
+          <>
+            Building internal tools and automations using Microsoft Copilot and Microsoft Suite tools to enhance productivity and automate routine tasks.
+          </>,
+        ],
+        images: [],
+      },
+      {
         company: "HHB AI Systems",
-        timeframe: "06.01.2023 - Present",
-        role: "Co-Founder & ML Engineer",
+        timeframe: "06.01.2023 - 10.05.2025",
+        role: "",
         achievements: [
           <>
             Built an Agent–Powered Retrieval–Augmented Generation (RAG) chatbot to search and summarize highly technical orthopedic implant documentation in collaboration with Stryker.
