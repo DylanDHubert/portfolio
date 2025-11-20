@@ -77,8 +77,23 @@
   :global([class*="Text"]),
   :global(p),
   :global(span),
-  :global(div) {
+  :global(div),
+  :global(li),
+  :global(ul),
+  :global(ol) {
     color: #fecaca !important; /* Light red/white like blog page */
+  }
+  
+  // Light mode table text color
+  .comparisonTable {
+    :global(th),
+    :global(td),
+    :global(table),
+    :global(tr),
+    :global(thead),
+    :global(tbody) {
+      color: #fecaca !important;
+    }
   }
 }
 

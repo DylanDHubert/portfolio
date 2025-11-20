@@ -161,13 +161,13 @@ export default function ChartPage() {
         {/* INTRODUCTION */}
         <Column gap="s">
           <Heading as="h2" variant="heading-strong-xl" style={{ marginTop: "12px", marginBottom: "6px" }}>
-            Introduction — Two Priors
+            Introduction — Two Priori
           </Heading>
           <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
-            This project rests on two priors that, when combined, point to a very natural architectural idea.
+            This project rests on two priori that, when combined, point to a very natural architectural idea.
           </Text>
           
-          {/* Two inline boxes for the two priors */}
+          {/* Two inline boxes for the two priori */}
           <div className={styles.twoPriorBoxes} style={{ display: "flex", gap: "12px", marginTop: "12px", marginBottom: "8px" }}>
             <div className={styles.chartCard} style={{ flex: 1 }}>
               <Column padding="24" vertical="center" horizontal="center" fillWidth gap="4">
