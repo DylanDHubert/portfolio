@@ -26,7 +26,6 @@ export function ThemeAwareRedBox({ children }: { children: React.ReactNode }) {
       borderRadius: "8px",
       border: "1.5px solid rgba(239, 68, 68, 0.5)",
       backgroundColor: theme === 'light' ? '#fef2f2' : '#1f1515',
-      color: theme === 'light' ? '#000' : '#fff',
       fontSize: "14px",
       lineHeight: "1.6",
       textAlign: "center",

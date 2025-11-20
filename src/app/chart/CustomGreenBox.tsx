@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 
-export function ThemeAwareGreenBox({ children }: { children: React.ReactNode }) {
+export function CustomGreenBox({ children }: { children: React.ReactNode }) {
   const [theme, setTheme] = useState<'light' | 'dark'>('dark');
   
   // Track theme changes
@@ -30,7 +30,11 @@ export function ThemeAwareGreenBox({ children }: { children: React.ReactNode }) 
       lineHeight: "1.6",
       textAlign: "center",
     }}>
-      {children}
+      <div className="custom-green-box-text" style={{
+        color: theme === 'light' ? '#15803d' : '#fff',
+      }}>
+        {children}
+      </div>
     </div>
   );
 }

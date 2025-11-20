@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 
-export function ThemeAwareGreenBox({ children }: { children: React.ReactNode }) {
+export function CustomRedBox({ children }: { children: React.ReactNode }) {
   const [theme, setTheme] = useState<'light' | 'dark'>('dark');
   
   // Track theme changes
@@ -24,13 +24,17 @@ export function ThemeAwareGreenBox({ children }: { children: React.ReactNode }) 
       width: "100%",
       padding: "16px 20px",
       borderRadius: "8px",
-      border: "1.5px solid rgba(34, 197, 94, 0.5)",
-      backgroundColor: theme === 'light' ? '#f0fdf4' : '#0f1f15',
+      border: "1.5px solid rgba(239, 68, 68, 0.5)",
+      backgroundColor: theme === 'light' ? '#fef2f2' : '#1f1515',
       fontSize: "14px",
       lineHeight: "1.6",
       textAlign: "center",
     }}>
-      {children}
+      <div className="custom-red-box-text" style={{
+        color: theme === 'light' ? '#dc2626' : '#fff',
+      }}>
+        {children}
+      </div>
     </div>
   );
 }

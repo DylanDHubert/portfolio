@@ -1,3 +1,10 @@
+// REMOVE ALL BOLD FONT FROM CHART PAGE
+.chartPage {
+  :global(*) {
+    font-weight: normal !important;
+  }
+}
+
 // PURPLE/MAROON CONTAINER FOR CHART PAGE CARDS
 .chartCard {
   background: linear-gradient(135deg, 
@@ -496,6 +503,21 @@
   :global(span),
   :global(div) {
     color: rgba(255, 255, 255, 0.95) !important;
+  }
+}
+
+// FORCE COLORS IN CUSTOM BOXES - LIGHT MODE ONLY
+.chartPage {
+  [data-theme="light"] & {
+    :global(.custom-green-box-text),
+    :global(.custom-green-box-text *) {
+      color: #15803d !important;
+    }
+    
+    :global(.custom-red-box-text),
+    :global(.custom-red-box-text *) {
+      color: #dc2626 !important;
+    }
   }
 }
 

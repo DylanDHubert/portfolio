@@ -8,6 +8,8 @@ import { SphereVisualization2 } from "@/components/chart/SphereVisualization2";
 import styles from "./Chart.module.scss";
 import { ThemeAwareRedBox } from "./ThemeAwareRedBox";
 import { ThemeAwareGreenBox } from "./ThemeAwareGreenBox";
+import { CustomGreenBox } from "./CustomGreenBox";
+import { CustomRedBox } from "./CustomRedBox";
 import { ExpandableRedBox } from "./ExpandableRedBox";
 import { MobileWarning } from "./MobileWarning";
 
@@ -29,7 +31,7 @@ export default function ChartPage() {
     "@context": "https://schema.org",
     "@type": "TechArticle",
     "headline": "CHART: Coarse-to-Fine Hierarchical Attention for Recursive Traversal",
-    "alternativeHeadline": "C.H.A.R.T. - Coarse-to-Fine Hierarchical Attention for Recursive Traversal",
+    "alternativeHeadline": "C.H.A.R.T.— Coarse-to-Fine Hierarchical Attention for Recursive Traversal",
     "description": "A transformer-based approach to embedding search that learns to traverse hierarchical semantic trees, enabling relationship-based retrieval instead of distance-based nearest neighbor search. CHART uses coarse-to-fine traversal with a fixed-size attention window to navigate embedding space in O(log N) time.",
     "url": `${baseURL}/chart`,
     "datePublished": publishedAt,
@@ -135,7 +137,7 @@ export default function ChartPage() {
           Blog
         </Button>
         <Heading variant="display-strong-m">C.H.A.R.T.<br />Coarse-to-Fine Hierarchical Attention for Recursive Traversal</Heading>
-        <Text variant="body-default-l" onBackground="neutral-weak">
+        <Text variant="body-default-l" onBackground="neutral-medium">
           {formatDate(publishedAt)}
         </Text>
       </Column>
@@ -144,14 +146,14 @@ export default function ChartPage() {
         <Column horizontal="center" gap="s">
           <SphereVisualization />
           <Heading variant="heading-strong-m">CHART</Heading>
-          <Text variant="body-default-l" onBackground="neutral-weak" style={{ textAlign: "center" }}>
+          <Text variant="body-default-l" onBackground="neutral-medium" style={{ textAlign: "center" }}>
             Traverses THROUGH Embedding Space
           </Text>
         </Column>
         <Column horizontal="center" gap="s">
           <SphereVisualization2 />
           <Heading variant="heading-strong-m">HNSW</Heading>
-          <Text variant="body-default-l" onBackground="neutral-weak" style={{ textAlign: "center" }}>
+          <Text variant="body-default-l" onBackground="neutral-medium" style={{ textAlign: "center" }}>
             Traverses Across Embedding Space
           </Text>
         </Column>
@@ -161,7 +163,7 @@ export default function ChartPage() {
         {/* INTRODUCTION */}
         <Column gap="s">
           <Heading as="h2" variant="heading-strong-xl" style={{ marginTop: "12px", marginBottom: "6px" }}>
-            Introduction — Two Priori
+            Introduction— Two Priori
           </Heading>
           <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
             This project rests on two priori that, when combined, point to a very natural architectural idea.
@@ -171,7 +173,7 @@ export default function ChartPage() {
           <div className={styles.twoPriorBoxes} style={{ display: "flex", gap: "12px", marginTop: "12px", marginBottom: "8px" }}>
             <div className={styles.chartCard} style={{ flex: 1 }}>
               <Column padding="24" vertical="center" horizontal="center" fillWidth gap="4">
-                <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", textAlign: "center", fontWeight: "bold" }}>
+                <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", textAlign: "center" }}>
                   EMBEDDINGS
                 </Text>
                 <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", textAlign: "center" }}>
@@ -181,7 +183,7 @@ export default function ChartPage() {
             </div>
             <div className={styles.chartCard} style={{ flex: 1 }}>
               <Column padding="24" vertical="center" horizontal="center" fillWidth gap="4">
-                <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", textAlign: "center", fontWeight: "bold" }}>
+                <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", textAlign: "center" }}>
                   TRANSFORMERS
                 </Text>
                 <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", textAlign: "center" }}>
@@ -212,7 +214,7 @@ export default function ChartPage() {
           <div className={styles.chartCard} style={{ marginTop: "8px", marginBottom: "4px" }}>
             <Column padding="24" vertical="center" horizontal="center" fillWidth gap="4">
               <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", textAlign: "center" }}>
-                <Text as="span" variant="body-default-xl" onBackground="brand-strong" style={{ lineHeight: "175%", textAlign: "center" }}>TOGETHER</Text>
+                <Text as="span" variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", textAlign: "center" }}>TOGETHER</Text>
               </Text>
               <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", textAlign: "center" }}>
                 If embeddings hold meaning, and attention learns relationships, <br />
@@ -240,7 +242,7 @@ export default function ChartPage() {
             A corpus might have <InlineCode>10M–100M</InlineCode> embeddings. Self-attention is <InlineCode>O(N²)</InlineCode>.
           </Text>
           <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
-            So the naive idea — &quot;just run a transformer over the embeddings&quot; — is effectively impossible.
+            So the naive idea— &quot;just run a transformer over the embeddings&quot;— is effectively impossible.
           </Text>
           
           <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", marginTop: "8px" }}>
@@ -296,7 +298,7 @@ export default function ChartPage() {
                 }
                 expandedContent={
                   <Column gap="m" style={{ textAlign: "left" }}>
-                    <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", textAlign: "center", margin: 0, fontWeight: "bold" }}>
+                    <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", textAlign: "center", margin: 0 }}>
                       Use cosine similarity (not Euclidean distance) when clustering.
                     </Text>
                     <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", margin: 0 }}>
@@ -304,25 +306,25 @@ export default function ChartPage() {
                     </Text>
                     <Column gap="xs" style={{ marginTop: "8px" }}>
                       <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", margin: 0 }}>
-                        <Text as="span" variant="body-default-xl" onBackground="brand-strong" style={{ lineHeight: "175%" }}>direction = meaning</Text>
+                        <Text as="span" variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>direction = meaning</Text>
                       </Text>
                       <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", margin: 0 }}>
-                        <Text as="span" variant="body-default-xl" onBackground="brand-strong" style={{ lineHeight: "175%" }}>angle = semantic distance</Text>
+                        <Text as="span" variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>angle = semantic distance</Text>
                       </Text>
                       <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", margin: 0 }}>
-                        <Text as="span" variant="body-default-xl" onBackground="brand-strong" style={{ lineHeight: "175%" }}>cosine similarity ≈ geodesic proximity on the sphere</Text>
+                        <Text as="span" variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>cosine similarity ≈ geodesic proximity on the sphere</Text>
                       </Text>
                     </Column>
                     <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", marginTop: "8px", margin: 0 }}>
                       Clustering with cosine ensures each node in the hierarchy represents a spherical cap (a directional cone), which aligns with how transformers interpret embeddings internally.
                     </Text>
                     <div style={{ marginTop: "16px", paddingTop: "16px", borderTop: "1px solid rgba(239, 68, 68, 0.3)" }}>
-                      <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", margin: 0, fontWeight: "bold" }}>
+                      <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", margin: 0 }}>
                         Modern neural networks don&apos;t operate in flat Euclidean space.
                       </Text>
                       <Column gap="s" style={{ marginTop: "12px" }}>
                         <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", margin: 0 }}>
-                          <Text as="span" variant="body-default-xl" onBackground="brand-strong" style={{ lineHeight: "175%" }}>1. LayerNorm forces every token onto a constant-norm shell</Text>
+                          <Text as="span" variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>1. LayerNorm forces every token onto a constant-norm shell</Text>
                         </Text>
                         <Text variant="body-default-l" onBackground="neutral-medium" style={{ lineHeight: "175%", margin: 0, paddingLeft: "16px" }}>
                           LayerNorm normalizes hidden states at nearly every layer, which removes magnitude information and pushes representations toward a uniform radius.
@@ -330,7 +332,7 @@ export default function ChartPage() {
                       </Column>
                       <Column gap="s" style={{ marginTop: "12px" }}>
                         <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", margin: 0 }}>
-                          <Text as="span" variant="body-default-xl" onBackground="brand-strong" style={{ lineHeight: "175%" }}>2. Embedding models normalize outputs</Text>
+                          <Text as="span" variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>2. Embedding models normalize outputs</Text>
                         </Text>
                         <Text variant="body-default-l" onBackground="neutral-medium" style={{ lineHeight: "175%", margin: 0, paddingLeft: "16px" }}>
                           Text, image, and multimodal encoders (OpenAI, CLIP, LLaMA, etc.) commonly L2-normalize final vectors to make cosine similarity meaningful.
@@ -338,21 +340,21 @@ export default function ChartPage() {
                       </Column>
                       <Column gap="s" style={{ marginTop: "12px" }}>
                         <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", margin: 0 }}>
-                          <Text as="span" variant="body-default-xl" onBackground="brand-strong" style={{ lineHeight: "175%" }}>3. High-dimensional geometry concentrates mass on a sphere</Text>
+                          <Text as="span" variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>3. High-dimensional geometry concentrates mass on a sphere</Text>
                         </Text>
                         <Text variant="body-default-l" onBackground="neutral-medium" style={{ lineHeight: "175%", margin: 0, paddingLeft: "16px" }}>
-                          In high dimensions, random vectors automatically lie near the unit sphere — making angular distance the only stable signal.
+                          In high dimensions, random vectors automatically lie near the unit sphere— making angular distance the only stable signal.
                         </Text>
                       </Column>
                       <Column gap="s" style={{ marginTop: "16px", paddingTop: "12px", borderTop: "1px solid rgba(239, 68, 68, 0.3)" }}>
-                        <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", margin: 0, fontWeight: "bold" }}>
+                        <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", margin: 0 }}>
                           Together, these effects mean:
                         </Text>
                         <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", margin: 0, fontStyle: "italic" }}>
                           embeddings don&apos;t live in a flat space; they live on a high-dimensional sphere.
                         </Text>
                         <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", marginTop: "12px", margin: 0 }}>
-                          This is why CHART builds directional (cosine-based) clusters, not Euclidean ones — and why its hierarchy naturally reflects the geometry that transformers already expect.
+                          This is why CHART builds directional (cosine-based) clusters, not Euclidean ones— and why its hierarchy naturally reflects the geometry that transformers already expect.
                         </Text>
                       </Column>
                       <Text variant="body-default-l" onBackground="neutral-medium" style={{ lineHeight: "175%", textAlign: "center", marginTop: "16px", fontStyle: "italic" }}>
@@ -434,7 +436,7 @@ export default function ChartPage() {
             </Column>
           </div>
           <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", marginTop: "4px" }}>
-            STRUCTURE IS NEVER FULLY LOADED — ONLY THE FRONTIER.
+            STRUCTURE IS NEVER FULLY LOADED— ONLY THE FRONTIER.
           </Text>
           <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
             THIS IS CHART&apos;S CORE COMPUTATIONAL TRICK.
@@ -459,12 +461,12 @@ export default function ChartPage() {
             TRAINING: A Three-Stage Curriculum
           </Heading>
           <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
-            Three stages build from basic localization to relational reasoning to embedding-space refinement. <Text as="span" variant="body-default-xl" onBackground="brand-strong" style={{ lineHeight: "175%" }}>The transformer never learns to manage sequence length</Text>— we enforce a fixed-size frontier at every step; the model only learns to navigate within that bounded set.
+            Three stages build from basic localization to relational reasoning to embedding-space refinement. <Text as="span" variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>The transformer never learns to manage sequence length</Text>— we enforce a fixed-size frontier at every step; the model only learns to navigate within that bounded set.
           </Text>
 
           <Column gap="xs" style={{ marginTop: "4px" }}>
             <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
-              <Text as="span" variant="body-default-xl" onBackground="brand-strong" style={{ lineHeight: "175%" }}>A. Localization:</Text> Descend the hierarchy to locate a single document. Teaches basic tree geometry: given an embedding, find the correct coarse-to-fine route. No multi-path reasoning yet.
+              <Text as="span" variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>A. Localization:</Text> Descend the hierarchy to locate a single document. Teaches basic tree geometry: given an embedding, find the correct coarse-to-fine route. No multi-path reasoning yet.
             </Text>
             <div className={styles.chartCard} style={{ marginTop: "4px", marginBottom: "4px" }}>
               <Column padding="24" vertical="center" horizontal="center" fillWidth>
@@ -477,7 +479,7 @@ export default function ChartPage() {
 
           <Column gap="xs" style={{ marginTop: "4px" }}>
             <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
-              <Text as="span" variant="body-default-xl" onBackground="brand-strong" style={{ lineHeight: "175%" }}>B. Relational Localization:</Text> Generalize to find a document and its related documents. Teaches semantic routing: explore multiple paths toward meaningful neighbors. Traversal becomes reasoning, not just following.
+              <Text as="span" variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>B. Relational Localization:</Text> Generalize to find a document and its related documents. Teaches semantic routing: explore multiple paths toward meaningful neighbors. Traversal becomes reasoning, not just following.
             </Text>
             <div className={styles.chartCard} style={{ marginTop: "4px", marginBottom: "4px" }}>
               <Column padding="24" vertical="center" horizontal="center" fillWidth>
@@ -490,7 +492,7 @@ export default function ChartPage() {
 
           <Column gap="xs" style={{ marginTop: "4px" }}>
             <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
-              <Text as="span" variant="body-default-xl" onBackground="brand-strong" style={{ lineHeight: "175%" }}>C. Embedding Refinement:</Text> Close the loop by reshaping embedding space so learned paths become easier and more coherent. After updating embeddings: recompute coherence for affected leaf clusters only, split inconsistent clusters, merge overly tight ones, update centroids upward, leave rest untouched. Results in a self-correcting hierarchy that aligns with discovered relationships.
+              <Text as="span" variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>C. Embedding Refinement:</Text> Close the loop by reshaping embedding space so learned paths become easier and more coherent. After updating embeddings: recompute coherence for affected leaf clusters only, split inconsistent clusters, merge overly tight ones, update centroids upward, leave rest untouched. Results in a self-correcting hierarchy that aligns with discovered relationships.
             </Text>
             <div className={styles.chartCard} style={{ marginTop: "4px", marginBottom: "4px" }}>
               <Column padding="24" vertical="center" horizontal="center" fillWidth>
@@ -507,7 +509,7 @@ export default function ChartPage() {
                 <details>
                   <summary style={{ cursor: "pointer", listStyle: "none" }}>
                     <Column gap="xs">
-                      <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", textAlign: "center", fontWeight: "bold" }}>
+                      <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", textAlign: "center" }}>
                         D. ROTATING THE HYPERSPHERE
                       </Text>
                       <Text variant="body-default-l" onBackground="neutral-medium" style={{ lineHeight: "175%", textAlign: "center", fontStyle: "italic" }}>
@@ -522,17 +524,17 @@ export default function ChartPage() {
                     <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
                       This sphere has a powerful symmetry:
                     </Text>
-                    <ThemeAwareGreenBox>
-                      <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", textAlign: "center", margin: 0 }}>
+                    <CustomGreenBox>
+                      <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", textAlign: "center", margin: 0, color: "inherit" }}>
                         Rotate the entire space around the origin, and all cosine distances stay the same.
                       </Text>
-                    </ThemeAwareGreenBox>
+                    </CustomGreenBox>
                     <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", marginTop: "8px" }}>
                       This symmetry leads to two useful ideas:
                     </Text>
                     <Column gap="s" style={{ marginTop: "8px" }}>
                       <Column gap="xs">
-                        <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", fontWeight: "bold" }}>
+                        <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
                           • Random Rotations (augmentation)
                         </Text>
                         <Text variant="body-default-l" onBackground="neutral-medium" style={{ lineHeight: "175%", paddingLeft: "16px" }}>
@@ -546,7 +548,7 @@ export default function ChartPage() {
                         </Text>
                       </Column>
                       <Column gap="xs" style={{ marginTop: "8px" }}>
-                        <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", fontWeight: "bold" }}>
+                        <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
                           • Learnable Rotation (alignment)
                         </Text>
                         <Text variant="body-default-l" onBackground="neutral-medium" style={{ lineHeight: "175%", paddingLeft: "16px" }}>
@@ -560,11 +562,11 @@ export default function ChartPage() {
                     <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", marginTop: "12px" }}>
                       Both ideas exploit the fact that CHART works with directional geometry, not raw coordinates—
                     </Text>
-                    <ThemeAwareRedBox>
-                      <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", textAlign: "center", margin: 0 }}>
+                    <CustomRedBox>
+                      <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", textAlign: "center", margin: 0, color: "inherit" }}>
                         something HNSW cannot take advantage of.
                       </Text>
-                    </ThemeAwareRedBox>
+                    </CustomRedBox>
                     <Text variant="body-default-l" onBackground="neutral-medium" style={{ lineHeight: "175%", textAlign: "center", fontStyle: "italic", marginTop: "8px" }}>
                       Click to collapse
                     </Text>
@@ -578,27 +580,27 @@ export default function ChartPage() {
         {/* PUTTING IT ALL TOGETHER */}
         <Column gap="s">
           <Heading as="h2" variant="heading-strong-xl" style={{ marginTop: "12px", marginBottom: "6px" }}>
-            Now We Put It All Together — CHART
+            Now We Put It All Together— CHART
           </Heading>
           <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
             By this point, the system has all the necessary ingredients:
           </Text>
           <Column as="ol" gap="s" style={{ listStyle: "decimal", paddingLeft: "24px", marginTop: "8px" }}>
             <Text as="li" variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
-              <Text as="span" variant="body-default-xl" onBackground="brand-strong" style={{ lineHeight: "175%" }}>A hierarchical semantic tree</Text> — built from clustering, storing centroids and summaries.
+              <Text as="span" variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>A hierarchical semantic tree</Text>— built from clustering, storing centroids and summaries.
             </Text>
             <Text as="li" variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
-              <Text as="span" variant="body-default-xl" onBackground="brand-strong" style={{ lineHeight: "175%" }}>A transformer that reasons over a fixed-size frontier</Text> — stepping coarse → medium → fine.
+              <Text as="span" variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>A transformer that reasons over a fixed-size frontier</Text>— stepping coarse → medium → fine.
             </Text>
             <Text as="li" variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
-              <Text as="span" variant="body-default-xl" onBackground="brand-strong" style={{ lineHeight: "175%" }}>A training loop that uses real relational structure</Text> — to teach traversal.
+              <Text as="span" variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>A training loop that uses real relational structure</Text>— to teach traversal.
             </Text>
             <Text as="li" variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
-              <Text as="span" variant="body-default-xl" onBackground="brand-strong" style={{ lineHeight: "175%" }}>A dynamic maintenance loop</Text> — that keeps the hierarchy coherent without expensive rebuilds.
+              <Text as="span" variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>A dynamic maintenance loop</Text>— that keeps the hierarchy coherent without expensive rebuilds.
             </Text>
           </Column>
           <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", marginTop: "8px" }}>
-            <Text as="span" variant="body-default-xl" onBackground="brand-strong" style={{ lineHeight: "175%" }}>The result:</Text>
+            <Text as="span" variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>The result:</Text>
           </Text>
           <div className={styles.chartCard} style={{ marginTop: "4px", marginBottom: "4px" }}>
             <Column padding="24" vertical="center" horizontal="center" fillWidth>
@@ -640,7 +642,7 @@ export default function ChartPage() {
         {/* CHART vs. HNSW */}
         <Column gap="s">
           <Heading as="h2" variant="heading-strong-xl" style={{ marginTop: "12px", marginBottom: "6px" }}>
-            CHART vs. HNSW — Why Hierarchy Beats Surface Hopping
+            CHART vs. HNSW— Why Hierarchy Beats Surface Hopping
           </Heading>
           <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
             Most vector search systems today (like HNSW) treat the embedding space as if it were flat.
@@ -674,7 +676,7 @@ export default function ChartPage() {
           </div>
 
           <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", marginTop: "12px" }}>
-            The difference is not a data structure tweak — it&apos;s a geometric shift.
+            The difference is not a data structure tweak— it&apos;s a geometric shift.
           </Text>
           <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
             HNSW navigates lateral connections on the sphere.
@@ -685,44 +687,46 @@ export default function ChartPage() {
           <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", marginTop: "8px" }}>
             This is what makes CHART fundamentally different:
           </Text>
-          <div className={styles.chartCard} style={{ marginTop: "8px", marginBottom: "4px" }}>
-            <Column padding="24" gap="s">
-              <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", textAlign: "center" }}>
-                <Text as="span" variant="body-default-xl" onBackground="brand-strong" style={{ lineHeight: "175%" }}>HNSW: nearest-neighbor hops.</Text>
-              </Text>
-              <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", textAlign: "center" }}>
-                <Text as="span" variant="body-default-xl" onBackground="brand-strong" style={{ lineHeight: "175%" }}>CHART: semantic descent.</Text>
-              </Text>
-              <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", textAlign: "center", marginTop: "8px" }}>
-                One searches for proximity.
-              </Text>
-              <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", textAlign: "center" }}>
-                One searches for meaningful direction.
-              </Text>
-            </Column>
+          <div className={`${styles.chartCard} ${styles.tableCard}`} style={{ marginTop: "8px", marginBottom: "4px" }}>
+            <div className={styles.comparisonTable}>
+              <Table
+                data={{
+                  headers: [
+                    { content: "HNSW", key: "hnsw" },
+                    { content: "CHART", key: "chart" }
+                  ],
+                  rows: [
+                    ["nearest-neighbor hops", "semantic descent"],
+                    ["distance-based", "relationship-based"],
+                    ["flat", "topological"],
+                    ["retrieves nearest neighbors", "retrieves meaningful connections"]
+                  ]
+                }}
+              />
+            </div>
           </div>
 
           <details style={{ marginTop: "12px" }}>
-            <summary style={{ cursor: "pointer", fontWeight: "bold" }}>
+            <summary style={{ cursor: "pointer" }}>
               <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
-                <Text as="span" variant="body-default-xl" onBackground="brand-strong" style={{ lineHeight: "175%" }}>Why CHART outperforms HNSW on spherical embeddings (technical)</Text>
+                <Text as="span" variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>Why CHART outperforms HNSW on spherical embeddings (technical)</Text>
               </Text>
             </summary>
             <Column gap="s" style={{ marginTop: "16px", paddingLeft: "16px" }}>
               <Column gap="xs">
-                <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", fontWeight: "bold" }}>
+                <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
                   1. Embeddings lie on a hypersphere
                 </Text>
                 <Text variant="body-default-l" onBackground="neutral-medium" style={{ lineHeight: "175%", paddingLeft: "16px" }}>
                   Due to LayerNorm + normalization, embeddings cluster on a unit sphere.
                 </Text>
                 <Text variant="body-default-l" onBackground="neutral-medium" style={{ lineHeight: "175%", paddingLeft: "16px" }}>
-                  Cosine (angle) is the true distance — Euclidean distance is misleading.
+                  Cosine (angle) is the true distance— Euclidean distance is misleading.
                 </Text>
               </Column>
 
               <Column gap="xs" style={{ marginTop: "8px" }}>
-                <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", fontWeight: "bold" }}>
+                <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
                   2. HNSW ignores the spherical manifold
                 </Text>
                 <Text variant="body-default-l" onBackground="neutral-medium" style={{ lineHeight: "175%", paddingLeft: "16px" }}>
@@ -740,26 +744,26 @@ export default function ChartPage() {
               </Column>
 
               <Column gap="xs" style={{ marginTop: "8px" }}>
-                <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", fontWeight: "bold" }}>
+                <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
                   3. CHART builds spherical caps (&quot;cones&quot;)
                 </Text>
                 <Text variant="body-default-l" onBackground="neutral-medium" style={{ lineHeight: "175%", paddingLeft: "16px" }}>
                   Spherical k-means partitions the hypersphere into directional regions.
                 </Text>
                 <Text variant="body-default-l" onBackground="neutral-medium" style={{ lineHeight: "175%", paddingLeft: "16px" }}>
-                  Parents → wide angles.
+                  Parents: wide angles.
                 </Text>
                 <Text variant="body-default-l" onBackground="neutral-medium" style={{ lineHeight: "175%", paddingLeft: "16px" }}>
-                  Children → narrow angles.
+                  Children: narrow angles.
                 </Text>
               </Column>
 
               <Column gap="xs" style={{ marginTop: "8px" }}>
-                <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", fontWeight: "bold" }}>
+                <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
                   4. CHART introduces a radial dimension
                 </Text>
                 <Text variant="body-default-l" onBackground="neutral-medium" style={{ lineHeight: "175%", paddingLeft: "16px" }}>
-                  Not coordinates inside the sphere —
+                  Not coordinates inside the sphere—
                 </Text>
                 <Text variant="body-default-l" onBackground="neutral-medium" style={{ lineHeight: "175%", paddingLeft: "16px" }}>
                   but an inward hierarchy of resolutions, which HNSW cannot represent.
@@ -767,7 +771,7 @@ export default function ChartPage() {
               </Column>
 
               <Column gap="xs" style={{ marginTop: "8px" }}>
-                <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", fontWeight: "bold" }}>
+                <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
                   5. Transformers are angular routers
                 </Text>
                 <Text variant="body-default-l" onBackground="neutral-medium" style={{ lineHeight: "175%", paddingLeft: "16px" }}>
@@ -778,39 +782,16 @@ export default function ChartPage() {
                 </Text>
               </Column>
 
-              <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", marginTop: "12px", fontWeight: "bold" }}>
+              <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", marginTop: "12px" }}>
                 HNSW cannot exploit the geometric structure because it doesn&apos;t build one.
               </Text>
-              <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", fontWeight: "bold" }}>
-                CHART is literally designed around it.
+              <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
+                CHART is designed around it.
               </Text>
             </Column>
           </details>
         </Column>
 
-        {/* WHY THIS MATTERS (continued with comparison table) */}
-        <Column gap="s">
-          <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", marginTop: "8px" }}>
-            COMPARISON:
-          </Text>
-          <div className={`${styles.chartCard} ${styles.tableCard}`} style={{ marginTop: "8px", marginBottom: "4px" }}>
-            <div className={styles.comparisonTable}>
-              <Table
-                data={{
-                  headers: [
-                    { content: "ANN", key: "ann" },
-                    { content: "CHART", key: "chart" }
-                  ],
-                  rows: [
-                    ["distance-based", "relationship-based"],
-                    ["flat", "topological"],
-                    ["retrieves nearest neighbors", "retrieves meaningful connections"]
-                  ]
-                }}
-              />
-            </div>
-          </div>
-        </Column>
 
         {/* NEXT STEPS */}
         <Column gap="s">
@@ -839,23 +820,23 @@ export default function ChartPage() {
           </Text>
           <Column as="ul" gap="xs" style={{ listStyle: "none", paddingLeft: "0", marginTop: "4px" }}>
             <Text as="li" variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
-              + <Text as="span" variant="body-default-xl" onBackground="brand-strong" style={{ lineHeight: "175%" }}>SEEDING THE ATTENTION WINDOW</Text>: how the initial sequence is fully populated, and how the query embedding is integrated so the model starts with a complete, fixed-length token set
+              + <Text as="span" variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>SEEDING THE ATTENTION WINDOW</Text>: how the initial sequence is fully populated, and how the query embedding is integrated so the model starts with a complete, fixed-length token set
             </Text>
             <Text as="li" variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
-              + <Text as="span" variant="body-default-xl" onBackground="brand-strong" style={{ lineHeight: "175%" }}>EMBEDDINGS AS TOKENS</Text>: the projection layers and tokenization strategy that allow raw embeddings to function as transformer inputs
+              + <Text as="span" variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>EMBEDDINGS AS TOKENS</Text>: the projection layers and tokenization strategy that allow raw embeddings to function as transformer inputs
             </Text>
             <Text as="li" variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
-              + <Text as="span" variant="body-default-xl" onBackground="brand-strong" style={{ lineHeight: "175%" }}>TRAINING DYNAMICS</Text>: curriculum scheduling, stage-wise loss weighting, and stabilization during early training
+              + <Text as="span" variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>TRAINING DYNAMICS</Text>: curriculum scheduling, stage-wise loss weighting, and stabilization during early training
             </Text>
             <Text as="li" variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
-              + <Text as="span" variant="body-default-xl" onBackground="brand-strong" style={{ lineHeight: "175%" }}>EVALUATION METRICS</Text>: measuring success beyond retrieval accuracy, including traversal interpretability and hierarchy coherence
+              + <Text as="span" variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>EVALUATION METRICS</Text>: measuring success beyond retrieval accuracy, including traversal interpretability and hierarchy coherence
             </Text>
           </Column>
         </Column>
 
         {/* FOOTER NOTE */}
         <Column gap="s">
-          <Text variant="body-default-m" onBackground="neutral-weak" style={{ lineHeight: "175%", textAlign: "center", marginTop: "24px" }}>
+          <Text variant="body-default-m" onBackground="neutral-medium" style={{ lineHeight: "175%", textAlign: "center", marginTop: "24px" }}>
             SOCIALS ARE IN THE FOOTER IF YOU WANT TO FOLLOW ALONG.
           </Text>
         </Column>
