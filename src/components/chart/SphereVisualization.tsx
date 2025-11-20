@@ -679,6 +679,36 @@ export function SphereVisualization() {
     
   }, [points, rootNodes, maxDepthValue, xMin, xMax, yMin, yMax, theme]);
 
+  // Animation loop for rotation
+  useEffect(() => {
+    if (!rendererRef.current || !sceneRef.current || !cameraRef.current) return;
+
+    let animationFrameId: number;
+    let rotationAngle = 0;
+    const rotationSpeed = 0.005; // Adjust speed here (slower = smaller number)
+    const cameraDistance = 3.5;
+
+    const animate = () => {
+      rotationAngle += rotationSpeed;
+      
+      // Rotate camera around Y axis (vertical rotation)
+      cameraRef.current!.position.x = Math.sin(rotationAngle) * cameraDistance;
+      cameraRef.current!.position.z = Math.cos(rotationAngle) * cameraDistance;
+      cameraRef.current!.lookAt(0, 0, 0);
+      
+      rendererRef.current!.render(sceneRef.current!, cameraRef.current!);
+      animationFrameId = requestAnimationFrame(animate);
+    };
+
+    animate();
+
+    return () => {
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+      }
+    };
+  }, [points, rootNodes, maxDepthValue, xMin, xMax, yMin, yMax, theme]);
+
   return (
     <div
       ref={containerRef}
