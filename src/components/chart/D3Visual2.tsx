@@ -678,12 +678,6 @@ export function D3Visual2() {
       return type === 'query' ? `Query Document ${id}` : `Document ${id}`;
     };
     
-    // LOG TARGETS FOR USER TO LABEL (sorted by Y position)
-    console.log('Targets sorted by Y position (top to bottom):');
-    allTargets.forEach((target, idx) => {
-      const targetType: 'query' | 'related' = target.type as 'query' | 'related';
-      console.log(`${idx + 1}. ${target.type === 'query' ? 'QUERY' : 'RELATED'} - ID: ${target.id}, Y: ${target.normalizedY.toFixed(3)}, Label: ${getDocumentLabel(target.id, targetType)}`);
-    });
     
     // Draw related points as X markers with tooltips
     // In CHART mode: show with normal highlighting

@@ -2,7 +2,7 @@ import { Column, Heading, Text, Meta, Schema, Button, Card, InlineCode, Table } 
 import { baseURL, person, blog } from "@/resources";
 import { formatDate } from "@/utils/formatDate";
 import { ScrollToHash } from "@/components";
-import { D3Visual1, D3Visual2, D3Visual3 } from "@/components/chart/D3Placeholders";
+import { D3Visual1, D3Visual2 } from "@/components/chart/D3Placeholders";
 import { SphereVisualization } from "@/components/chart/SphereVisualization";
 import { SphereVisualization2 } from "@/components/chart/SphereVisualization2";
 import styles from "./Chart.module.scss";
@@ -15,16 +15,16 @@ import { MobileWarning } from "./MobileWarning";
 
 export async function generateMetadata() {
   return Meta.generate({
-    title: "CHART: Coarse-to-Fine Transformer Traversal for Embedding Search",
+    title: "C.H.A.R.T. Coarse-to-Fine Hierarchical Attention for Recursive Traversal",
     description: "A transformer-based approach to embedding search that learns to traverse hierarchical semantic trees, enabling relationship-based retrieval instead of distance-based nearest neighbor search.",
     baseURL: baseURL,
-    image: `/api/og/generate?title=${encodeURIComponent("CHART: Coarse-to-Fine Transformer Traversal")}`,
+    image: `/api/og/generate?title=${encodeURIComponent("C.H.A.R.T. Coarse-to-Fine Hierarchical Attention for Recursive Traversal")}`,
     path: "/chart",
   });
 }
 
 export default function ChartPage() {
-  const publishedAt = "2025-11-17"; // UPDATE THIS WHEN PUBLISHING
+  const publishedAt = "2025-11-19"; // UPDATE THIS WHEN PUBLISHING
 
   // COMPREHENSIVE BLOG POST STRUCTURED DATA FOR AI ACCESSIBILITY
   const articleSchema = {
