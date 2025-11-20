@@ -1,6 +1,7 @@
 import { Column, Heading, Text, Meta, Schema, Button } from "@once-ui-system/core";
 import { baseURL, person } from "@/resources";
 import { SphereVisualization } from "@/components/chart/SphereVisualization";
+import { SphereVisualization2 } from "@/components/chart/SphereVisualization2";
 
 export async function generateMetadata() {
   return Meta.generate({
@@ -14,7 +15,7 @@ export async function generateMetadata() {
 
 export default function LatentPage() {
   return (
-    <Column as="section" maxWidth="m" horizontal="center" gap="m" style={{ padding: "24px 0" }}>
+    <Column as="section" horizontal="center" gap="m" style={{ padding: "24px 0", width: "100%" }}>
       <Schema
         as="webPage"
         baseURL={baseURL}
@@ -33,7 +34,16 @@ export default function LatentPage() {
         </Text>
       </Column>
 
-      <SphereVisualization />
+      <div style={{ display: "flex", flexDirection: "row", gap: "24px", justifyContent: "center", alignItems: "flex-start", flexWrap: "wrap", width: "100%" }}>
+        <Column horizontal="center" gap="s">
+          <SphereVisualization />
+          <Heading variant="heading-strong-m">CHART</Heading>
+        </Column>
+        <Column horizontal="center" gap="s">
+          <SphereVisualization2 />
+          <Heading variant="heading-strong-m">HNSW</Heading>
+        </Column>
+      </div>
     </Column>
   );
 }

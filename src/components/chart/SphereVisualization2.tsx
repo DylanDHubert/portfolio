@@ -275,7 +275,7 @@ function getCentroidPath(point: Point, rootNodes: ClusterNode[], maxDepth: numbe
   return path;
 }
 
-export function SphereVisualization() {
+export function SphereVisualization2() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [theme, setTheme] = useState<'light' | 'dark'>('dark');
   const sceneRef = useRef<THREE.Scene | null>(null);
@@ -531,110 +531,100 @@ export function SphereVisualization() {
       return depthColors.get(depth)!;
     };
     
-    // Show all depths
-    for (let d = 0; d <= maxDepthValue; d++) {
-      const clustersAtD = getClustersAtDepth(rootNodes, d);
+    // HNSW: Connect yellow centroids (outer layer) to their nearest neighbors (graph structure)
+    const outerSphereColor = getCentroidColor(maxDepthValue);
+    const numNeighbors = 5; // Number of nearest neighbors to connect for each connected centroid
+    
+    // Get clusters at max depth (yellow centroids on outer layer)
+    const clustersAtMaxDepth = getClustersAtDepth(rootNodes, maxDepthValue);
+    
+    // Render yellow centroids at max depth
+    clustersAtMaxDepth.forEach((cluster) => {
+      const centroidPos = mapToSphere(cluster.centroid, xMin, xMax, yMin, yMax, outerRadius);
+      const centroidRadius = 0.02; // Small size for centroids
       
-      // Calculate radius: depth 0 (root) = innermost, max depth (leaves) = outermost
-      // innerRadii = [0.1, 0.2, 0.4, 0.8, 1.2, 1.6] for depths 1, 2, 3, 4, 5, 6
-      // depth 0 should use the smallest radius (0.1 or first in array)
-      // max depth should use outerRadius (2.0)
-      let radius: number;
-      if (d === 0) {
-        // Root: use smallest inner radius
-        radius = innerRadii[0] || 0.1;
-      } else if (d === maxDepthValue) {
-        // Leaves: use outer radius (same as points)
-        radius = outerRadius;
-      } else {
-        // Intermediate: use innerRadii based on depth
-        // depth 1 -> innerRadii[0] (0.1), depth 2 -> innerRadii[1] (0.2), etc.
-        const radiusIndex = Math.min(d - 1, innerRadii.length - 1);
-        radius = innerRadii[radiusIndex] || 0.1;
-      }
+      const centroidGeometry = new THREE.SphereGeometry(centroidRadius, 16, 16);
+      const centroidMaterial = new THREE.MeshStandardMaterial({
+        color: outerSphereColor,
+        emissive: outerSphereColor,
+        emissiveIntensity: 0.8,
+      });
+      const centroidMesh = new THREE.Mesh(centroidGeometry, centroidMaterial);
+      centroidMesh.position.copy(centroidPos);
+      scene.add(centroidMesh);
+    });
+    
+    // Map centroids to sphere positions
+    const centroidPositions3D: THREE.Vector3[] = [];
+    clustersAtMaxDepth.forEach(cluster => {
+      const position = mapToSphere(cluster.centroid, xMin, xMax, yMin, yMax, outerRadius);
+      centroidPositions3D.push(position);
+    });
+    
+    // Track which centroids are connected to avoid duplicate lines
+    const connectedPairs = new Set<string>();
+    const getPairKey = (idx1: number, idx2: number) => {
+      return idx1 < idx2 ? `${idx1}-${idx2}` : `${idx2}-${idx1}`;
+    };
+    
+    // For each centroid, find nearest neighbor centroids and connect them
+    clustersAtMaxDepth.forEach((cluster, clusterIdx) => {
+      // Connect every 5th centroid for good coverage
+      if (clusterIdx % 5 !== 0) return;
       
-      // Get color for this depth level
-      const centroidColor = getCentroidColor(d);
+      const centroidPos = centroidPositions3D[clusterIdx];
       
-      clustersAtD.forEach((cluster) => {
-        // Map centroid to sphere
-        const centroidPos = mapToSphere(cluster.centroid, xMin, xMax, yMin, yMax, radius);
-        
-        // Scale size by inverse of depth: leaves (max depth) = smaller, root (depth 0) = smallest
-        // Linear interpolation: size = 0.1 + (d / maxDepthValue) * 0.5 (reduced from 0.9 to make outer ones smaller)
-        const sizeScale = maxDepthValue === 0 ? 1.0 : 0.1 + (d / maxDepthValue) * 0.5;
-        const centroidRadius = 0.025 * sizeScale; // Smaller base size
-        
-        // Create centroid sphere with glow effect
-        const centroidGeometry = new THREE.SphereGeometry(centroidRadius, 16, 16);
-        
-        // Create a brighter emissive color for glow
-        const glowColor = centroidColor.clone();
-        glowColor.r = Math.min(glowColor.r * 1.5, 1);
-        glowColor.g = Math.min(glowColor.g * 1.5, 1);
-        glowColor.b = Math.min(glowColor.b * 1.5, 1);
-        
-        const centroidMaterial = new THREE.MeshStandardMaterial({
-          color: centroidColor,
-          emissive: glowColor,
-          emissiveIntensity: 0.8, // Increased from 0.3 for stronger glow
-        });
-        const centroidMesh = new THREE.Mesh(centroidGeometry, centroidMaterial);
-        centroidMesh.position.copy(centroidPos);
-        scene.add(centroidMesh);
-        
-        // Draw lines to parent centroids
-        // Each cluster at depth d connects to its parent at depth d-1
-        if (cluster.parent) {
-          const parentDepth = cluster.parent.depth;
-          
-          // Calculate parent radius using same logic as above
-          let parentRadius: number;
-          if (parentDepth === 0) {
-            parentRadius = innerRadii[0] || 0.1;
-          } else if (parentDepth === maxDepthValue) {
-            parentRadius = outerRadius;
-          } else {
-            const radiusIndex = Math.min(parentDepth - 1, innerRadii.length - 1);
-            parentRadius = innerRadii[radiusIndex] || 0.1;
-          }
-          
-          const parentPos = mapToSphere(cluster.parent.centroid, xMin, xMax, yMin, yMax, parentRadius);
-          
-          // Use the child's color for the line (or interpolate between parent and child)
-          const lineColor = centroidColor; // Use child's color
-          
-          // Create lines using cylinder geometry
-          const lineDirection = new THREE.Vector3().subVectors(centroidPos, parentPos);
-          const lineLength = lineDirection.length();
-          const lineGeometry = new THREE.CylinderGeometry(0.01, 0.01, lineLength, 8); // Slightly thinner (0.01 instead of 0.015)
-          
-          const lineMaterial = new THREE.MeshStandardMaterial({
-            color: lineColor,
-            opacity: 0.9, // Less transparent - more visible
-            transparent: true,
-          });
-          
-          const lineMesh = new THREE.Mesh(lineGeometry, lineMaterial);
-          
-          // Position at midpoint and orient toward centroid
-          const midpoint = new THREE.Vector3().addVectors(parentPos, centroidPos).multiplyScalar(0.5);
-          lineMesh.position.copy(midpoint);
-          
-          // Create a quaternion to orient the cylinder along the line
-          const up = new THREE.Vector3(0, 1, 0);
-          const direction = lineDirection.normalize();
-          const quaternion = new THREE.Quaternion().setFromUnitVectors(up, direction);
-          lineMesh.setRotationFromQuaternion(quaternion);
-          
-          scene.add(lineMesh);
+      // Calculate distances to all other centroids
+      const distances: Array<{ idx: number; dist: number }> = [];
+      centroidPositions3D.forEach((otherPos, otherIdx) => {
+        if (otherIdx !== clusterIdx) {
+          const dist = centroidPos.distanceTo(otherPos);
+          distances.push({ idx: otherIdx, dist });
         }
       });
-    }
+      
+      // Sort by distance and take nearest neighbors
+      distances.sort((a, b) => a.dist - b.dist);
+      const neighbors = distances.slice(0, numNeighbors);
+      
+      // Draw lines to nearest neighbor centroids (using cylinder geometry like CHART)
+      neighbors.forEach(neighbor => {
+        const pairKey = getPairKey(clusterIdx, neighbor.idx);
+        if (connectedPairs.has(pairKey)) return; // Skip if already connected
+        connectedPairs.add(pairKey);
+        
+        const neighborPos = centroidPositions3D[neighbor.idx];
+        
+        // Create lines using cylinder geometry (matching CHART style)
+        const lineDirection = new THREE.Vector3().subVectors(neighborPos, centroidPos);
+        const lineLength = lineDirection.length();
+        const lineGeometry = new THREE.CylinderGeometry(0.01, 0.01, lineLength, 8);
+        
+        const lineMaterial = new THREE.MeshStandardMaterial({
+          color: outerSphereColor,
+          opacity: 0.9, // Match CHART opacity
+          transparent: true,
+        });
+        
+        const lineMesh = new THREE.Mesh(lineGeometry, lineMaterial);
+        
+        // Position at midpoint and orient toward neighbor
+        const midpoint = new THREE.Vector3().addVectors(centroidPos, neighborPos).multiplyScalar(0.5);
+        lineMesh.position.copy(midpoint);
+        
+        // Create a quaternion to orient the cylinder along the line
+        const up = new THREE.Vector3(0, 1, 0);
+        const direction = lineDirection.normalize();
+        const quaternion = new THREE.Quaternion().setFromUnitVectors(up, direction);
+        lineMesh.setRotationFromQuaternion(quaternion);
+        
+        scene.add(lineMesh);
+      });
+    });
     
     // Draw wireframe spheres for reference - colored by depth
     // Outer sphere wireframe (max depth - leaves)
-    const outerSphereColor = getCentroidColor(maxDepthValue);
+    // outerSphereColor already defined above
     const outerWireframeMaterial = new THREE.MeshBasicMaterial({
       color: outerSphereColor,
       wireframe: true,

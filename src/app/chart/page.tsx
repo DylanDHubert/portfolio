@@ -3,6 +3,8 @@ import { baseURL, person, blog } from "@/resources";
 import { formatDate } from "@/utils/formatDate";
 import { ScrollToHash } from "@/components";
 import { D3Visual1, D3Visual2, D3Visual3 } from "@/components/chart/D3Placeholders";
+import { SphereVisualization } from "@/components/chart/SphereVisualization";
+import { SphereVisualization2 } from "@/components/chart/SphereVisualization2";
 import styles from "./Chart.module.scss";
 import { ThemeAwareRedBox } from "./ThemeAwareRedBox";
 import { ThemeAwareGreenBox } from "./ThemeAwareGreenBox";
@@ -138,6 +140,23 @@ export default function ChartPage() {
         </Text>
       </Column>
 
+      <div style={{ display: "flex", flexDirection: "row", gap: "24px", justifyContent: "center", alignItems: "flex-start", flexWrap: "wrap", width: "100%", maxWidth: "900px", margin: "0 auto" }}>
+        <Column horizontal="center" gap="s">
+          <SphereVisualization />
+          <Heading variant="heading-strong-m">CHART</Heading>
+          <Text variant="body-default-l" onBackground="neutral-weak" style={{ textAlign: "center" }}>
+            Traverses THROUGH Embedding Space
+          </Text>
+        </Column>
+        <Column horizontal="center" gap="s">
+          <SphereVisualization2 />
+          <Heading variant="heading-strong-m">HNSW</Heading>
+          <Text variant="body-default-l" onBackground="neutral-weak" style={{ textAlign: "center" }}>
+            Traverses Across Embedding Space
+          </Text>
+        </Column>
+      </div>
+
       <Column className={styles.mobileContent} style={{ margin: "auto" }} as="article" maxWidth="s" gap="m">
         {/* INTRODUCTION */}
         <Column gap="s">
@@ -258,7 +277,7 @@ export default function ChartPage() {
           </Text>
           <Column as="ul" gap="xs" style={{ listStyle: "none", paddingLeft: "0", marginTop: "4px" }}>
             <Text as="li" variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
-              + Recursively cluster the embeddings... <InlineCode>k₀ = 2</InlineCode>.
+              + Recursively cluster the embeddings...
             </Text>
             <Text as="li" variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%" }}>
               + Because embeddings live on a high-dimensional sphere, clustering must respect angular geometry—not Euclidean distance.
@@ -410,7 +429,7 @@ export default function ChartPage() {
                 ...<br />
                 STEP N: Expand <InlineCode>16</InlineCode>: replace with the <InlineCode>32</InlineCode> children, then remove <InlineCode>16</InlineCode> low attention nodes.<br />
                 STOP: When nodes are stable in the input sequence, or all nodes are leaves. <br />
-                MAX STEPS: <InlineCode>LogN</InlineCode>.
+                MAX STEPS: <InlineCode>log N</InlineCode>.
               </Text>
             </Column>
           </div>
@@ -584,7 +603,7 @@ export default function ChartPage() {
           <div className={styles.chartCard} style={{ marginTop: "4px", marginBottom: "4px" }}>
             <Column padding="24" vertical="center" horizontal="center" fillWidth>
               <Text variant="body-default-xl" onBackground="neutral-medium" style={{ lineHeight: "175%", textAlign: "center" }}>
-                A transformer that traverses embedding space in <InlineCode>O(LogN)</InlineCode> time,
+                A transformer that traverses embedding space in <InlineCode>O(log N)</InlineCode> time,
                 learning relationships between distant but semantically related embeddings.
               </Text>
             </Column>
