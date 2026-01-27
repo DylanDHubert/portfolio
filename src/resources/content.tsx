@@ -118,16 +118,19 @@ const about = {
       {
         company: "NanaWall",
         timeframe: "10.30.2025 - Present",
-        role: "Software Engineering Intern",
+        role: "Software Engineer",
         achievements: [
           <>
-            Automating business-side systems and processes to improve operational efficiency and reduce manual workflows.
+            Re-architected a legacy C# + Excel calculation system used for downstream architectural drawings, eliminating spreadsheet-coupled logic.
           </>,
           <>
-            Working with Salesforce to streamline customer relationship management and business operations.
+            Reverse-engineered and disentangled tightly coupled business rules spanning code and Excel, establishing a clean, code-first calculation interface.
           </>,
           <>
-            Building internal tools and automations using Microsoft Copilot and Microsoft Suite tools to enhance productivity and automate routine tasks.
+            Designed a testable, extensible backend foundation to support drawing automation and future AI integration.
+          </>,
+          <>
+            Contributed to technical strategy around data, system architecture, and AI readiness for legacy automation workflows.
           </>,
         ],
         images: [],
