@@ -9,7 +9,7 @@ interface SlideContentProps {
   subtitle: string;
   contentBox1: React.ReactNode;
   contentBox2: React.ReactNode;
-  takeaway: string;
+  takeaway: string | React.ReactNode;
 }
 
 export function SlideContent({ title, subtitle, contentBox1, contentBox2, takeaway }: SlideContentProps) {
@@ -105,9 +105,15 @@ export function SlideContent({ title, subtitle, contentBox1, contentBox2, takeaw
         {/* TAKEAWAY */}
         <div className={styles.chartCard} style={{ flexShrink: 0, marginTop: "auto", width: "100%", alignSelf: "center" }}>
           <Column padding="24" vertical="center" horizontal="center" fillWidth gap="s">
-            <Heading variant="heading-strong-xl" style={{ fontSize: "1.25rem", lineHeight: "1.2", textAlign: "center" }}>
-              {takeaway}
-            </Heading>
+            {typeof takeaway === "string" ? (
+              <Heading variant="heading-strong-xl" style={{ fontSize: "1.25rem", lineHeight: "1.2", textAlign: "center" }}>
+                {takeaway}
+              </Heading>
+            ) : (
+              <Heading variant="heading-strong-xl" style={{ fontSize: "1.25rem", lineHeight: "1.2", textAlign: "center" }}>
+                {takeaway}
+              </Heading>
+            )}
           </Column>
         </div>
       </Column>
