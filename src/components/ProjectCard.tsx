@@ -24,6 +24,7 @@ interface ProjectCardProps {
   avatars: { src: string }[];
   link: string;
   demoUrl?: string;
+  showDetails?: boolean;
 }
 
 export const ProjectCard: React.FC<ProjectCardProps> = ({
@@ -35,6 +36,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
   avatars,
   link,
   demoUrl,
+  showDetails = true,
 }) => {
   const [showDemo, setShowDemo] = useState(false);
   return (
@@ -112,14 +114,16 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
               </Text>
             )}
                         <Flex gap="24" wrap>
-              <Button
-                variant="secondary"
-                size="s"
-                onClick={() => window.location.href = href}
-                className={styles.yellowGlowButton}
-              >
-                VIEW DETAILS
-              </Button>
+              {showDetails && (
+                <Button
+                  variant="secondary"
+                  size="s"
+                  onClick={() => window.location.href = href}
+                  className={styles.yellowGlowButton}
+                >
+                  VIEW DETAILS
+                </Button>
+              )}
               {demoUrl && (
                 <Button
                   variant="secondary"

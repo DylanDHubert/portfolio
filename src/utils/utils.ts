@@ -21,6 +21,7 @@ type Metadata = {
   link?: string;
   demoUrl?: string;
   hidden?: boolean;
+  noPage?: boolean;
 };
 
 import { notFound } from 'next/navigation';
@@ -52,6 +53,7 @@ function readMDXFile(filePath: string) {
     team: data.team || [],
     link: data.link || "",
     demoUrl: data.demoUrl || "",
+    noPage: data.noPage === true,
   };
 
   return { metadata, content };

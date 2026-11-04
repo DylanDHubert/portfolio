@@ -101,13 +101,9 @@ const about = {
     title: "Introduction",
     description: (
       <>
-        Dylan is a recent Computer Science graduate (May 2025) and Machine Learning Engineer who transforms ideas into reality. His journey began with Python turtle graphics drawing polygons—a simple project that perfectly captured his core passion: creating things that bridge the gap between what&apos;s in his mind and tangible reality.
+        Dylan is a Software Engineer with a degree in Machine Learning currently working at NanaWall.
         <br/><br/>
-        Mentored by Dr. Leah Ding at American University, Dylan deepened his love for machine learning and discovered his talent for building systems that matter. This foundation led to cutting-edge research at NASA and building production-ready RAG systems that handle real-world, messy data.
-        <br/><br/>
-        When not coding, Dylan creates art with markers and paper, produces music (self-taught), practices Taoist philosophy, and enjoys soccer, cycling, hiking, and baking bread. He believes in combining intellectual depth with practical impact, always seeking projects that are both technologically fascinating and genuinely useful.
-        <br/><br/>
-        <strong>Currently seeking ML Engineer, Software Engineer, and AI/ML roles where I can apply my experience in RAG systems, computer vision, and full-stack development to build impactful products.</strong>
+        In his free time he plays Classical Guitar and programs games among other projects.
       </>
     ),
   },
@@ -117,20 +113,26 @@ const about = {
     experiences: [
       {
         company: "NanaWall",
-        timeframe: "10.30.2025 - Present",
-        role: "Software Engineer",
+        timeframe: "10.2025 - Present",
+        role: "Software Engineer & Project Lead (Intern: Oct 2025 – Dec 2025)",
         achievements: [
           <>
-            Re-architected a legacy C# + Excel calculation system used for downstream architectural drawings, eliminating spreadsheet-coupled logic.
+            Rebuilding the calculation layer behind the company&apos;s architectural drawing system, moving fifteen years of product and engineering logic previously encoded in spreadsheets into a documented Python rules engine covering ~10 product lines. Currently in validation and phased rollout.
           </>,
           <>
-            Reverse-engineered and disentangled tightly coupled business rules spanning code and Excel, establishing a clean, code-first calculation interface.
+            Designed a bespoke validation approach for a system with no correct reference to test against.
           </>,
           <>
-            Designed a testable, extensible backend foundation to support drawing automation and future AI integration.
+            Built the downstream systems on that foundation: automated product–data mapping into a German manufacturing partner&apos;s configuration platform, and a 3D configurator rendering engine output in-browser.
           </>,
           <>
-            Contributed to technical strategy around data, system architecture, and AI readiness for legacy automation workflows.
+            Designed and deployed containerized services on AWS with and without Terraform, including an asynchronous queuing and job-orchestration service, a token-based file proxy that closed a public enumeration vulnerability, master-data microservices, and larger product lifecycle and tooling systems with a focus on smooth cutover.
+          </>,
+          <>
+            Stack: Python, FastAPI, Docker, AWS (EC2, ECR, ECS, S3, DynamoDB, ALB, Route 53), Terraform, React, three.js, Salesforce, MuleSoft, REST, stateful systems, software design, and multi-system architecture.
+          </>,
+          <>
+            AI tooling: Cursor, Claude Code, MCP server integrations, agent skill authoring, multi-repo context design, and agent guardrailing.
           </>,
         ],
         images: [],

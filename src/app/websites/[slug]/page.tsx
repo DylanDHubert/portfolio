@@ -8,9 +8,11 @@ import { Metadata } from "next";
 
 export async function generateStaticParams(): Promise<{ slug: string }[]> {
   const posts = getPosts(["src", "app", "websites", "projects"]);
-  return posts.map((post) => ({
-    slug: post.slug,
-  }));
+  return posts
+    .filter((post) => !post.metadata.noPage)
+    .map((post) => ({
+      slug: post.slug,
+    }));
 }
 
 export async function generateMetadata({
@@ -24,7 +26,7 @@ export async function generateMetadata({
   const posts = getPosts(["src", "app", "websites", "projects"])
   let post = posts.find((post) => post.slug === slugPath);
 
-  if (!post) return {};
+  if (!post || post.metadata.noPage) return {};
 
   return Meta.generate({
     title: post.metadata.title,
@@ -43,7 +45,7 @@ export default async function Project({
 
   let post = getPosts(["src", "app", "websites", "projects"]).find((post) => post.slug === slugPath);
 
-  if (!post) {
+  if (!post || post.metadata.noPage) {
     notFound();
   }
 

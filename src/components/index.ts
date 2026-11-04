@@ -1,4 +1,5 @@
 export { Header } from "@/components/Header";
+export { OutdatedNotice } from "@/components/OutdatedNotice";
 export { Footer } from "@/components/Footer";
 export { Mailchimp } from "@/components/Mailchimp";
 export { ProjectCard } from "@/components/ProjectCard";

@@ -44,7 +44,9 @@ export async function GET() {
     projects: projects.map(project => ({
       title: project.metadata.title,
       slug: project.slug,
-      url: `${baseURL}/websites/${project.slug}`,
+      url: project.metadata.noPage && project.metadata.link
+        ? project.metadata.link
+        : `${baseURL}/websites/${project.slug}`,
       summary: project.metadata.summary,
       publishedAt: project.metadata.publishedAt,
       tags: project.metadata.tags || [],

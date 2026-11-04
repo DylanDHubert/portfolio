@@ -15,7 +15,7 @@ export default async function sitemap() {
     // category: 'Machine Learning & AI'
   }));
 
-  const works = getPosts(["src", "app", "websites", "projects"]).map((post) => ({
+  const works = getPosts(["src", "app", "websites", "projects"]).filter((post) => !post.metadata.noPage).map((post) => ({
     url: `${baseURL}/websites/${post.slug}`,
     lastModified: post.metadata.publishedAt,
     changeFrequency: 'monthly' as const,
