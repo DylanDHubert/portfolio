@@ -301,28 +301,32 @@ const work = {
 const gallery = {
   path: "/gallery",
   label: "GALLERY",
-  title: `Photo gallery – ${person.name}`,
-  description: `A photo collection by ${person.name}`,
-  // Images by https://lorant.one
-  // These are placeholder images, replace with your own
+  title: `Gallery – ${person.name}`,
+  description: `Drawings by ${person.name}: markers and ink on paper.`,
+  medium: "Markers and ink on paper",
+  // ORDER HERE SETS THE NUMBERS SHOWN ON THE WALL (No. 01, No. 02, ...)
   images: [
     {
       src: "/images/gallery/ruins.jpeg",
+      title: "Overgrown Ruins",
       alt: "Ruins",
       orientation: "vertical",
     },
     {
       src: "/images/gallery/factory.jpeg",
+      title: "Night Factory",
       alt: "Factory",
       orientation: "vertical",
     },
     {
-      src: "/images/gallery/twinpeaks.jpeg",
-      alt: "Twin Peaks",
-      orientation: "vertical",
+      src: "/images/gallery/searchlight.jpeg",
+      title: "Lighthouse",
+      alt: "Searchlight",
+      orientation: "horizontal",
     },
     {
       src: "/images/gallery/opeanocean.jpeg",
+      title: "Castaway",
       alt: "Ocean",
       orientation: "horizontal",
     },
@@ -343,48 +347,56 @@ const gallery = {
     },
     {
       src: "/images/gallery/cactusisland.jpeg",
+      title: "Island",
       alt: "Cactus Island",
       orientation: "horizontal",
     },
     {
       src: "/images/gallery/chinacampmarsh.jpeg",
+      title: "China Camp",
       alt: "China Camp Marsh",
       orientation: "horizontal",
     },
     {
       src: "/images/gallery/balloons.jpeg",
+      title: "Seaside Town",
       alt: "Balloons",
       orientation: "horizontal",
     },
     {
       src: "/images/gallery/sunsetocean.jpeg",
+      title: "Sakura",
       alt: "Sunset Ocean",
       orientation: "horizontal",
     },
     {
       src: "/images/gallery/temple.jpeg",
+      title: "Temple Island",
       alt: "Temple",
       orientation: "vertical",
     },
     {
       src: "/images/gallery/thething.jpeg",
+      title: "Thing",
       alt: "The Thing",
       orientation: "horizontal",
     },
     {
       src: "/images/gallery/thetankii.jpeg",
+      title: "The Tank",
       alt: "The Tank II",
       orientation: "vertical",
     },
     {
       src: "/images/gallery/seastacks.jpeg",
+      title: "Undersea",
       alt: "Sea Stacks",
       orientation: "vertical",
     },
     {
-      src: "/images/gallery/searchlight.jpeg",
-      alt: "Searchlight",
-      orientation: "horizontal",
+      src: "/images/gallery/twinpeaks.jpeg",
+      alt: "Twin Peaks",
+      orientation: "vertical",
     },
   ],
 };

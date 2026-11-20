@@ -1,14 +1,281 @@
-.masonryGrid {
-    display: flex;
-    margin-left: calc(-1 * var(--static-space-16));
-    width: 100%;
+// GALLERY: POLAROID-STYLE PAPER CARDS TAPED TO A WALL, IN THE SITE'S PALETTE
+// DARK MODE: NIGHT WALL WITH GOLD ACCENTS. LIGHT MODE: PLASTER WALL WITH CYAN ACCENTS.
+
+.page {
+  --g-accent: #f59e0b;
+  --g-glow: rgba(245, 158, 11, 0.35);
+  --g-tape: rgba(251, 191, 36, 0.55);
+  --g-wall: radial-gradient(ellipse at 50% 0%, rgba(245, 158, 11, 0.08), transparent 60%), #0b1020;
+  --g-paper: #f8f5ee;
+  --g-ink: #3f3a33;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
-.masonryGridColumn {
-    padding-left: var(--static-space-16);
-    background-clip: padding-box;
+:global([data-theme="light"]) .page {
+  --g-accent: #0891b2;
+  --g-glow: rgba(8, 145, 178, 0.3);
+  --g-tape: rgba(103, 232, 249, 0.6);
+  --g-wall: radial-gradient(ellipse at 50% 0%, rgba(8, 145, 178, 0.07), transparent 60%), #efe9df;
+  --g-ink: #000000;
 }
 
-.gridItem {
-    margin-bottom: var(--static-space-16);
+.intro {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px 16px;
+}
+
+.introText {
+  margin: 0;
+  color: var(--neutral-on-background-medium);
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.count {
+  font-variant-numeric: tabular-nums;
+  color: var(--neutral-on-background-weak);
+}
+
+// THE WALL
+
+.wall {
+  width: 100%;
+  padding: 44px 34px 40px;
+  border-radius: 18px;
+  background: var(--g-wall);
+  box-shadow: inset 0 0 0 1px var(--neutral-alpha-weak), inset 0 30px 60px rgba(0, 0, 0, 0.12);
+  box-sizing: border-box;
+
+  @media (max-width: 560px) {
+    padding: 28px 14px 24px;
+  }
+}
+
+.row {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+// A CARD: PAPER MAT, DRAWING, LABEL STRIP, A PIECE OF TAPE ON TOP
+
+.card {
+  position: relative;
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  border: none;
+  border-radius: 3px;
+  background: var(--g-paper);
+  color: var(--g-ink);
+  cursor: zoom-in;
+  transform: rotate(var(--tilt));
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.18), 0 10px 24px rgba(0, 0, 0, 0.22);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+
+  &:hover,
+  &:focus-visible {
+    transform: rotate(0deg) translateY(-6px) scale(1.025);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2), 0 18px 40px rgba(0, 0, 0, 0.3), 0 0 0 3px var(--g-glow);
+    z-index: 2;
+    outline: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+}
+
+.tape {
+  position: absolute;
+  top: -11px;
+  left: 50%;
+  width: 64px;
+  height: 22px;
+  transform: translateX(-50%) rotate(calc(var(--tilt) * -2));
+  background: var(--g-tape);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+  // TORN-LOOKING ENDS
+  clip-path: polygon(3% 0, 97% 4%, 100% 50%, 96% 100%, 4% 96%, 0 50%);
+  pointer-events: none;
+}
+
+.frame {
+  display: block;
+  overflow: hidden;
+  border-radius: 1px;
+}
+
+.img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cardNo {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0 2px;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  // NOT NAMED "label": THE SITE'S GLOBAL [class*="label"] GLOW RULE WOULD WASH OUT THE INK
+  color: var(--g-ink) !important;
+  text-shadow: none !important;
+}
+
+// TITLE ON THE LEFT, NUMBER ON THE RIGHT; LONG TITLES TRUNCATE ON SMALL CARDS
+.cardNo {
+  gap: 8px;
+  min-width: 0;
+}
+
+.cardName,
+.cardNameless {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-align: left;
+  color: var(--g-ink) !important;
+}
+
+.cardNameless {
+  font-style: italic;
+  opacity: 0.6;
+}
+
+.cardNum {
+  flex: none;
+  font-size: 0.85em;
+  opacity: 0.6;
+  color: var(--g-ink) !important;
+}
+
+.card *,
+.placard * {
+  text-shadow: none !important;
+}
+
+@media (max-width: 560px) {
+  .tape {
+    top: -8px;
+    width: 40px;
+    height: 15px;
+  }
+
+  .cardNo { font-size: 11px; }
+}
+
+// FULL-SCREEN VIEWER
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  background: rgba(4, 6, 14, 0.9);
+  backdrop-filter: blur(6px);
+  animation: fadeIn 0.18s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.viewer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.viewerCard {
+  background: #f8f5ee;
+  padding: 14px 14px 0;
+  border-radius: 4px;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55);
+}
+
+.viewerFrame {
+  position: relative;
+  overflow: hidden;
+  // FIT INSIDE THE SCREEN WHILE KEEPING THE DRAWING'S TRUE SHAPE
+  width: min(86vw, calc((100vh - 170px) * var(--aspect)));
+  touch-action: none;
+  user-select: none;
+}
+
+.viewerImg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: transform 0.2s ease, opacity 0.25s ease;
+}
+
+.placard {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding: 12px 4px 14px;
+  font-size: 13px;
+  color: #3f3a33 !important;
+  text-shadow: none !important;
+
+  strong { font-size: 15px; color: #000 !important; }
+  .medium { opacity: 0.7; }
+  span { color: #3f3a33 !important; }
+  .count { margin-left: auto; color: #8a8378; }
+}
+
+.hint {
+  margin: 0;
+  font-size: 12px;
+  color: rgba(226, 232, 240, 0.7);
+}
+
+.navBtn {
+  position: fixed;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(15, 23, 42, 0.6);
+  color: #fff;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.15s ease;
+
+  &:hover { background: rgba(15, 23, 42, 0.9); }
+  &:focus-visible { outline: 2px solid #f59e0b; outline-offset: 2px; }
+}
+
+.closeBtn { top: 18px; right: 18px; font-size: 24px; }
+.prevBtn { left: 18px; top: 50%; transform: translateY(-50%); }
+.nextBtn { right: 18px; top: 50%; transform: translateY(-50%); }
+
+@media (max-width: 560px) {
+  .prevBtn,
+  .nextBtn {
+    top: auto;
+    bottom: 18px;
+    transform: none;
+  }
+  .prevBtn { left: calc(50% - 56px); }
+  .nextBtn { right: calc(50% - 56px); }
+  .viewerFrame { width: min(92vw, calc((100vh - 220px) * var(--aspect))); }
 }
