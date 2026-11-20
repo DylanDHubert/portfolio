@@ -3,6 +3,7 @@
 import { Column, Flex, Heading, Media, SmartLink, Tag, Text } from '@once-ui-system/core';
 import styles from './Posts.module.scss';
 import { formatDate } from '@/utils/formatDate';
+import { PostThumb, hasThumb } from './thumbs/PostThumb';
 
 interface PostProps {
     post: any;
@@ -26,7 +27,11 @@ export default function Post({ post, thumbnail, direction }: PostProps) {
                 className={`${styles.hover} ${styles.blogPostContainer}`}
                 mobileDirection="column"
                 fillWidth>
-                {post.metadata.image && thumbnail && (
+                {/* POSTS WITH INTERACTIVE VISUALS GET AN ANIMATED THUMBNAIL */}
+                {thumbnail && hasThumb(post.metadata.thumb) && (
+                    <PostThumb kind={post.metadata.thumb} badge={post.metadata.badge} />
+                )}
+                {post.metadata.image && thumbnail && !hasThumb(post.metadata.thumb) && (
                     <Media
                         priority
                         className={styles.image}

@@ -32,8 +32,14 @@ export default function Blog() {
 
       <Column
 				fillWidth flex={1}>
+				{/* NASA PROJECTS FIRST, SIDE BY SIDE; THEN CHART FULL WIDTH (IT IS THE NEWEST POST BY DATE) */}
+				<SideBySidePosts
+					post1Slug="3d-cloud-modeling-transfer-learning"
+					post2Slug="tsi-prediction-nasa-breakthrough"
+					thumbnail
+					direction="column"
+				/>
 				<Posts range={[1,1]} thumbnail direction="column"/>
-				<Posts range={[2,2]} thumbnail direction="column"/>
 				<SideBySidePosts 
 					post1Slug="pbj-pipeline-dynamic-document-processing"
 					post2Slug="farm-agent-conversational-rag"

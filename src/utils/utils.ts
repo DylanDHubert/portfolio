@@ -22,6 +22,10 @@ type Metadata = {
   demoUrl?: string;
   hidden?: boolean;
   noPage?: boolean;
+  // ANIMATED THUMBNAIL KEY FOR POSTS WITH INTERACTIVE VISUALS (SEE components/blog/thumbs)
+  thumb?: string;
+  // SMALL BADGE SHOWN ON THE ANIMATED THUMBNAIL (E.G. WHERE THE WORK WAS DONE)
+  badge?: string;
 };
 
 import { notFound } from 'next/navigation';
@@ -54,6 +58,8 @@ function readMDXFile(filePath: string) {
     link: data.link || "",
     demoUrl: data.demoUrl || "",
     noPage: data.noPage === true,
+    thumb: data.thumb || "",
+    badge: data.badge || "",
   };
 
   return { metadata, content };

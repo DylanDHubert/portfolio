@@ -1,0 +1,106 @@
+// ANIMATED BLOG THUMBNAILS: SITE PALETTE (GOLD ON NIGHT IN DARK MODE, CYAN ON PAPER IN LIGHT MODE)
+
+.thumb {
+  --th-bg: radial-gradient(ellipse at 30% 20%, #1e293b 0%, #070b18 75%);
+  --th-accent: #f59e0b;
+  --th-accent-soft: rgba(245, 158, 11, 0.35);
+  --th-ink: #e2e8f0;
+  --th-dim: rgba(148, 163, 184, 0.35);
+  --th-faint: rgba(148, 163, 184, 0.14);
+  --th-violet: #a78bfa;
+  --th-red: #f87171;
+  --th-mark: #fb7185;
+
+  position: relative;
+  // INSET EVENLY INSIDE THE CARD LIKE A FRAMED WINDOW; CORNERS FOLLOW THE CARD'S CURVE
+  --th-inset: 12px;
+  width: calc(100% - 2 * var(--th-inset));
+  margin: var(--th-inset) var(--th-inset) 0;
+  aspect-ratio: 16 / 9;
+  // KEEP THE FULL-WIDTH CARD FROM TOWERING; THE DRAWING STAYS CENTERED
+  max-height: 340px;
+  border-radius: calc(var(--radius-l) - 4px);
+  overflow: hidden;
+  background: var(--th-bg);
+  box-shadow: inset 0 0 0 1px var(--neutral-alpha-weak);
+
+  svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+:global([data-theme="light"]) .thumb {
+  --th-bg: radial-gradient(ellipse at 30% 20%, #ffffff 0%, #eef2f6 80%);
+  --th-accent: #0891b2;
+  --th-accent-soft: rgba(8, 145, 178, 0.3);
+  --th-ink: #0f172a;
+  --th-dim: rgba(71, 85, 105, 0.4);
+  --th-faint: rgba(71, 85, 105, 0.12);
+  --th-violet: #7c3aed;
+  --th-red: #dc2626;
+  --th-mark: #e11d48;
+}
+
+.tag {
+  position: absolute;
+  left: 12px;
+  bottom: 10px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--th-ink);
+  background: var(--th-faint);
+  backdrop-filter: blur(4px);
+}
+
+// REAL-SUN DISK: SAME BOX AS THE SVG LAYOUT (x 26, y 28, 124 x 124 IN A 320 x 180 VIEW)
+.sun {
+  position: absolute;
+  left: calc(26 / 320 * 100%);
+  top: calc(28 / 180 * 100%);
+  width: calc(124 / 320 * 100%);
+  aspect-ratio: 1 / 1;
+  clip-path: circle(48.8% at 50% 50%);
+  background-repeat: no-repeat;
+  pointer-events: none;
+}
+
+// WRAPPER SO THE BADGE CAN SIT ON TOP OF THE INSET THUMBNAIL
+.thumbWrap {
+  position: relative;
+  width: 100%;
+}
+
+.badge {
+  position: absolute;
+  // TOP-LEFT IS EMPTY SKY IN BOTH THE CLOUD AND SOLAR THUMBNAILS
+  top: 22px;
+  left: 22px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px 4px 8px;
+  border-radius: 999px;
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  // WHITE PILL SO THE BLUE NASA INSIGNIA STANDS OUT; TEXT IN NASA BLUE
+  color: #0b3d91 !important;
+  text-shadow: none !important;
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25), inset 0 0 0 1px rgba(11, 61, 145, 0.18);
+  pointer-events: none;
+
+  svg { flex: none; }
+}
+
+.badgeLogo {
+  flex: none;
+  display: block;
+  width: 26px;
+  height: 22px;
+  margin: -3px 0 -3px -4px;
+}
