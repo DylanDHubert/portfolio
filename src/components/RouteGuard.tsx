@@ -34,7 +34,7 @@ const RouteGuard: React.FC<RouteGuardProps> = ({ children }) => {
         }
 
         // Check if pathname starts with any enabled route (for sub-routes)
-        const dynamicRoutes = ["/blog", "/websites", "/chart"] as const;
+        const dynamicRoutes = ["/blog", "/websites"] as const;
         for (const route of dynamicRoutes) {
           if (pathname?.startsWith(route) && routes[route]) {
             return true;

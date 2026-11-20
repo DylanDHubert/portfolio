@@ -1,0 +1,72 @@
+---
+title: "CHART: Coarse-to-Fine Hierarchical Attention for Recursive Traversal"
+summary: "A research design for a transformer that learns to navigate a tree of embeddings, aiming to retrieve related documents rather than only nearest neighbors. Paused prototype, no results yet."
+publishedAt: "2025-11-19"
+tags: ["Research Design", "Transformers", "Embedding Search", "Hierarchical Clustering", "Vector Search"]
+---
+
+*Status: paused research prototype, no results yet.*
+
+<HierarchySpheres />
+
+## The Idea
+
+Embeddings capture meaning, but nearest-neighbor search uses only one thing about them: how close two vectors are. Self-attention, by contrast, learns relationships between whatever tokens it is shown.
+
+CHART asks whether a transformer can learn to *navigate* an embedding space, finding documents that are related to a query even when they aren't its nearest neighbors.
+
+<KeyIdea>Organize the corpus into a tree of semantic regions, then let a transformer walk it from coarse to fine while only ever looking at a small, fixed-size set of nodes.</KeyIdea>
+
+The obstacle is scale. A corpus can hold `10M–100M` embeddings and self-attention costs `O(N²)`, so a transformer can't look at all of them at once. The design below keeps its input at a fixed size no matter how large the corpus grows.
+
+## 1. Build a Tree of Directions
+
+Most embedding models normalize their outputs, so every embedding sits on a high-dimensional sphere and what carries meaning is its direction. CHART builds the tree by clustering recursively with cosine similarity (spherical k-means):
+
+- Leaves are document chunks.
+- Each parent stores the centroid of its children: their normalized mean direction.
+- Higher levels are coarser regions, up to a small set of root clusters.
+
+<SphericalClusters />
+
+## 2. Walk It With a Fixed-Size Window
+
+Traversal keeps a fixed-size set of tree nodes, the frontier, as the transformer's entire input. Each step:
+
+1. Run one encoder pass over the window and score every node with attention.
+2. Expand the top `α` fraction (`α ≈ 0.25`), replacing each with its children.
+3. Drop the lowest-scoring nodes until the window is back to `max_seq_len`.
+
+It stops when the window settles or holds only leaves, which takes about `log N` steps. The tree is never loaded in full, only the frontier. With a window of 16 and two children per node, each step expands 4 nodes, adds 8 children and prunes 4:
+
+<FrontierStepper />
+
+Because several branches stay in the window at once, the walk can end on the query's own document *and* on related documents in distant parts of the tree, which a nearest-neighbor search would not return.
+
+## 3. The Training Plan
+
+The transformer never manages the window size; the procedure above enforces it. It only has to learn which nodes deserve expanding. The plan was a three-stage curriculum:
+
+1. **Localization:** descend to a single target document (single-target BCE), learning the basic coarse-to-fine route.
+2. **Relational localization:** reach the query's document and its related documents (multi-target BCE), keeping several branches open.
+3. **Embedding refinement:** adjust the embeddings with a contrastive loss (InfoNCE) so related documents become easier to reach, then re-cluster only the parts of the tree that changed.
+
+## CHART vs. HNSW: Two Kinds of Hierarchy
+
+HNSW (Hierarchical Navigable Small World), the index behind most vector databases, is hierarchical too. It stacks graph layers, from a sparse top layer with long-range links down to a dense bottom layer holding every point.
+
+A search starts at the top, greedily hops toward the query, and drops a layer whenever it can't get closer. That's coarse-to-fine, and it is fast and accurate at what it's built for: finding nearest neighbors.
+
+CHART differs in what the hierarchy is and what navigates it:
+
+<HnswTable />
+
+HNSW will almost certainly stay faster. The question CHART asks is whether a learned traversal can retrieve relationships that distance alone misses.
+
+<GeometryArgument />
+
+## Where It Stands
+
+I wrote the core codebase and built two datasets; the first turned out to be a dead end. I was running the first training and evaluation loops when I started a full-time role, and the project has been paused since. There are no results yet, so everything above is a design, not a demonstrated result.
+
+If I pick it back up, the first test is simple: does learned traversal find related documents that nearest-neighbor search misses, at an acceptable cost per query?

@@ -10,6 +10,10 @@ const withMDX = mdx({
 const nextConfig = {
   pageExtensions: ["ts", "tsx", "md", "mdx"],
   transpilePackages: ["next-mdx-remote"],
+  // CHART MOVED FROM ITS OWN PAGE INTO THE BLOG
+  async redirects() {
+    return [{ source: "/chart", destination: "/blog/chart-coarse-to-fine-traversal", permanent: true }];
+  },
   sassOptions: {
     compiler: "modern",
     silenceDeprecations: ["legacy-js-api"],

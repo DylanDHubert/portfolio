@@ -6,6 +6,11 @@ import { SolarStepper } from "@/components/solar/SolarStepper";
 import { CloudScene } from "@/components/cloud/CloudScene";
 import { MaskingViz } from "@/components/cloud/MaskingViz";
 import { BandMixer } from "@/components/cloud/BandMixer";
+import { HierarchySpheres } from "@/components/chart/HierarchySpheres";
+import { SphericalClusters } from "@/components/chart/SphericalClusters";
+import { FrontierStepper } from "@/components/chart/FrontierStepper";
+import { KeyIdea } from "@/components/chart/KeyIdea";
+import { HnswTable, GeometryArgument } from "@/components/chart/HnswComparison";
 
 import { 
   Heading,
@@ -222,6 +227,12 @@ const components = {
   CloudScene,
   MaskingViz,
   BandMixer,
+  HierarchySpheres,
+  SphericalClusters,
+  FrontierStepper,
+  KeyIdea,
+  HnswTable,
+  GeometryArgument,
 };
 
 type CustomMDXProps = MDXRemoteProps & {
