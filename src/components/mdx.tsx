@@ -3,6 +3,7 @@ import React, { ReactNode } from "react";
 import { SolarArchitecture } from "@/components/solar/SolarArchitecture";
 import { SolarScenarios } from "@/components/solar/SolarScenarios";
 import { SolarStepper } from "@/components/solar/SolarStepper";
+import { CloudScene } from "@/components/cloud/CloudScene";
 
 import { 
   Heading,
@@ -216,6 +217,7 @@ const components = {
   SolarArchitecture,
   SolarScenarios,
   SolarStepper,
+  CloudScene,
 };
 
 type CustomMDXProps = MDXRemoteProps & {

@@ -457,10 +457,10 @@
 
 .stepText {
   font-size: 14px;
+  line-height: 1.55;
 
   // ON PHONES THE EXPLANATION SITS ABOVE THE CODE SO IT STAYS NEAR THE IMAGE
   @media (max-width: 680px) { order: -1; }
-  line-height: 1.55;
 
   strong { display: block; margin-bottom: 4px; }
   p { margin: 0; color: var(--neutral-on-background-medium); }
