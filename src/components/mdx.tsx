@@ -1,5 +1,8 @@
 import { MDXRemote, MDXRemoteProps } from "next-mdx-remote/rsc";
 import React, { ReactNode } from "react";
+import { SolarArchitecture } from "@/components/solar/SolarArchitecture";
+import { SolarScenarios } from "@/components/solar/SolarScenarios";
+import { SolarStepper } from "@/components/solar/SolarStepper";
 
 import { 
   Heading,
@@ -210,6 +213,9 @@ const components = {
   Icon,
   Media,
   SmartLink,
+  SolarArchitecture,
+  SolarScenarios,
+  SolarStepper,
 };
 
 type CustomMDXProps = MDXRemoteProps & {

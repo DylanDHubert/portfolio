@@ -1,0 +1,492 @@
+// SHARED STYLES FOR THE SOLAR PROJECT VISUALS
+// COLORS: AMBER = SPATIAL (IMAGES), VIOLET = TEMPORAL (SIGNALS), NEUTRAL = MERGED
+
+.figure {
+  --solar-spatial: #f59e0b;
+  --solar-temporal: #8b5cf6;
+  --solar-predict: #f97316;
+  margin: 28px 0;
+  padding: 16px;
+  border: 1px solid var(--neutral-alpha-medium);
+  border-radius: 12px;
+  background: var(--neutral-background-weak);
+  color: var(--neutral-on-background-strong);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+:global([data-theme="light"]) .figure {
+  --solar-spatial: #d97706;
+  --solar-temporal: #7c3aed;
+  --solar-predict: #ea580c;
+}
+
+// LEGEND
+
+.legend,
+.legendRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  font-size: 13px;
+  color: var(--neutral-on-background-weak);
+
+  span {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  i {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+  }
+}
+
+.swatchSpatial { background: var(--solar-spatial); }
+.swatchTemporal { background: var(--solar-temporal); }
+
+// ARCHITECTURE DIAGRAM
+
+.archSvg {
+  width: 100%;
+  height: auto;
+  display: block;
+  overflow: visible;
+}
+
+.node {
+  cursor: pointer;
+  outline: none;
+  transition: opacity 0.2s ease;
+
+  rect {
+    fill: color-mix(in srgb, var(--node-color) 14%, var(--neutral-background-weak));
+    stroke: color-mix(in srgb, var(--node-color) 70%, transparent);
+    stroke-width: 1.5;
+    transition: fill 0.2s ease, stroke-width 0.2s ease;
+  }
+
+  &:hover rect,
+  &:focus-visible rect {
+    fill: color-mix(in srgb, var(--node-color) 26%, var(--neutral-background-weak));
+  }
+
+  &:focus-visible rect {
+    stroke-width: 3;
+  }
+}
+
+.branch_source { --node-color: var(--neutral-on-background-medium); }
+.branch_spatial { --node-color: var(--solar-spatial); }
+.branch_temporal { --node-color: var(--solar-temporal); }
+.branch_merge { --node-color: var(--neutral-on-background-weak); }
+
+.nodeDim { opacity: 0.28; }
+
+.nodeSel rect {
+  stroke-width: 3;
+  fill: color-mix(in srgb, var(--node-color) 30%, var(--neutral-background-weak));
+}
+
+.nodeTitle {
+  fill: var(--neutral-on-background-strong);
+  font-size: 16px;
+  font-weight: 600;
+  text-anchor: middle;
+  pointer-events: none;
+}
+
+.nodeSub {
+  fill: var(--neutral-on-background-weak);
+  font-size: 12.5px;
+  text-anchor: middle;
+  pointer-events: none;
+}
+
+.edge {
+  fill: none;
+  stroke: var(--neutral-alpha-strong);
+  stroke-width: 1.5;
+}
+
+.edgeFlow {
+  fill: none;
+  stroke: var(--neutral-on-background-medium);
+  stroke-width: 2;
+  stroke-dasharray: 3 12;
+  animation: flow 1.4s linear infinite;
+}
+
+@keyframes flow {
+  to { stroke-dashoffset: -15; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .edgeFlow { animation: none; display: none; }
+}
+
+.edgeOn { opacity: 1; transition: opacity 0.2s ease; }
+.edgeOff { opacity: 0.15; transition: opacity 0.2s ease; }
+
+.edgeLabel {
+  fill: var(--neutral-on-background-weak);
+  font-size: 12px;
+  font-family: var(--font-code, monospace);
+}
+
+.archWrap {
+  position: relative;
+  width: 100%;
+  // CAP THE DIAGRAM SO A WIDE ARTICLE DOESN'T MAKE IT TALLER THAN THE SCREEN
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+.popover {
+  position: absolute;
+  z-index: 2;
+  width: min(320px, 100%);
+  padding: 12px 34px 12px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--neutral-alpha-strong);
+  background: var(--neutral-background-strong);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  font-size: 14px;
+  line-height: 1.5;
+  animation: popIn 0.15s ease-out;
+
+  strong { display: block; margin-bottom: 4px; color: var(--neutral-on-background-strong); }
+  p { margin: 0; color: var(--neutral-on-background-medium); }
+}
+
+@keyframes popIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.popClose {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 26px;
+  height: 26px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--neutral-on-background-weak);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+
+  &:hover { background: var(--neutral-alpha-weak); color: var(--neutral-on-background-strong); }
+}
+
+.hint {
+  margin: 0;
+  font-size: 13px;
+  font-style: italic;
+  color: var(--neutral-on-background-weak);
+}
+
+// SCENARIO CHART
+
+.segmented {
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 10px;
+  background: var(--neutral-alpha-weak);
+  align-self: flex-start;
+  flex-wrap: wrap;
+}
+
+.seg,
+.segActive {
+  border: none;
+  border-radius: 7px;
+  padding: 7px 12px;
+  font-size: 14px;
+  cursor: pointer;
+  background: transparent;
+  color: var(--neutral-on-background-medium);
+  transition: background 0.15s ease, color 0.15s ease;
+
+  &:focus-visible { outline: 2px solid var(--solar-predict); outline-offset: 1px; }
+}
+
+.seg:hover { background: var(--neutral-alpha-medium); }
+
+.segActive {
+  background: var(--neutral-background-strong);
+  color: var(--neutral-on-background-strong);
+  font-weight: 600;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+}
+
+.chartSvg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.grid { stroke: var(--neutral-alpha-weak); }
+.axis { stroke: var(--neutral-on-background-weak); }
+
+.tickY {
+  fill: var(--neutral-on-background-weak);
+  font-size: 11px;
+  text-anchor: end;
+}
+
+.predBand { fill: color-mix(in srgb, var(--solar-predict) 16%, transparent); }
+
+.lineSeen {
+  fill: none;
+  stroke: var(--neutral-on-background-strong);
+  stroke-width: 1.6;
+}
+
+.lineHidden {
+  fill: none;
+  stroke: var(--solar-predict);
+  stroke-width: 1.6;
+  stroke-dasharray: 4 4;
+}
+
+.lineUnused {
+  fill: none;
+  stroke: var(--neutral-alpha-medium);
+  stroke-width: 1.2;
+}
+
+.pointMark {
+  fill: none;
+  stroke: var(--solar-predict);
+  stroke-width: 2.5;
+}
+
+.nowLine {
+  stroke: var(--neutral-on-background-medium);
+  stroke-dasharray: 2 3;
+}
+
+.nowLabel {
+  fill: var(--neutral-on-background-medium);
+  font-size: 12px;
+  text-anchor: end;
+}
+
+.bracket {
+  fill: none;
+  stroke-width: 1.5;
+}
+
+.bracketLabel {
+  font-size: 12px;
+  text-anchor: middle;
+  font-family: var(--font-code, monospace);
+}
+
+.bracket_ctx {
+  .bracket { stroke: var(--neutral-on-background-weak); }
+  .bracketLabel { fill: var(--neutral-on-background-weak); }
+}
+
+.bracket_label {
+  .bracket { stroke: var(--solar-temporal); }
+  .bracketLabel { fill: var(--solar-temporal); }
+}
+
+.bracket_pred {
+  .bracket { stroke: var(--solar-predict); }
+  .bracketLabel { fill: var(--solar-predict); }
+}
+
+.keySeen { background: var(--neutral-on-background-strong); height: 3px !important; }
+.keyHidden { background: var(--solar-predict); height: 3px !important; }
+.keyUnused { background: var(--neutral-alpha-medium); height: 3px !important; }
+
+.chartFooter {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.slider {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 13px;
+  color: var(--neutral-on-background-medium);
+
+  // OVERRIDE THE SITE'S GLOBAL LABEL GLOW
+  span { text-shadow: none; color: var(--neutral-on-background-medium); font-family: inherit; }
+
+  input { width: 100%; accent-color: var(--solar-predict); }
+}
+
+.caption {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--neutral-on-background-medium);
+}
+
+.disclaimer {
+  margin: 0;
+  font-size: 12px;
+  color: var(--neutral-on-background-weak);
+  font-style: italic;
+}
+
+// SVG TEXT SCALES DOWN WITH THE VIEWBOX, SO ENLARGE IT ON NARROW SCREENS
+@media (max-width: 560px) {
+  .figure { padding: 12px; }
+  .tickY, .nowLabel { font-size: 18px; }
+  .bracketLabel { font-size: 19px; }
+  .nodeSub { font-size: 14px; }
+  .edgeLabel { font-size: 15px; }
+}
+
+// PREPROCESSING STEPPER
+
+.stepGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+
+  @media (max-width: 680px) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.stepImage {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #000;
+
+  img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: opacity 0.25s ease;
+  }
+}
+
+.stepLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+
+.stepImgOn { opacity: 1; }
+.stepImgOff { opacity: 0; }
+
+.stepBadge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  font-size: 12px;
+}
+
+.peek {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  padding: 5px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  font-size: 12px;
+  cursor: pointer;
+  user-select: none;
+  touch-action: none;
+
+  &:hover { background: rgba(0, 0, 0, 0.8); }
+}
+
+.stepSide {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+}
+
+.code {
+  margin: 0;
+  padding: 10px 0;
+  border-radius: 8px;
+  background: var(--neutral-alpha-weak);
+  font-family: var(--font-code, monospace);
+  font-size: 11.5px;
+  line-height: 1.6;
+  overflow-x: auto;
+  white-space: pre;
+}
+
+.codeLine,
+.codeOn {
+  display: block;
+  padding: 0 12px;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.codeLine { color: var(--neutral-on-background-weak); }
+
+.codeOn {
+  color: var(--neutral-on-background-strong);
+  background: color-mix(in srgb, var(--solar-spatial) 22%, transparent);
+  box-shadow: inset 3px 0 0 var(--solar-spatial);
+}
+
+.stepText {
+  font-size: 14px;
+
+  // ON PHONES THE EXPLANATION SITS ABOVE THE CODE SO IT STAYS NEAR THE IMAGE
+  @media (max-width: 680px) { order: -1; }
+  line-height: 1.55;
+
+  strong { display: block; margin-bottom: 4px; }
+  p { margin: 0; color: var(--neutral-on-background-medium); }
+}
+
+.stepControls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.stepRange {
+  flex: 1;
+  accent-color: var(--solar-spatial);
+}
+
+.stepBtn {
+  width: 38px;
+  height: 34px;
+  border: 1px solid var(--neutral-alpha-medium);
+  border-radius: 8px;
+  background: var(--neutral-alpha-weak);
+  color: var(--neutral-on-background-strong);
+  font-size: 16px;
+  cursor: pointer;
+
+  &:disabled { opacity: 0.35; cursor: default; }
+  &:not(:disabled):hover { background: var(--neutral-alpha-medium); }
+}
