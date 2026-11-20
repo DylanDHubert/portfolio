@@ -2,9 +2,13 @@ import { NextRequest, NextResponse } from 'next/server';
 import OpenAI from 'openai';
 import { getContentContext } from '@/utils/contentParser';
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+// CREATE THE CLIENT ON FIRST REQUEST, NOT AT IMPORT: NEXT 16 EVALUATES ROUTE MODULES DURING
+// `next build`, AND A MISSING OPENAI_API_KEY AT BUILD TIME WOULD OTHERWISE FAIL THE WHOLE DEPLOY
+let client: OpenAI | null = null;
+function getOpenAI(): OpenAI {
+  if (!client) client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+  return client;
+}
 
 const systemPrompt = `You are Dylan's personal scribe and assistant. You have deep insider knowledge about Dylan Hubert - his background, projects, experiences, personality, and way of thinking. You're like a knowledgeable friend who knows him well and can speak authentically about him.
 
@@ -93,6 +97,10 @@ const tools = [
 ];
 
 export async function POST(request: NextRequest) {
+  if (!process.env.OPENAI_API_KEY) {
+    return NextResponse.json({ error: 'Chat is not configured on this deployment.' }, { status: 503 });
+  }
+  const openai = getOpenAI();
   try {
     const { 
       messages, // NEW: Accept full conversation history
