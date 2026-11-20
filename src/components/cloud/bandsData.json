@@ -1,0 +1,150 @@
+{
+  "size": 256,
+  "sunCos": 0.554,
+  "bands": [
+    {
+      "id": "C01",
+      "name": "Blue",
+      "group": "visible",
+      "um": 0.47,
+      "kind": "refl",
+      "rawMin": 0.0,
+      "rawMax": 1.2
+    },
+    {
+      "id": "C02",
+      "name": "Red",
+      "group": "visible",
+      "um": 0.64,
+      "kind": "refl",
+      "rawMin": 0.0,
+      "rawMax": 1.2
+    },
+    {
+      "id": "C03",
+      "name": "Veggie",
+      "group": "near-IR",
+      "um": 0.87,
+      "kind": "refl",
+      "rawMin": 0.0,
+      "rawMax": 1.2
+    },
+    {
+      "id": "C04",
+      "name": "Cirrus",
+      "group": "near-IR",
+      "um": 1.38,
+      "kind": "refl",
+      "rawMin": 0.0,
+      "rawMax": 1.2
+    },
+    {
+      "id": "C05",
+      "name": "Snow/Ice",
+      "group": "near-IR",
+      "um": 1.61,
+      "kind": "refl",
+      "rawMin": 0.0,
+      "rawMax": 1.2
+    },
+    {
+      "id": "C06",
+      "name": "Cloud particle",
+      "group": "near-IR",
+      "um": 2.25,
+      "kind": "refl",
+      "rawMin": 0.0,
+      "rawMax": 1.2
+    },
+    {
+      "id": "C07",
+      "name": "Shortwave IR",
+      "group": "infrared",
+      "um": 3.89,
+      "kind": "bt",
+      "rawMin": 180.0,
+      "rawMax": 320.0
+    },
+    {
+      "id": "C08",
+      "name": "Upper water vapor",
+      "group": "water vapor",
+      "um": 6.17,
+      "kind": "bt",
+      "rawMin": 180.0,
+      "rawMax": 320.0
+    },
+    {
+      "id": "C09",
+      "name": "Mid water vapor",
+      "group": "water vapor",
+      "um": 6.93,
+      "kind": "bt",
+      "rawMin": 180.0,
+      "rawMax": 320.0
+    },
+    {
+      "id": "C10",
+      "name": "Lower water vapor",
+      "group": "water vapor",
+      "um": 7.34,
+      "kind": "bt",
+      "rawMin": 180.0,
+      "rawMax": 320.0
+    },
+    {
+      "id": "C11",
+      "name": "Cloud-top phase",
+      "group": "infrared",
+      "um": 8.44,
+      "kind": "bt",
+      "rawMin": 180.0,
+      "rawMax": 320.0
+    },
+    {
+      "id": "C12",
+      "name": "Ozone",
+      "group": "infrared",
+      "um": 9.61,
+      "kind": "bt",
+      "rawMin": 180.0,
+      "rawMax": 320.0
+    },
+    {
+      "id": "C13",
+      "name": "Clean IR",
+      "group": "infrared",
+      "um": 10.33,
+      "kind": "bt",
+      "rawMin": 180.0,
+      "rawMax": 320.0
+    },
+    {
+      "id": "C14",
+      "name": "IR",
+      "group": "infrared",
+      "um": 11.19,
+      "kind": "bt",
+      "rawMin": 180.0,
+      "rawMax": 320.0
+    },
+    {
+      "id": "C15",
+      "name": "Dirty IR",
+      "group": "infrared",
+      "um": 12.27,
+      "kind": "bt",
+      "rawMin": 180.0,
+      "rawMax": 320.0
+    },
+    {
+      "id": "C16",
+      "name": "CO2",
+      "group": "infrared",
+      "um": 13.27,
+      "kind": "bt",
+      "rawMin": 180.0,
+      "rawMax": 320.0
+    }
+  ]
+}

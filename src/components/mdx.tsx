@@ -4,6 +4,8 @@ import { SolarArchitecture } from "@/components/solar/SolarArchitecture";
 import { SolarScenarios } from "@/components/solar/SolarScenarios";
 import { SolarStepper } from "@/components/solar/SolarStepper";
 import { CloudScene } from "@/components/cloud/CloudScene";
+import { MaskingViz } from "@/components/cloud/MaskingViz";
+import { BandMixer } from "@/components/cloud/BandMixer";
 
 import { 
   Heading,
@@ -218,6 +220,8 @@ const components = {
   SolarScenarios,
   SolarStepper,
   CloudScene,
+  MaskingViz,
+  BandMixer,
 };
 
 type CustomMDXProps = MDXRemoteProps & {

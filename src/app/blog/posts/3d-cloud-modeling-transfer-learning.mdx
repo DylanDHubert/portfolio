@@ -67,6 +67,10 @@ The second part of the project was equally fascinating: transfer learning betwee
 - **ABI (Advanced Baseline Imager)**: 16-band multispectral data from GOES
 - **MODIS**: 36-band data from NASA's Terra and Aqua satellites
 
+Each band sees something different, which is what makes multispectral data powerful. Mix any three of ABI's 16 bands into a color image below:
+
+<BandMixer />
+
 The goal was to see if models trained on MODIS data could effectively transfer to ABI data, which would be valuable for operational forecasting and research.
 
 ## Pretraining Strategy: MAE and SATMAE
@@ -99,6 +103,10 @@ I developed an **independent masking** approach where the locations of masked ar
 - **Multispectral Advantage**: Different satellite channels capture different aspects of the atmosphere (visible, infrared, water vapor, etc.)
 - **Cross-Channel Learning**: Independent masking allowed the model to leverage information from one channel to reconstruct masked areas in another channel
 - **Better Transfer Learning**: This approach improved the model's ability to generalize across different satellite platforms
+
+Try both strategies below on a real 16-band GOES chip. The number that matters is how many locations end up hidden in every band at once.
+
+<MaskingViz />
 
 The independent masking setup improved both pretraining performance and transfer learning capabilities, enabling the model to better leverage the complementary information available across different spectral channels.
 
