@@ -1,184 +1,99 @@
 ---
 title: "The Solar Project"
-summary: "Solar Weather Forecasting using Machine Learning on NASA TSI and HMI Data."
+summary: "Forecasting the Sun's energy output with a CNN-Informer that reads sunspots straight from NASA HMI imagery."
 publishedAt: "2025-07-10"
 tags: ["NASA GSFC–610", "Machine Learning", "Computer Vision", "Time Series Forecasting", "Solar Weather", "CNNs", "Transformers"]
-images: ["/images/placeholder/nasa-tsi.jpg", "/images/nasa/comparison.png", "/images/nasa/TSI_graph.png"]
+images: ["/images/nasa/comparison.png", "/images/nasa/TSI_graph.png"]
 ---
 
-# Predicting Solar Energy: My NASA Research with CNN-Informer Architecture
+# Predicting the Sun's Energy Output from Images of the Sun
 
-## The Problem: Predicting Earth's Solar Energy Input
+This was my first machine learning project, and still my favorite. As an undergraduate researcher in a university lab collaborating with NASA Goddard Space Flight Center, I worked on forecasting **Total Solar Irradiance (TSI)**: the total solar power reaching Earth, measured in watts per square meter. My bet was that the answer was sitting in plain sight, in pictures of the Sun that the model wasn't being shown.
 
-I started working on Total Solar Irradiance (TSI) prediction as an undergraduate researcher in my university lab, which was collaborating with NASA Goddard Space Flight Center. The goal was to predict the amount of solar energy reaching Earth (measured in watts per square meter) using images from the Helioseismic and Magnetic Imager (HMI).
+## The Problem
 
-We actually worked with TSI perturbation (`TSI - 1362 W/m²`) rather than absolute TSI values, which made the problem more tractable for the model to predict variations around the baseline solar constant.
-
-<div style={{ textAlign: 'center', margin: '20px 0' }}>
-  <img src="/images/nasa/TSI_graph.png" alt="TSI perturbation graph showing TSI minus 1362 W/m² over time" style={{ maxWidth: '100%', borderRadius: '8px' }} />
-</div>
-
-The lab had already done extensive work and found their best baseline: an Informer model using SSA (Singular Spectrum Analysis) with a window size of 1K, where the decomposed signals were recombined into just 3 components: main, trend, and noise. While this approach captured some temporal patterns, I wondered if we were losing valuable information by artificially limiting the model to only 3 recombined signals.
-
-## Getting Started with Machine Learning
-
-This was my introduction to machine learning. I began by rerunning the original baseline metrics to understand what was happening and get familiar with the dataset. Over the course of a semester working with Dr. Ding, I became comfortable with the data and started experimenting with my own ideas—like not recombining the SSA sub-signals, thinking the model could learn to weight them more effectively.
-
-This was my first real machine learning project, and I was learning PyTorch from scratch. Understanding the fundamentals—train/validation/test splits, learning rates, layer architectures—was challenging but exciting, especially in the pre-LLM era when resources were more limited.
-
-I spent a lot of time experimenting with different architectures, debugging gradient flows, and learning hyperparameter tuning. It was a steep learning curve, but each small improvement felt rewarding.
-
-## The Approach: CNN-Informer Hybrid Architecture
-
-I had two main ideas that became my key contributions to the project. First, I thought we could leverage the actual visual content of the HMI images instead of just their statistical summaries—sunspots and other solar features visible in the images directly correlate with solar energy output. Second, I believed the model could learn to weight the SSA sub-signals more effectively than manually recombining them into just 3 components.
-
-## My Key Contributions
-
-### SSA Signal Preservation
-My first major innovation was **not recombining the SSA signals** into just 3 components. While the lab had established the 3-component approach as their baseline, I tested and implemented using the full SSA decomposition. This approach proved more effective than the manual recombination approach.
-
-### Visual Feature Integration
-While the team knew we could potentially use the HMI images, I was the one who **pushed for it and figured out how to implement it**. This involved designing the CNN architecture and developing the preprocessing pipeline to extract meaningful visual features from the solar imagery.
-
-### HMI Preprocessing Pipeline
-I developed the **high-density extraction preprocessing** that focused on sunspots and faculae. This computer vision approach was crucial for making the visual features useful to the model.
-
-This project remains my favorite because I had significant ownership over these innovations—from initial concept to implementation and testing. The freedom to experiment and learn was invaluable, and I was able to contribute meaningful technical advances to the lab's research.
-
-I designed a hybrid architecture that combined:
-- **Custom CNN**: A lightweight architecture with CNN blocks (ReLU, batch normalization, max pooling) designed to connect efficiently to the Informer
-- **Informer**: A transformer-based model for time series forecasting
-- **SSA Sub-signals**: Individual components from Singular Spectrum Analysis, passed directly to the Informer without artificial recombination
-
-The CNN used global pooling to reduce the image features to a single `batch_size × num_channels` vector that could be integrated with the Informer's input requirements.
-
-## The CNN Architecture: Simple but Effective
-
-The CNN was intentionally simple—no skip connections, residual blocks, or special attention mechanisms. It just needed to extract visual features and convert them into a feature vector. The architecture followed a classic pattern:
-
-### Layer Configuration
-- **Input**: Single channel (grayscale HMI images)
-- **Conv3D → ReLU → MaxPool → BatchNorm** (repeated through the network)
-- **Channel growth**: 1 → 32 → 64 → 128 → 1024 channels
-- **Output**: Flattened to 1024-dimensional feature vector
-
-### Feature Fusion Strategy
-The 1024 CNN features were concatenated with:
-- **SSA Sub-signals**: 10 components (I tested and found 10 vs 1K window size made very little difference)
-- **Statistical Features**: 6 additional metrics including mean, median, mode, temporal count, and other statistical measures
-- **Total**: 1040-dimensional combined feature vector
-
-### Projection to Informer
-The 1040-dimensional vector went through a simple MLP projection layer to reduce dimensionality to the Informer's `d_model` parameter.
-
-## The Informer Configuration
-
-The Informer transformer had four critical parameters:
-- **d_model**: Input dimension for attention at each timestamp
-- **seq_len**: Total number of timestamps the model receives
-- **label_len**: Number of past target values it can see (normally its own predictions during inference)
-- **pred_len**: How many future timestamps to predict (non-autoregressive predictions)
-
-## From University Research to NASA Internship
-
-After the semester of research, I had the opportunity to intern with Dr. Wu, the NASA collaborator and solar physicist. During this internship, I worked on expanding the model to include additional SDO (Solar Dynamics Observatory) channels at different wavelengths, which would provide richer input data.
-
-We successfully implemented the CNN architecture during my internship, but ran into a practical challenge: the multi-channel SDO dataset was terabytes in size, making it impossible to secure the computational resources needed to run comprehensive tests with the additional wavelength channels.
-
-## The Architecture Details
-
-The pipeline worked as follows:
-
-1. **HMI Images** → **Preprocessing** (focusing on sunspots and faculae)
-2. **Preprocessed Images** → **CNN** → **Global Pooling** (extracting spatial features)
-3. **HMI Images** → **Averaging** → **SSA Decomposition** (creating temporal sub-signals)
-4. **CNN Features + SSA Sub-signals** → **Concatenation** → **Informer** → **TSI Prediction**
-
-The approach allowed the model to learn both spatial patterns (sunspots, solar features) and temporal patterns (solar cycles, variations) simultaneously. The CNN captured the visual information that previous approaches had ignored, while the SSA sub-signals provided the full temporal decomposition without artificial recombination into just 3 components.
-
-## Preprocessing: Focusing on Relevant Features
-
-Understanding the physics was important. HMI images show the Sun's surface with a granulated orange texture—these granules aren't noise but convection cells, the normal solar surface. What we needed to capture were areas of **high information density** that affect solar energy output:
-
-- **Sunspots**: Dark spots indicating significant solar magnetic activity
-- **Faculae**: Bright regions where magnetic fields are highly active
-
-I developed a preprocessing pipeline using computer vision techniques to **extract regions** of interest:
-- **Gaussian blurring** to reduce noise while preserving important features
-- **Edge extraction** to identify boundaries of active regions
-- **Thresholding** to isolate areas of high information density where sunspots and faculae occur
-- **Temporal differencing** by subtracting previous/next images to highlight changes in active areas and remove the general solar background
-
-This preprocessing step improved model performance by focusing the CNN on the most relevant features.
-
-When images contain no regions of high information density (no sunspots or faculae), the preprocessed output would be essentially "blank" - showing only zeros or minimal variation. This is actually valuable information for the model, as it signals that only the overall trends like time of year and position in the solar cycle would affect the TSI output, rather than specific solar features.
+TSI sits a little above 1360 W/m², but it is not constant. It wobbles by roughly 0.1%, and those wobbles are what matter. We modeled the **TSI perturbation** (`TSI − 1362 W/m²`) rather than the absolute value, which gives the model a signal centered on the variation instead of on a huge constant offset.
 
 <div style={{ textAlign: 'center', margin: '20px 0' }}>
-  <img src="/images/nasa/comparison.png" alt="Comparison of original HMI image vs preprocessed image highlighting regions of high information density" style={{ maxWidth: '100%', borderRadius: '8px' }} />
+  <img src="/images/nasa/TSI_graph.png" alt="TSI perturbation (TSI minus 1362 W/m²) from 2011 to 2013, with sharp dips such as the one in August 2011" style={{ maxWidth: '100%', borderRadius: '8px' }} />
 </div>
 
-## Results and Evaluation
+Look at the sharp downward spikes, like the one in August 2011. Those dips happen when large **sunspot groups** rotate across the face of the Sun. Sunspots are cooler, darker patches of intense magnetic field, and when big ones face Earth, less light reaches us. Bright magnetic regions called **faculae** push the other way.
 
-We tested the model across three different forecasting scenarios:
+### Why it matters
 
-**Single Point Fill**: Where the model could see data around a missing point to predict (least meaningful but good for validation)
+TSI is the main energy input to Earth's climate system, so accurate records and forecasts feed directly into energy-budget and climate research.
 
-**Gap Filling**: Model saw data before and after but had to predict across gaps of hundreds or thousands of datapoints
+It also connects to space weather. The magnetically complex **active regions** that cause TSI dips are the same regions that produce **solar flares and coronal mass ejections (CMEs)**, the events that disrupt satellites, radio communication, and power grids. A model that learns to find and weigh active regions from solar imagery is learning to read the same features that space weather forecasting depends on.
 
-**Forecasting**: Like gap filling but with no "after" data—predicting into the future as far as possible (most challenging and practical)
+## Where the Lab Was
 
-We measured performance using Mean Squared Error (MSE) as our primary metric. The improvements came from several factors:
+The lab had already done extensive work. Their best baseline was an **Informer** (a transformer built for long time series) fed with **Singular Spectrum Analysis (SSA)**. SSA breaks a signal into many sub-signals: slow trends, periodic cycles, and noise. The baseline used a window size of 1K and then recombined those sub-signals into just three: main, trend, and noise.
 
-1. **Smart Preprocessing**: The computer vision preprocessing pipeline focused the model on sunspots and faculae
-2. **Visual Feature Extraction**: The CNN learned to recognize these key solar features
-3. **Temporal Decomposition**: Using SSA sub-signals without artificial recombination preserved important frequency components
-4. **End-to-End Learning**: The entire pipeline learned to optimize for the final prediction task
+I spent my first semester with Dr. Ding re-running the baseline to learn the data, and learning PyTorch from scratch along the way: data splits, learning rates, layer design, debugging gradient flow, all before LLMs could help. Once the data made sense, I had two ideas.
 
-## The Reality of Research Results
+## Idea 1: Stop Throwing Away the SSA Signals
 
-The single point gap fill achieved near-perfect accuracy very early on, but the other scenarios showed incremental improvements rather than dramatic breakthroughs. Research isn't about finding magic bullets for 50% accuracy improvements—those kinds of metrics are often misleading and can be achieved through clever test set manipulation.
+Recombining the SSA output into three components is a human decision about which frequencies belong together. I wanted to know whether the model could make that decision better.
 
-What mattered was that our approach was **better than the mathematical models** that the solar physicist was using. That's why he was investing in this research—our deep learning approach could capture patterns that traditional mathematical models couldn't.
+So I passed the **individual SSA sub-signals** straight to the model and let it learn their weights. It worked better than the manual recombination. I also found that a window of 10 versus 1K made very little difference, which made the full decomposition cheap to use.
 
-The work was successful because it provided real usability improvements for solar physicists, not because of any single impressive metric. In research, incremental progress that enables better science is often more valuable than dramatic but unreliable performance gains.
+## Idea 2: Let the Model See the Sun
 
-## Technical Challenges
+The baseline only saw numbers summarizing the Sun. But the cause of the biggest TSI swings is visible in the images from the **Helioseismic and Magnetic Imager (HMI)** on NASA's Solar Dynamics Observatory. The team knew the images could help; I pushed to use them and worked out how.
 
-Handling the massive HMI images at high frequency was challenging. The HMI instrument captures images at regular intervals, creating a continuous stream of high-resolution data. Processing this efficiently required careful attention to data pipelines and memory management.
+### Preprocessing: Finding the Active Regions
 
-The challenge became more significant when we tried to incorporate additional SDO channels. The multi-channel dataset grew to terabytes in size, making it impossible to secure the computational resources needed for comprehensive testing.
+An HMI image of the Sun is mostly a granulated orange disk. That texture is convection, the Sun's normal surface, and to a model it is mostly noise. The signal is in the small areas of **high information density**: sunspots and faculae.
 
+I built the filter by hand with OpenCV, tuning each constant by eye. It does three things: a **high-pass filter** strips the smooth disk, so only fine structure remains. **Blurring and taking the magnitude** let random granulation cancel out while clustered sunspot groups survive. Then **two thresholds** keep only the strongest structure, the first absolute and the second relative to the brightest surviving pixel.
 
+Step through it below on real HMI images from April 2024, near the peak of the current solar cycle. Each step highlights the line of code that produces it.
+
+<SolarStepper />
+
+When the Sun is quiet, the output is nearly blank. That's useful information too: it tells the model that only slow factors like the solar cycle and time of year should drive TSI right now.
+
+## The Architecture: CNN + Informer
+
+The final model has two branches that meet in the middle: a CNN that reads **space** (what the Sun looks like) and SSA features that carry **time** (how the signal has been moving). Tap any block to see what it does.
+
+<SolarArchitecture />
+
+A few details:
+
+- **The CNN is deliberately simple.** Repeated `Conv3D → ReLU → MaxPool → BatchNorm` blocks grow the channels 1 → 32 → 64 → 128 → 1024, then global pooling turns each frame into a 1024-number feature vector. No residuals or attention: its only job is to turn images into features.
+- **Fusion is concatenation.** 1024 image features + 10 SSA sub-signals + 6 statistical features (mean, median, mode, and others) give a 1040-dimensional vector per timestep.
+- **A small MLP** projects that vector down to the Informer's `d_model`.
+- **The Informer** is set by four numbers: `d_model` (feature size per timestep), `seq_len` (how much history it sees), `label_len` (how many known target values it gets as a starting point), and `pred_len` (how far ahead it predicts, all at once rather than one step at a time).
+
+## How We Tested It
+
+We evaluated the model in three settings, from easiest to most useful. Switch between them below to see what the model gets to see and what it has to predict.
+
+<SolarScenarios />
+
+- **Single-point fill:** predict one missing value with data on both sides. Mostly a sanity check.
+- **Gap fill:** predict a run of hundreds or thousands of missing points with data on both sides, which is useful for repairing instrument outages.
+- **Forecasting:** predict forward with no future data at all. This is the hard one and the one that matters.
+
+## Results
+
+Single-point fill reached near-perfect accuracy early. Gap filling and forecasting improved steadily rather than dramatically, measured by mean squared error.
+
+That is normal for real research. Fifty-percent improvements are usually a sign of a leaky test set, not a breakthrough. What mattered was that the approach **beat the mathematical models the solar physicist was using**, which is why the collaboration kept investing in it.
+
+## From Lab to NASA Internship
+
+After that semester I interned with Dr. Wu, the solar physicist on the NASA side. The goal was to extend the model beyond HMI to more **SDO channels at different wavelengths**, which show the Sun's atmosphere at different heights.
+
+We built the multi-channel CNN, but the dataset grew to terabytes, and we couldn't secure the compute to test it properly. It was an early lesson that infrastructure often limits research as much as ideas do.
 
 ## What I Learned
 
-1. **Domain Knowledge Matters**: Understanding the physics of sunspots and faculae was essential for effective preprocessing
-2. **Don't Throw Away Information**: The recombination of SSA signals into just 3 components was losing valuable temporal information
-3. **Hybrid Architectures Can Work**: Combining CNN spatial features with transformer temporal modeling can be effective
-4. **Start Simple**: I began with basic CNN approaches before adding the Informer component
-5. **Test Multiple Scenarios**: The three different forecasting tests revealed different aspects of model performance
-6. **Preprocessing is Important**: The computer vision preprocessing pipeline was as important as the neural network architecture
+1. **Ask what information you are throwing away.** Both of my contributions came from that one question: the discarded SSA sub-signals and the unused images.
+2. **Domain knowledge drives preprocessing.** Knowing that granulation is normal and sunspots are signal mattered as much as the network design.
+3. **Simple, hybrid architectures work.** A plain CNN feeding a transformer was enough to combine spatial and temporal information.
+4. **Test more than one way.** The three evaluation settings showed very different sides of the model.
 
-## Impact and Limitations
-
-This work contributed to the lab's understanding of solar-terrestrial relationships and improved the accuracy of space weather predictions. The approach has potential applications in other areas where visual and temporal data need to be combined for prediction tasks.
-
-### Real-World Applications
-
-TSI prediction is crucial for **space weather forecasting**—essentially "Earth weather forecasting" for space. Understanding solar energy input is critical for:
-
-- **Spacecraft Operations**: Solar storms can damage satellites and affect space missions
-- **Electrical Grid Protection**: Solar activity can cause power grid disruptions and blackouts
-- **Global Energy Systems**: A huge portion of Earth's energy comes from the Sun, making TSI prediction fundamental to understanding our planet's energy balance
-
-Better TSI prediction means better protection for our technological infrastructure and more accurate understanding of Earth's energy systems.
-
-While we successfully implemented the CNN architecture and demonstrated its potential, the computational challenges of working with terabytes of multi-channel SDO data highlighted the infrastructure limitations that often constrain research. This experience taught me the importance of balancing technical goals with practical computational constraints.
-
-## Moving Forward
-
-After this project, I transitioned to working on cloud computing projects. The principles I learned from this work—hybrid architectures, preserving information, and domain-aware modeling—continue to influence my approach to machine learning problems.
-
-This project taught me the importance of working on problems that matter. Predicting solar energy input to Earth has real implications for climate science, space weather forecasting, and our understanding of the Sun-Earth system.
-
-The key insight was that sometimes the most effective solutions come from asking "What information are we unnecessarily throwing away?" rather than trying to make things more complex. 
+After this project I moved on to cloud modeling work, but this question still shapes how I approach ML problems.

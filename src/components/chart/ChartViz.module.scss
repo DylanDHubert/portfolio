@@ -1,0 +1,245 @@
+// STYLES FOR THE CHART PROJECT VISUALS (FIGURE SHELL COMES FROM THE SHARED SOLAR STYLES)
+
+// SITE PALETTE: GOLD ACCENT IN DARK MODE, CYAN IN LIGHT MODE (MATCHES THE HEADER), PLUS RED AND VIOLET
+.themed {
+  --chart-d0: #78350f;
+  --chart-d1: #b45309;
+  --chart-d2: #d97706;
+  --chart-d3: #f59e0b;
+  --chart-d4: #fcd34d;
+  --chart-accent: #f59e0b;
+  --chart-expand: #ef4444;
+  --chart-added: #a78bfa;
+  --chart-prune: #64748b;
+  --chart-seen: rgba(245, 158, 11, 0.22);
+  --chart-mark: #f43f5e;
+}
+
+:global([data-theme="light"]) .themed {
+  --chart-d0: #164e63;
+  --chart-d1: #0e7490;
+  --chart-d2: #0891b2;
+  --chart-d3: #06b6d4;
+  --chart-d4: #67e8f9;
+  --chart-accent: #0891b2;
+  --chart-expand: #dc2626;
+  --chart-added: #7c3aed;
+  --chart-prune: #94a3b8;
+  --chart-seen: rgba(8, 145, 178, 0.2);
+  --chart-mark: #e11d48;
+}
+
+.svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.svgLabel {
+  font-size: 13px;
+  fill: var(--neutral-on-background-weak);
+}
+
+.rowLabel {
+  font-size: 12px;
+  text-anchor: end;
+  fill: var(--neutral-on-background-weak);
+  font-family: var(--font-code, monospace);
+}
+
+.stepHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 14px;
+}
+
+.stepCount { font-weight: 600; }
+.phase { font-weight: 400; color: var(--neutral-on-background-weak); }
+.windowCount { color: var(--neutral-on-background-medium); font-variant-numeric: tabular-nums; }
+
+// WINDOW SLOTS AND BARS
+.slot { fill: var(--neutral-alpha-weak); stroke: var(--neutral-alpha-medium); }
+.slotExtra { fill: none; stroke: var(--neutral-alpha-medium); stroke-dasharray: 3 3; }
+.bar { transition: height 0.3s ease, y 0.3s ease; }
+.barExpand { fill: var(--chart-expand); }
+.barAdded { fill: var(--chart-added); }
+.barPrune { fill: var(--chart-prune); opacity: 0.6; }
+
+.slotText {
+  font-size: 11px;
+  text-anchor: middle;
+  fill: var(--neutral-on-background-weak);
+  font-family: var(--font-code, monospace);
+}
+
+// TREE CELLS
+.cell { fill: var(--neutral-alpha-weak); }
+.cellSeen { fill: var(--chart-seen); }
+.cellOn { fill: var(--chart-d2); }
+.cellExpand { fill: var(--chart-expand); }
+.cellAdded { fill: var(--chart-added); }
+.cellPrune { fill: var(--chart-prune); }
+
+.markQuery { fill: var(--chart-mark); }
+.markRelated { fill: none; stroke: var(--chart-mark); stroke-width: 2; }
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+  font-size: 12px;
+  color: var(--neutral-on-background-weak);
+
+  span { display: inline-flex; align-items: center; gap: 6px; }
+  i { display: inline-block; width: 11px; height: 11px; border-radius: 2px; }
+}
+
+.lgExpand { background: var(--chart-expand); }
+.lgAdded { background: var(--chart-added); }
+.lgPrune { background: var(--chart-prune); }
+.lgSeen { background: var(--chart-seen); }
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.range {
+  flex: 1;
+  accent-color: var(--chart-accent);
+}
+
+@media (max-width: 560px) {
+  .svgLabel { font-size: 18px; }
+  .slotText { font-size: 15px; }
+  .rowLabel { font-size: 16px; }
+}
+
+// HERO SPHERES
+
+.sphereGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+
+  @media (max-width: 560px) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.sphereCell {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+
+  strong { font-size: 15px; }
+  p { margin: 0; font-size: 13.5px; line-height: 1.5; color: var(--neutral-on-background-medium); }
+}
+
+.sphereCanvas {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 10px;
+  overflow: hidden;
+  background: radial-gradient(circle at 50% 45%, #1e293b 0%, #020617 80%);
+  cursor: grab;
+
+  &:active { cursor: grabbing; }
+}
+
+.sphereLoading { width: 100%; height: 100%; }
+
+// LIGHT MODE: WHITE SPHERE BACKGROUND
+:global([data-theme="light"]) .sphereCanvas {
+  background: #ffffff;
+  border: 1px solid var(--neutral-alpha-medium);
+}
+
+.lgShell { background: rgba(125, 211, 252, 0.45); border-radius: 50% !important; }
+
+// SPHERICAL CLUSTERS RING
+
+.ringSvg {
+  width: 100%;
+  max-width: 440px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+.ring { fill: none; stroke: var(--neutral-alpha-medium); stroke-width: 1; }
+.origin { fill: var(--neutral-on-background-weak); }
+.cap { fill: none; stroke-width: 9; stroke-linecap: butt; opacity: 0.85; }
+.pt { opacity: 0.85; }
+.spoke { stroke: var(--neutral-on-background-weak); stroke-width: 1; stroke-dasharray: 3 3; opacity: 0.6; }
+.rawMean { fill: var(--neutral-on-background-strong); }
+.centroid { stroke: var(--neutral-background-strong); stroke-width: 1.5; }
+
+.lgArc { background: linear-gradient(90deg, #06b6d4, #8b5cf6, #ef4444); height: 5px !important; }
+.lgCentroid { background: #8b5cf6; border-radius: 50% !important; }
+.lgMean { background: var(--neutral-on-background-strong); border-radius: 50% !important; width: 7px !important; height: 7px !important; }
+
+// KEY IDEA CALLOUT AND HNSW COMPARISON (USED FROM THE BLOG POST)
+.keyIdea {
+  margin: 8px 0;
+  padding: 14px 18px;
+  border-radius: 10px;
+  border: 1px solid var(--neutral-alpha-medium);
+  border-left: 4px solid var(--chart-accent, #f59e0b);
+  background: var(--neutral-alpha-weak);
+}
+
+.tableWrap {
+  // THE UI LIBRARY'S TABLE ALREADY DRAWS ITS OWN ROUNDED BORDER; DON'T ADD A SECOND ONE
+  margin: 8px 0;
+
+  > :global(*) {
+    margin: 0 !important;
+  }
+
+  // THE UI LIBRARY GIVES TABLES A 30REM MINIMUM WIDTH; LET THEM FIT THE COLUMN
+  :global(table) {
+    width: 100% !important;
+    min-width: 0 !important;
+    table-layout: fixed;
+    border-collapse: collapse;
+  }
+
+  :global(th),
+  :global(td) {
+    white-space: normal !important;
+    overflow-wrap: anywhere;
+    vertical-align: top;
+    padding: 10px 12px !important;
+    font-size: 14px;
+    line-height: 1.45;
+  }
+
+  :global(th:first-child),
+  :global(td:first-child) {
+    width: 22%;
+    font-weight: 600;
+  }
+}
+
+.detailsCard {
+  border-radius: 10px;
+  border: 1px solid var(--neutral-alpha-medium);
+  background: var(--neutral-alpha-weak);
+
+  summary { list-style: none; }
+  summary::-webkit-details-marker { display: none; }
+}
+
+@media (max-width: 560px) {
+  .tableWrap {
+    :global(th),
+    :global(td) {
+      padding: 8px 6px !important;
+      font-size: 12.5px;
+    }
+  }
+}

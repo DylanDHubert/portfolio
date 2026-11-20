@@ -11,7 +11,6 @@ export {
   music,
   library,
   writing,
-  chart,
   heroProjects,
 } from "./content";
 

@@ -3,7 +3,7 @@ title: "The Cloud Project"
 summary: "3D Cloud Reconstruction and Assessment of Knowledge Transfer with NASA ABI, MODIS, & CloudSat Data."
 publishedAt: "2025-07-15"
 tags: ["NASA GSFC–610", "Machine Learning", "Transfer Learning", "Pre–Training", "Vision Transformers", "Auto–Encoders"]
-images: ["/images/placeholder/cloud-modeling.jpg"]
+images: ["/images/nasa/cloud/board.webp"]
 ---
 
 ![Presenting 3D Cloud Research at NASA MOSAICS Conference](/images/nasa/nasaposter.JPG)
@@ -28,7 +28,9 @@ The key insight was to use **perpendicular 2D views** to solve a 3D problem. Her
 - **CloudSat Data**: Side-view "slices" through the atmosphere showing cloud density profiles
 - **The Approach**: Use CloudSat slices as ground truth for cloud density and train a model to predict density across the entire GOES image
 
-This was like having a CT scan of the atmosphere—we could see both the horizontal extent (GOES) and the vertical structure (CloudSat) and use that to reconstruct the full 3D picture.
+This was like having a CT scan of the atmosphere—we could see both the horizontal extent (GOES) and the vertical structure (CloudSat) and use that to reconstruct the full 3D picture. Step through it below.
+
+<CloudScene />
 
 ## The Technical Implementation
 
@@ -52,18 +54,22 @@ A key innovation was incorporating **time and location embeddings** into the tra
 - **Spatial context**: Where the observation was located (latitude/longitude)
 
 ### The M2M Approach
-For each CloudSat ground truth point, we created a square "chip" of GOES imagery centered on that location. The transformer would:
+For each stretch of CloudSat track, we created a square "chip" of GOES imagery centered on it. The transformer would:
 1. Take the GOES chip as input
-2. Use the single CloudSat density value as supervision for that pixel
-3. Predict the full 3D density profile for the entire chip
+2. Use the CloudSat vertical profiles along the track through the chip as supervision
+3. Predict a vertical cloud profile for every pixel in the chip
 
-This meant the model learned to extrapolate from a single vertical slice (CloudSat) to predict the complete 3D cloud structure across the entire horizontal area (GOES chip).
+This meant the model learned to extrapolate from a thin vertical slice (CloudSat) to the complete 3D cloud structure across the entire horizontal area (GOES chip).
 
 ## Transfer Learning Across Satellite Platforms
 
 The second part of the project was equally fascinating: transfer learning between different satellite datasets. We worked with:
-- **ABI (Advanced Baseline Imager)**: 17-channel multispectral data from GOES
-- **MODIS**: 34-channel data from a different satellite platform
+- **ABI (Advanced Baseline Imager)**: 16-band multispectral data from GOES
+- **MODIS**: 36-band data from NASA's Terra and Aqua satellites
+
+Each band sees something different, which is what makes multispectral data powerful. Mix any three of ABI's 16 bands into a color image below:
+
+<BandMixer />
 
 The goal was to see if models trained on MODIS data could effectively transfer to ABI data, which would be valuable for operational forecasting and research.
 
@@ -98,6 +104,10 @@ I developed an **independent masking** approach where the locations of masked ar
 - **Cross-Channel Learning**: Independent masking allowed the model to leverage information from one channel to reconstruct masked areas in another channel
 - **Better Transfer Learning**: This approach improved the model's ability to generalize across different satellite platforms
 
+Try both strategies below on a real 16-band GOES chip. The number that matters is how many locations end up hidden in every band at once.
+
+<MaskingViz />
+
 The independent masking setup improved both pretraining performance and transfer learning capabilities, enabling the model to better leverage the complementary information available across different spectral channels.
 
 ### The Reality of Research Metrics
@@ -107,7 +117,7 @@ What mattered most was that the independent masking approach consistently showed
 
 ## A Critical Learning Moment: The Channel Reordering Mistake
 
-As we worked on transfer learning between ABI and MODIS datasets, I encountered a challenge that would become my biggest learning experience. The two satellites have different spectral channels—ABI has 17 channels while MODIS has 34. To enable transfer learning, I needed to map MODIS's 34 channels to ABI's 17 channels based on wavelength similarity.
+As we worked on transfer learning between ABI and MODIS datasets, I encountered a challenge that would become my biggest learning experience. The two satellites have different spectral channels—ABI has 16 bands while MODIS has 36. To enable transfer learning, I needed to map MODIS's bands onto ABI's 16 based on wavelength similarity.
 
 **The Mistake**: I was iterating over a range instead of my reordering list. This meant the channel mapping was completely wrong, and I spent weeks training models with misaligned spectral data.
 
